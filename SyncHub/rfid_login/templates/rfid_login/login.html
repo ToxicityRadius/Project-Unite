@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RFID Login</title>
+</head>
+<body>
+    <h1>RFID Login</h1>
+    {% if message %}
+    <p>{{ message }}</p>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <label for="rfid_tag">RFID Tag:</label>
+        <input type="text" id="rfid_tag" name="rfid_tag" required>
+        <button type="submit">Tap RFID</button>
+    </form>
+    <a href="{% url 'rfid_login:time_log' %}">View Time Logs</a>
+</body>
+</html>

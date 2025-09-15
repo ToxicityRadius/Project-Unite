@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inventory Items</title>
+</head>
+<body>
+    <h1>Inventory Items</h1>
+    <a href="{% url 'inventory:item_add' %}">Add New Item</a>
+    <ul>
+        {% for item in items %}
+        <li>{{ item.name }} - Quantity: {{ item.quantity }}</li>
+        {% empty %}
+        <li>No items found.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

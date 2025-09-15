@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Time Logs</title>
+</head>
+<body>
+    <h1>Time Logs</h1>
+    <ul>
+        {% for log in time_logs %}
+        <li>{{ log.officer.name }} - Date: {{ log.date }} - Time In: {{ log.time_in }} - Time Out: {{ log.time_out }}</li>
+        {% empty %}
+        <li>No time logs found.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'rfid_login:login' %}">Back to Login</a>
+</body>
+</html>
