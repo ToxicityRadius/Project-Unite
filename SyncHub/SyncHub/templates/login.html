@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - PROJECT UNITE</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <!-- Background Design -->
+    <div class="background-design">
+        <img src="https://api.builder.io/api/v1/image/assets/TEMP/69e5a03207d72e05249171283d6b3fef53da98b7?width=3356" alt="" class="bg-logo-1">
+        <img src="https://api.builder.io/api/v1/image/assets/TEMP/5bae535a77c2066496e68aa5ed0ea8132703a86a?width=4062" alt="" class="bg-logo-2">
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="{% url 'landing' %}">HOME</a></li>
+            <li><a href="#about">ABOUT US</a></li>
+            <li><a href="#purpose">PURPOSE</a></li>
+        </ul>
+    </nav>
+
+    <!-- Login Content -->
+    <main class="login-container fade-in">
+        <div class="login-card">
+            <div class="login-left">
+                <div class="login-welcome">welcome</div>
+                <h1 class="login-title">PROJECT UNITE</h1>
+                <p class="login-subtitle">INEFFICIENT OFFICER ATTENDANCE LOGGING AND INVENTORY TRACKING</p>
+                
+                <form method="post" class="login-form" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <input type="text" name="username" placeholder="username" class="form-input" required>
+                    <input type="password" name="password" placeholder="password" class="form-input" required>
+                    <button type="submit" class="login-button">Login</button>
+                </form>
+                
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                            <div class="message {{ message.tags }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="login-right">
+                <div class="logo-container">
+                    <img src="https://api.builder.io/api/v1/image/assets/TEMP/a65df8bbc0c314444292b21f3727e85bdea1974e?width=1426" alt="PROJECT UNITE Logo" class="logo-image">
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Add form validation and smooth animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('.login-form');
+            const inputs = document.querySelectorAll('.form-input');
+            
+            // Add focus effects
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.style.transform = 'scale(1.02)';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+
+            // Form submission with loading state
+            form.addEventListener('submit', function(e) {
+                const button = form.querySelector('.login-button');
+                button.textContent = 'Logging in...';
+                button.disabled = true;
+            });
+        });
+    </script>
+</body>
+</html>
