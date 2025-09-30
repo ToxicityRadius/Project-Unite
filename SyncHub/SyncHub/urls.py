@@ -16,11 +16,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import TemplateView
+from django.conf import settings
+from django.conf.urls.static import static
+from . import views
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='dashboard.html'), name='dashboard'),
+    path('', views.landing_page, name='landing'),
+    path('login/', views.login_page, name='login'),
+    path('dashboard/', views.dashboard_view, name='dashboard'),
     path('admin/', admin.site.urls),
     path('inventory/', include('inventory.urls')),
     path('rfid_login/', include('rfid_login.urls')),
 ]
+
+# Serve static files during development
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])

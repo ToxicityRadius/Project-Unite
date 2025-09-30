@@ -1,19 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Supreme Student Council Office Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - PROJECT UNITE</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <div class="dashboard-container">
-        <h1>Supreme Student Council Office Dashboard</h1>
-        <ul>
-            <li><a href="/inventory/">Inventory System</a></li>
-            <li><a href="/rfid_login/">RFID Login System</a></li>
-        </ul>
+    <!-- Background Design -->
+    <div class="background-design">
+        <img src="https://api.builder.io/api/v1/image/assets/TEMP/69e5a03207d72e05249171283d6b3fef53da98b7?width=3356" alt="" class="bg-logo-1">
+        <img src="https://api.builder.io/api/v1/image/assets/TEMP/5bae535a77c2066496e68aa5ed0ea8132703a86a?width=4062" alt="" class="bg-logo-2">
     </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="{% url 'landing' %}">HOME</a></li>
+            <li><a href="#about">ABOUT US</a></li>
+            <li><a href="#purpose">PURPOSE</a></li>
+        </ul>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <main class="dashboard-container fade-in">
+        <div class="dashboard-grid">
+            <!-- Inventory Card -->
+            <div class="dashboard-card">
+                <img src="https://api.builder.io/api/v1/image/assets/TEMP/b041c9905323aeed8880ccfb0ba126595e1fdf62?width=596" alt="Inventory Management" class="card-icon">
+                <a href="/inventory/" class="card-button">inventory list</a>
+            </div>
+
+            <!-- Attendance Card -->
+            <div class="dashboard-card">
+                <img src="https://api.builder.io/api/v1/image/assets/TEMP/47b1273de6eda6877c29e75bad1bf426e7a6dcb5?width=568" alt="Attendance Management" class="card-icon">
+                <a href="/rfid_login/" class="card-button">attendance list</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Add card hover animations and interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.dashboard-card');
+
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px) scale(1.02)';
+                });
+
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+
+                // Add click animation
+                card.addEventListener('click', function(e) {
+                    if (e.target.tagName !== 'A') {
+                        const link = this.querySelector('.card-button');
+                        if (link) {
+                            link.click();
+                        }
+                    }
+                });
+            });
+
+            // Add entrance animation
+            setTimeout(() => {
+                cards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.classList.add('fade-in');
+                    }, index * 200);
+                });
+            }, 100);
+        });
+    </script>
 </body>
 </html>
