@@ -451,10 +451,22 @@ body {
 }
 
 .form_close {
-    background: transparent;
+    /* Use the visual style of .login-button but keep a compact size */
+    background: var(--background-light);
+    color: var(--primary-blue);
     border: none;
     font-size: 1rem;
+    font-weight: 500;
+    padding: 0.45rem 1rem; /* keep the close button compact */
+    border-radius: 6rem;
     cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0,120,255,0.08);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form_close:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0,120,255,0.12);
 }
 
 .home .form_container {
