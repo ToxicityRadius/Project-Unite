@@ -50,6 +50,46 @@ def login_page(request):
             messages.error(request, 'Invalid username or password.')
     return render(request, 'login.html')
 
+def signup_page(request):
+    """Signup page view with form handling"""
+    if request.method == 'POST':
+        username = request.POST.get('username', '').strip()
+        email = request.POST.get('email', '').strip()
+        password = request.POST.get('password', '').strip()
+        confirm_password = request.POST.get('confirm_password', '').strip()
+
+        # Basic validation
+        if not username or not email or not password:
+            messages.error(request, 'All fields are required.')
+            return render(request, 'signup.html')
+
+        if password != confirm_password:
+            messages.error(request, 'Passwords do not match.')
+            return render(request, 'signup.html')
+
+        if len(password) < 8:
+            messages.error(request, 'Password must be at least 8 characters long.')
+            return render(request, 'signup.html')
+
+        if User.objects.filter(username__iexact=username).exists():
+            messages.error(request, 'Username already exists.')
+            return render(request, 'signup.html')
+
+        if User.objects.filter(email__iexact=email).exists():
+            messages.error(request, 'Email already registered.')
+            return render(request, 'signup.html')
+
+        try:
+            user = User.objects.create_user(username=username, email=email, password=password)
+            user.save()
+            messages.success(request, 'Account created successfully! Please log in.')
+            return redirect('login')
+        except Exception as e:
+            messages.error(request, f'Error creating account: {str(e)}')
+            return render(request, 'signup.html')
+
+    return render(request, 'signup.html')
+
 def signup_api(request):
     """Signup API endpoint that accepts JSON POST to create a new user"""
     if request.method != 'POST':
