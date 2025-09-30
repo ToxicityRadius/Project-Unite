@@ -422,6 +422,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(({status, body}) => {
                     alert(body.message);
                     if (status === 200) {
+                        // mark registered locally
+                        try { localStorage.setItem('registered', 'true'); } catch (e) {}
+
                         document.querySelector('.signup_form').setAttribute('aria-hidden', 'true');
                         document.querySelector('.login_form').setAttribute('aria-hidden', 'false');
                         if (formContainer) formContainer.classList.remove('active');
