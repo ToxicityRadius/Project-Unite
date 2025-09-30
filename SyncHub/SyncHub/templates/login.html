@@ -48,6 +48,9 @@
                         <span tabindex="0" class="pw_hide" style="position:absolute;right:12px;top:10px;cursor:pointer;">👁️</span>
                     </div>
                     <button type="submit" class="login-button">Login</button>
+                    <div id="login_signup_prompt" class="signup-prompt" style="margin-top:8px;font-size:0.95rem;color:var(--text-gray);">
+                        Don't have an account? <a href="{% url 'landing' %}#" id="goToSignupInline">Sign up</a>
+                    </div>
                 </form>
 
                 {% if messages %}
