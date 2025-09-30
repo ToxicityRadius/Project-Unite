@@ -27,6 +27,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('inventory/', include('inventory.urls')),
     path('rfid_login/', include('rfid_login.urls')),
+
+    # API endpoints for auth used by frontend JS
+    path('api/signup', views.signup_api, name='api_signup'),
+    path('api/login', views.login_page, name='api_login'),
 ]
 
 # Serve static files during development
