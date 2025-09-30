@@ -396,6 +396,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // link in login form to open signup
+    const goToSignup = document.getElementById('goToSignup');
+    if (goToSignup) {
+        goToSignup.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (formContainer) formContainer.classList.add('active');
+            document.querySelector('.login_form').setAttribute('aria-hidden', 'true');
+            document.querySelector('.signup_form').setAttribute('aria-hidden', 'false');
+            const loginPrompt = document.getElementById('login_signup_prompt');
+            if (loginPrompt) loginPrompt.classList.add('hidden');
+            setFocusToFirstInput('.signup_form');
+        });
+    }
+
     window.addEventListener('keydown', e => {
         if ((e.key === 'Escape' || e.key === 'Esc') && home && home.style.display !== 'none') {
             home.style.display = 'none';
