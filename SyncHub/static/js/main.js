@@ -367,6 +367,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Close modal if clicking outside the form_container (overlay click)
+    if (home) {
+        home.addEventListener('click', (e) => {
+            // If the click target is the overlay itself (not inside the form), close
+            if (e.target === home) {
+                home.style.display = 'none';
+                if (openLoginBtn) openLoginBtn.focus();
+            }
+        });
+    }
+
+    // Prevent clicks inside the form container from bubbling to the overlay
+    if (formContainer) {
+        formContainer.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    }
+
     window.addEventListener('keydown', e => {
         if ((e.key === 'Escape' || e.key === 'Esc') && home && home.style.display !== 'none') {
             home.style.display = 'none';
