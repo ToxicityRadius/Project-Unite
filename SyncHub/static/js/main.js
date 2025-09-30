@@ -325,6 +325,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (formContainer) formContainer.classList.add('active');
             document.querySelector('.login_form').setAttribute('aria-hidden', 'true');
             document.querySelector('.signup_form').setAttribute('aria-hidden', 'false');
+            // hide login prompt when viewing signup
+            const loginPrompt = document.getElementById('login_signup_prompt');
+            if (loginPrompt) loginPrompt.classList.add('hidden');
             setFocusToFirstInput('.signup_form');
         });
     }
@@ -336,6 +339,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (formContainer) formContainer.classList.remove('active');
             document.querySelector('.login_form').setAttribute('aria-hidden', 'false');
             document.querySelector('.signup_form').setAttribute('aria-hidden', 'true');
+            // show prompt to sign up if user hasn't registered
+            const loginPrompt = document.getElementById('login_signup_prompt');
+            try {
+                if (loginPrompt) {
+                    if (localStorage.getItem('registered') !== 'true') loginPrompt.classList.remove('hidden');
+                    else loginPrompt.classList.add('hidden');
+                }
+            } catch (e) {}
             setFocusToFirstInput('.login_form');
         });
     }
