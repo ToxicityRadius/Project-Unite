@@ -55,30 +55,6 @@
         </div>
     </main>
 
-    <script>
-        // Add form validation and smooth animations
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.querySelector('.login-form');
-            const inputs = document.querySelectorAll('.form-input');
-            
-            // Add focus effects
-            inputs.forEach(input => {
-                input.addEventListener('focus', function() {
-                    this.style.transform = 'scale(1.02)';
-                });
-                
-                input.addEventListener('blur', function() {
-                    this.style.transform = 'scale(1)';
-                });
-            });
-
-            // Form submission with loading state
-            form.addEventListener('submit', function(e) {
-                const button = form.querySelector('.login-button');
-                button.textContent = 'Logging in...';
-                button.disabled = true;
-            });
-        });
-    </script>
+    <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
