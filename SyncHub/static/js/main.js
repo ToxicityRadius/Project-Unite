@@ -203,3 +203,263 @@ window.ProjectUnite = {
     initButtonEnhancements,
     initScrollAnimations
 };
+
+// --- Auth modal and form validation logic (enhanced) ---
+document.addEventListener('DOMContentLoaded', () => {
+    // DOM Elements
+    const home = document.querySelector('.home');
+    const formContainer = document.querySelector('.form_container');
+    const formCloseBtn = document.querySelector('.form_close');
+    const signupBtn = document.querySelector('#signup');
+    const loginBtn = document.querySelector('#login');
+    const openLoginBtn = document.getElementById('openLogin');
+    const openSignupBtn = document.getElementById('openSignup');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const pwShowHideIcons = document.querySelectorAll('.pw_hide');
+
+    const profileInfo = document.getElementById('profile-info');
+    const navAvatarImg = document.getElementById('nav-avatar-img');
+    const navUsernameDisplay = document.getElementById('nav-username-display');
+
+    function togglePasswordIcon(icon) {
+        const input = icon.parentElement.querySelector('input') || icon.previousElementSibling;
+        if (!input) return;
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.textContent = '🙈';
+        } else {
+            input.type = 'password';
+            icon.textContent = '👁️';
+        }
+    }
+
+    pwShowHideIcons.forEach(icon => {
+        icon.addEventListener('click', () => togglePasswordIcon(icon));
+        icon.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                togglePasswordIcon(icon);
+            }
+        });
+    });
+
+    function setFocusToFirstInput(formSelector) {
+        const form = document.querySelector(formSelector);
+        if (!form) return;
+        const firstInput = form.querySelector('input, button, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (firstInput) firstInput.focus();
+    }
+
+    function showError(input, message) {
+        if (!input) return;
+        let errorElem = input.parentElement.querySelector('.error-message');
+        if (!errorElem) {
+            errorElem = document.createElement('div');
+            errorElem.className = 'error-message';
+            input.parentElement.appendChild(errorElem);
+        }
+        errorElem.textContent = message;
+        input.setAttribute('aria-invalid', 'true');
+    }
+
+    function clearError(input) {
+        if (!input) return;
+        const errorElem = input.parentElement.querySelector('.error-message');
+        if (errorElem) errorElem.textContent = '';
+        input.removeAttribute('aria-invalid');
+    }
+
+    function isValidEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
+
+    function isStrongPassword(password) {
+        const re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+        return re.test(password);
+    }
+
+    function toggleAuthButtons() {
+        if (localStorage.getItem('loggedIn') === 'true') {
+            if (openLoginBtn) openLoginBtn.style.display = 'none';
+            if (openSignupBtn) openSignupBtn.style.display = 'none';
+            if (logoutBtn) logoutBtn.style.display = 'inline-block';
+            if (profileInfo) profileInfo.style.display = 'flex';
+            if (navAvatarImg) {
+                const avatar = localStorage.getItem('avatar') || '';
+                if (avatar) {
+                    navAvatarImg.src = avatar; navAvatarImg.style.display = 'block';
+                }
+            }
+            if (navUsernameDisplay) {
+                const username = localStorage.getItem('username') || localStorage.getItem('email') || 'User';
+                navUsernameDisplay.textContent = username;
+            }
+        } else {
+            if (openLoginBtn) openLoginBtn.style.display = 'inline-block';
+            if (openSignupBtn) openSignupBtn.style.display = 'inline-block';
+            if (logoutBtn) logoutBtn.style.display = 'none';
+            if (profileInfo) profileInfo.style.display = 'none';
+            if (navAvatarImg) { navAvatarImg.src = ''; navAvatarImg.style.display = 'none'; }
+            if (navUsernameDisplay) navUsernameDisplay.textContent = '';
+        }
+    }
+
+    toggleAuthButtons();
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('loggedIn');
+            localStorage.removeItem('username');
+            localStorage.removeItem('avatar');
+            localStorage.removeItem('email');
+            toggleAuthButtons();
+            window.location.href = '/';
+        });
+    }
+
+    if (openSignupBtn) {
+        openSignupBtn.addEventListener('click', e => {
+            e.preventDefault();
+            if (home) home.style.display = 'flex';
+            if (formContainer) formContainer.classList.add('active');
+            document.querySelector('.login_form').setAttribute('aria-hidden', 'true');
+            document.querySelector('.signup_form').setAttribute('aria-hidden', 'false');
+            setFocusToFirstInput('.signup_form');
+        });
+    }
+
+    if (openLoginBtn) {
+        openLoginBtn.addEventListener('click', e => {
+            e.preventDefault();
+            if (home) home.style.display = 'flex';
+            if (formContainer) formContainer.classList.remove('active');
+            document.querySelector('.login_form').setAttribute('aria-hidden', 'false');
+            document.querySelector('.signup_form').setAttribute('aria-hidden', 'true');
+            setFocusToFirstInput('.login_form');
+        });
+    }
+
+    if (signupBtn) {
+        signupBtn.addEventListener('click', e => {
+            e.preventDefault();
+            if (formContainer) formContainer.classList.add('active');
+            document.querySelector('.login_form').setAttribute('aria-hidden', 'true');
+            document.querySelector('.signup_form').setAttribute('aria-hidden', 'false');
+            setFocusToFirstInput('.signup_form');
+        });
+    }
+
+    if (loginBtn) {
+        loginBtn.addEventListener('click', e => {
+            e.preventDefault();
+            if (formContainer) formContainer.classList.remove('active');
+            document.querySelector('.login_form').setAttribute('aria-hidden', 'false');
+            document.querySelector('.signup_form').setAttribute('aria-hidden', 'true');
+            setFocusToFirstInput('.login_form');
+        });
+    }
+
+    if (formCloseBtn) {
+        formCloseBtn.addEventListener('click', () => {
+            if (home) home.style.display = 'none';
+            if (openLoginBtn) openLoginBtn.focus();
+        });
+    }
+
+    window.addEventListener('keydown', e => {
+        if ((e.key === 'Escape' || e.key === 'Esc') && home && home.style.display !== 'none') {
+            home.style.display = 'none';
+            if (openLoginBtn) openLoginBtn.focus();
+        }
+    });
+
+    // Signup form submission
+    const signupForm = document.getElementById('signupForm');
+    if (signupForm) {
+        signupForm.addEventListener('submit', e => {
+            e.preventDefault();
+            const usernameInput = document.getElementById('signup_username');
+            const emailInput = document.getElementById('signup_email');
+            const passwordInput = document.getElementById('signup_password');
+            const confirmPasswordInput = document.getElementById('confirm_password');
+
+            let valid = true;
+            clearError(usernameInput); clearError(emailInput); clearError(passwordInput); clearError(confirmPasswordInput);
+
+            if (usernameInput.value.trim() === '') { showError(usernameInput, 'Please enter a username.'); valid = false; }
+            if (!isValidEmail(emailInput.value.trim())) { showError(emailInput, 'Please enter a valid email address.'); valid = false; }
+            if (!isStrongPassword(passwordInput.value.trim())) { showError(passwordInput, 'Password must be at least 8 characters long and include at least one letter and one number.'); valid = false; }
+            if (passwordInput.value.trim() !== confirmPasswordInput.value.trim()) { showError(confirmPasswordInput, 'Passwords do not match.'); valid = false; }
+
+            if (valid) {
+                const submitBtn = signupForm.querySelector('button[type="submit"]');
+                submitBtn.disabled = true; submitBtn.textContent = 'Signing up...';
+                fetch('/api/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: usernameInput.value.trim(), email: emailInput.value.trim(), password: passwordInput.value.trim() })
+                })
+                .then(res => res.json().then(data => ({status: res.status, body: data})))
+                .then(({status, body}) => {
+                    alert(body.message);
+                    if (status === 200) {
+                        document.querySelector('.signup_form').setAttribute('aria-hidden', 'true');
+                        document.querySelector('.login_form').setAttribute('aria-hidden', 'false');
+                        if (formContainer) formContainer.classList.remove('active');
+                        if (home) home.style.display = 'none';
+                        const identifierInput = document.getElementById('login_identifier');
+                        const passwordInputLogin = document.getElementById('login_password');
+                        if (identifierInput) identifierInput.value = usernameInput.value.trim();
+                        if (passwordInputLogin) passwordInputLogin.value = passwordInput.value.trim();
+                        if (identifierInput) identifierInput.focus();
+                    }
+                    submitBtn.disabled = false; submitBtn.textContent = 'Sign Up Now';
+                })
+                .catch(err => { alert('Error: ' + err.message); submitBtn.disabled = false; submitBtn.textContent = 'Sign Up Now'; });
+            }
+        });
+    }
+
+    // Login form submission
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', e => {
+            e.preventDefault();
+            const identifierInput = document.getElementById('login_identifier');
+            const passwordInput = document.getElementById('login_password');
+
+            let valid = true;
+            clearError(identifierInput); clearError(passwordInput);
+            if (identifierInput.value.trim() === '') { showError(identifierInput, 'Please enter your username or email.'); valid = false; }
+            if (passwordInput.value.trim() === '') { showError(passwordInput, 'Please enter your password.'); valid = false; }
+
+            if (valid) {
+                const submitBtn = loginForm.querySelector('button[type="submit"]');
+                submitBtn.disabled = true; submitBtn.textContent = 'Logging in...';
+                fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ identifier: identifierInput.value.trim(), password: passwordInput.value.trim() })
+                })
+                .then(res => res.json().then(data => ({status: res.status, body: data})))
+                .then(({status, body}) => {
+                    alert(body.message);
+                    if (status === 200) {
+                        if (home) home.style.display = 'none';
+                        localStorage.setItem('loggedIn', 'true');
+                        const identifier = identifierInput.value.trim();
+                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (emailRegex.test(identifier)) { localStorage.setItem('email', identifier); localStorage.removeItem('username'); }
+                        else { localStorage.setItem('username', identifier); localStorage.removeItem('email'); }
+                        toggleAuthButtons();
+                        // Redirect to dashboard
+                        window.location.href = '/dashboard/';
+                    }
+                    submitBtn.disabled = false; submitBtn.textContent = 'Login Now';
+                })
+                .catch(err => { alert('Error: ' + err.message); submitBtn.disabled = false; submitBtn.textContent = 'Login Now'; });
+            }
+        });
+    }
+});
