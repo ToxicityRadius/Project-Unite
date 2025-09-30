@@ -475,6 +475,244 @@ body {
     }
 }
 
+/* Figma Login Design */
+.figma-login-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    position: relative;
+}
+
+.figma-login-card {
+    display: flex;
+    background: var(--primary-blue);
+    border-radius: 3.4rem;
+    border: 5px solid var(--border-color);
+    overflow: hidden;
+    max-width: 75rem;
+    width: 100%;
+    min-height: 38rem;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 120, 255, 0.15);
+}
+
+.figma-login-left {
+    flex: 1;
+    padding: 3rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: var(--white);
+    position: relative;
+}
+
+.figma-login-right {
+    flex: 1;
+    background: var(--white);
+    border-radius: 3.2rem;
+    margin: 1.3rem 1.3rem 1.3rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.figma-login-welcome {
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.figma-login-title {
+    font-size: 3.8rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    margin-bottom: 0.5rem;
+    line-height: 0.9;
+}
+
+.figma-login-subtitle {
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    margin-bottom: 2.5rem;
+    opacity: 0.9;
+}
+
+.figma-login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 28rem;
+}
+
+.figma-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.figma-form-input {
+    padding: 0.7rem 10.3rem 0.7rem 2rem;
+    border: 4px solid var(--border-color);
+    border-radius: 6rem;
+    background: var(--background-light);
+    font-size: 1.35rem;
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-light);
+    outline: none;
+    transition: all 0.3s ease;
+    width: 100%;
+    text-align: center;
+}
+
+.figma-form-input::placeholder {
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.figma-form-input:focus {
+    border-color: var(--white);
+    color: var(--text-gray);
+    background: var(--white);
+    transform: scale(1.02);
+}
+
+.figma-pw-toggle {
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    color: var(--text-light);
+}
+
+.figma-login-button {
+    padding: 0.7rem 2rem;
+    background: var(--background-light);
+    color: var(--primary-blue);
+    border: none;
+    border-radius: 6rem;
+    font-size: 1.35rem;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: flex-start;
+    margin-top: 1rem;
+    min-width: 7.6rem;
+}
+
+.figma-login-button:hover {
+    background: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+}
+
+.figma-logo-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.figma-logo-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.figma-signup-prompt {
+    margin-top: 2rem;
+    font-size: 1rem;
+    color: var(--text-gray);
+    text-align: center;
+}
+
+.figma-signup-link {
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.figma-signup-link:hover {
+    color: #0066dd;
+    text-decoration: underline;
+}
+
+/* Responsive Design for Figma Login */
+@media (max-width: 1200px) {
+    .figma-login-card {
+        max-width: 60rem;
+    }
+
+    .figma-login-title {
+        font-size: 3rem;
+    }
+
+    .figma-form-input {
+        padding: 0.7rem 8rem 0.7rem 2rem;
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .figma-login-card {
+        flex-direction: column;
+        margin: 1rem;
+        min-height: auto;
+    }
+
+    .figma-login-right {
+        margin: 0 1.3rem 1.3rem 1.3rem;
+        min-height: 15rem;
+    }
+
+    .figma-login-title {
+        font-size: 2.5rem;
+    }
+
+    .figma-login-subtitle {
+        font-size: 0.5rem;
+    }
+
+    .figma-form-input {
+        padding: 0.6rem 2rem;
+        font-size: 1.1rem;
+        text-align: left;
+    }
+
+    .figma-login-button {
+        font-size: 1.1rem;
+        width: 100%;
+        align-self: stretch;
+    }
+}
+
+@media (max-width: 480px) {
+    .figma-login-left {
+        padding: 2rem;
+    }
+
+    .figma-login-title {
+        font-size: 2rem;
+    }
+
+    .figma-form-input {
+        padding: 0.5rem 1.5rem;
+        font-size: 1rem;
+    }
+}
+
 /* Utility Classes */
 .hidden {
     display: none;
