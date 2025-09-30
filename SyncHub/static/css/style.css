@@ -440,6 +440,28 @@ body {
     display: none;
 }
 
+.error-message {
+    color: #d9534f;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.form_container .form-input[aria-invalid="true"] {
+    border-color: #d9534f;
+}
+
+.form_close {
+    background: transparent;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.home .form_container {
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
 .fade-in {
     animation: fadeIn 0.6s ease-in;
 }
