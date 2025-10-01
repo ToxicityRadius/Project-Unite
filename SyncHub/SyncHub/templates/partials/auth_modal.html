@@ -1,28 +1,96 @@
 <!-- Shared Auth Modal (Login + Signup) -->
 <div class="home hidden" aria-hidden="true" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:60;">
-  <div class="form_container" style="background:var(--white);padding:24px;border-radius:12px;max-width:420px;width:95%;position:relative;">
-    <button class="form_close" aria-label="Close auth dialog" style="position:absolute;right:16px;top:16px;">Close</button>
+  <div class="form_container" style="background:transparent;padding:0;border-radius:0;max-width:75rem;width:95%;position:relative;">
+    <button class="form_close" aria-label="Close auth dialog" style="position:absolute;right:2rem;top:2rem;z-index:70;background:rgba(255,255,255,0.9);color:var(--primary-blue);border:none;border-radius:50%;width:40px;height:40px;font-size:1.2rem;cursor:pointer;">×</button>
 
     <!-- Signup Form (modal) -->
     <form id="signupForm" class="signup_form" style="width:100%;" aria-hidden="true">
-      <h3>Sign Up</h3>
-      {% csrf_token %}
-      <div style="margin-bottom:12px;"><input id="signup_username" name="username" class="form-input" placeholder="Username" required></div>
-      <div style="margin-bottom:12px;"><input id="signup_email" name="email" type="email" class="form-input" placeholder="Email" required></div>
-      <div style="margin-bottom:12px;position:relative;"><input id="signup_password" name="password" type="password" class="form-input" placeholder="Password" required><span tabindex="0" class="pw_hide" style="position:absolute;right:12px;top:10px;cursor:pointer;">👁️</span></div>
-      <div style="margin-bottom:12px;position:relative;"><input id="confirm_password" name="confirm_password" type="password" class="form-input" placeholder="Confirm Password" required><span tabindex="0" class="pw_hide" style="position:absolute;right:12px;top:10px;cursor:pointer;">👁️</span></div>
-      <button id="signup" class="login-button" type="submit">Sign Up Now</button>
-      <p style="text-align:center;margin-top:12px;font-size:14px;">Already have an account? <a href="#" id="goToLogin" style="color:var(--primary-blue);">Log in</a></p>
+      <div style="background:var(--white);padding:3rem;border-radius:2rem;max-width:32rem;width:100%;margin:0 auto;box-shadow:0 20px 60px rgba(0,120,255,0.1);border:2px solid rgba(0,120,255,0.1);text-align:center;">
+        <h3 style="font-size:2.5rem;font-weight:800;color:var(--primary-blue);margin-bottom:0.5rem;">Create Account</h3>
+        <p style="font-size:1rem;color:var(--text-gray);margin-bottom:2rem;opacity:0.8;">Join PROJECT UNITE to manage your inventory and attendance efficiently</p>
+        {% csrf_token %}
+        <div style="margin-bottom:1.5rem;"><input id="signup_username" name="username" class="form-input" style="padding:0.8rem 1.5rem;border:3px solid var(--border-color);border-radius:6rem;background:var(--background-light);font-size:1rem;width:100%;" placeholder="Username" required></div>
+        <div style="margin-bottom:1.5rem;"><input id="signup_email" name="email" type="email" class="form-input" style="padding:0.8rem 1.5rem;border:3px solid var(--border-color);border-radius:6rem;background:var(--background-light);font-size:1rem;width:100%;" placeholder="Email" required></div>
+        <div style="margin-bottom:1.5rem;position:relative;"><input id="signup_password" name="password" type="password" class="form-input" style="padding:0.8rem 1.5rem;border:3px solid var(--border-color);border-radius:6rem;background:var(--background-light);font-size:1rem;width:100%;" placeholder="Password" required><span tabindex="0" class="pw_hide" style="position:absolute;right:1.2rem;top:50%;transform:translateY(-50%);cursor:pointer;">👁️</span></div>
+        <div style="margin-bottom:1.5rem;position:relative;"><input id="confirm_password" name="confirm_password" type="password" class="form-input" style="padding:0.8rem 1.5rem;border:3px solid var(--border-color);border-radius:6rem;background:var(--background-light);font-size:1rem;width:100%;" placeholder="Confirm Password" required><span tabindex="0" class="pw_hide" style="position:absolute;right:1.2rem;top:50%;transform:translateY(-50%);cursor:pointer;">👁️</span></div>
+        <button id="signup" class="login-button" type="submit" style="padding:0.8rem 2rem;background:var(--primary-blue);color:var(--white);border:none;border-radius:6rem;font-size:1.1rem;font-weight:600;cursor:pointer;margin-top:0.5rem;">Create Account</button>
+        <p style="text-align:center;margin-top:1.5rem;font-size:0.95rem;color:var(--text-gray);">Already have an account? <a href="#" id="goToLogin" style="color:var(--primary-blue);text-decoration:none;font-weight:600;">Log in</a></p>
+      </div>
     </form>
 
-    <!-- Login Form (modal) -->
-    <form id="loginForm" class="login_form" style="width:100%;" aria-hidden="false">
-      <h3>Log In</h3>
-      {% csrf_token %}
-      <div style="margin-bottom:12px;"><input id="login_identifier" name="identifier" class="form-input" placeholder="Username or Email" required></div>
-      <div style="margin-bottom:12px;position:relative;"><input id="login_password" name="password" type="password" class="form-input" placeholder="Password" required><span tabindex="0" class="pw_hide" style="position:absolute;right:12px;top:10px;cursor:pointer;">👁️</span></div>
-      <button class="login-button" type="submit">Log In</button>
-      <p style="text-align:center;margin-top:12px;font-size:14px;">Don't have an account? <a href="#" id="goToSignup" style="color:var(--primary-blue);">Sign up</a></p>
-    </form>
+    <!-- Login Form (modal) - Figma Design -->
+    <div id="loginForm" class="login_form" style="width:100%;" aria-hidden="false">
+      <div class="figma-login-card" style="display:flex;background:var(--primary-blue);border-radius:3.44rem;border:5px solid var(--border-color);overflow:hidden;max-width:75rem;width:100%;min-height:38rem;position:relative;box-shadow:0 20px 60px rgba(0,120,255,0.15);">
+        <!-- Left Panel - Blue with form -->
+        <div class="figma-login-left" style="flex:1;padding:5.4rem 2.5rem 4rem;display:flex;flex-direction:column;justify-content:flex-start;color:var(--white);position:relative;">
+          <div class="figma-login-welcome" style="font-size:0.96rem;font-weight:500;margin-bottom:0rem;position:absolute;top:1.8rem;left:2.5rem;">welcome</div>
+          <h1 class="figma-login-title" style="font-size:3.78rem;font-weight:800;letter-spacing:-0.15rem;margin-bottom:0.5rem;line-height:0.9;">PROJECT UNITE</h1>
+          <p class="figma-login-subtitle" style="font-size:0.58rem;font-weight:500;letter-spacing:0.017rem;text-transform:uppercase;margin-bottom:2.5rem;opacity:0.9;max-width:21.4rem;">INEFFICIENT OFFICER ATTENDANCE LOGGING AND INVENTORY TRACKING</p>
+
+          <form class="figma-login-form" style="display:flex;flex-direction:column;gap:0.6rem;width:100%;max-width:27.56rem;">
+            {% csrf_token %}
+
+            <div class="figma-input-wrapper" style="position:relative;width:100%;">
+              <input
+                type="text"
+                id="login_identifier"
+                name="identifier"
+                placeholder="username"
+                class="figma-form-input"
+                style="padding:0.7rem 10.31rem 0.7rem 10.31rem;border:4px solid var(--border-color);border-radius:6rem;background:var(--background-light);font-size:1.34rem;font-family:'Poppins',sans-serif;font-weight:500;color:var(--text-light);outline:none;transition:all 0.3s ease;width:100%;text-align:center;"
+                required
+              >
+            </div>
+
+            <div class="figma-input-wrapper" style="position:relative;width:100%;">
+              <input
+                type="password"
+                id="login_password"
+                name="password"
+                placeholder="password"
+                class="figma-form-input"
+                style="padding:0.7rem 10.31rem 0.7rem 10.31rem;border:4px solid var(--border-color);border-radius:6rem;background:var(--background-light);font-size:1.34rem;font-family:'Poppins',sans-serif;font-weight:500;color:var(--text-light);outline:none;transition:all 0.3s ease;width:100%;text-align:center;"
+                required
+              >
+              <button type="button" class="figma-pw-toggle" style="position:absolute;right:2rem;top:50%;transform:translateY(-50%);background:transparent;border:none;font-size:1rem;cursor:pointer;color:var(--text-light);z-index:10;" onclick="toggleModalPassword()">👁️</button>
+            </div>
+
+            <button type="submit" class="figma-login-button" style="padding:0.7rem 2rem;background:var(--background-light);color:var(--primary-blue);border:none;border-radius:6rem;font-size:1.34rem;font-weight:500;font-family:'Poppins',sans-serif;cursor:pointer;transition:all 0.3s ease;align-self:center;margin-top:2.2rem;min-width:7.6rem;">Login</button>
+          </form>
+
+          <div class="figma-signup-prompt" style="margin-top:2rem;font-size:1rem;color:var(--white);text-align:center;">
+            Don't have an account? <a href="#" id="goToSignup" style="color:var(--white);text-decoration:none;font-weight:600;">Sign up here</a>
+          </div>
+        </div>
+
+        <!-- Right Panel - White with logo -->
+        <div class="figma-login-right" style="flex:1;background:var(--white);border-radius:3.2rem;margin:1.3rem 1.3rem 1.3rem 0;display:flex;align-items:center;justify-content:center;padding:2rem;">
+          <div class="figma-logo-container" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
+            <img
+              src="https://api.builder.io/api/v1/image/assets/TEMP/a65df8bbc0c314444292b21f3727e85bdea1974e?width=1426"
+              alt="PROJECT UNITE Logo"
+              class="figma-logo-image"
+              style="max-width:100%;max-height:100%;object-fit:contain;"
+            >
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
+<script>
+// Password toggle for modal
+function toggleModalPassword() {
+    const passwordInput = document.getElementById('login_password');
+    const toggleButton = document.querySelector('.figma-pw-toggle');
+
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleButton.textContent = '🙈';
+    } else {
+        passwordInput.type = 'password';
+        toggleButton.textContent = '👁️';
+    }
+}
+</script>
