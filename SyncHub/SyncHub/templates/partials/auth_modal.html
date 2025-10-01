@@ -1,0 +1,28 @@
+<!-- Shared Auth Modal (Login + Signup) -->
+<div class="home hidden" aria-hidden="true" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:60;">
+  <div class="form_container" style="background:var(--white);padding:24px;border-radius:12px;max-width:420px;width:95%;position:relative;">
+    <button class="form_close" aria-label="Close auth dialog" style="position:absolute;right:16px;top:16px;">Close</button>
+
+    <!-- Signup Form (modal) -->
+    <form id="signupForm" class="signup_form" style="width:100%;" aria-hidden="true">
+      <h3>Sign Up</h3>
+      {% csrf_token %}
+      <div style="margin-bottom:12px;"><input id="signup_username" name="username" class="form-input" placeholder="Username" required></div>
+      <div style="margin-bottom:12px;"><input id="signup_email" name="email" type="email" class="form-input" placeholder="Email" required></div>
+      <div style="margin-bottom:12px;position:relative;"><input id="signup_password" name="password" type="password" class="form-input" placeholder="Password" required><span tabindex="0" class="pw_hide" style="position:absolute;right:12px;top:10px;cursor:pointer;">👁️</span></div>
+      <div style="margin-bottom:12px;position:relative;"><input id="confirm_password" name="confirm_password" type="password" class="form-input" placeholder="Confirm Password" required><span tabindex="0" class="pw_hide" style="position:absolute;right:12px;top:10px;cursor:pointer;">👁️</span></div>
+      <button id="signup" class="login-button" type="submit">Sign Up Now</button>
+      <p style="text-align:center;margin-top:12px;font-size:14px;">Already have an account? <a href="#" id="goToLogin" style="color:var(--primary-blue);">Log in</a></p>
+    </form>
+
+    <!-- Login Form (modal) -->
+    <form id="loginForm" class="login_form" style="width:100%;" aria-hidden="false">
+      <h3>Log In</h3>
+      {% csrf_token %}
+      <div style="margin-bottom:12px;"><input id="login_identifier" name="identifier" class="form-input" placeholder="Username or Email" required></div>
+      <div style="margin-bottom:12px;position:relative;"><input id="login_password" name="password" type="password" class="form-input" placeholder="Password" required><span tabindex="0" class="pw_hide" style="position:absolute;right:12px;top:10px;cursor:pointer;">👁️</span></div>
+      <button class="login-button" type="submit">Log In</button>
+      <p style="text-align:center;margin-top:12px;font-size:14px;">Don't have an account? <a href="#" id="goToSignup" style="color:var(--primary-blue);">Sign up</a></p>
+    </form>
+  </div>
+</div>
