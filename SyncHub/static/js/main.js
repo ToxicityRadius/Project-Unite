@@ -517,7 +517,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Login form submission (support modal id or page id)
     const loginForm = document.getElementById('loginForm') || document.getElementById('loginFormPage');
     if (loginForm) {
-        loginForm.addEventListener('submit', e => {
+        // For the modal figma design, find the actual form element inside
+        const actualForm = loginForm.querySelector('form') || loginForm;
+
+        actualForm.addEventListener('submit', e => {
             e.preventDefault();
             const identifierInput = document.getElementById('login_identifier');
             const passwordInput = document.getElementById('login_password');
@@ -528,7 +531,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!passwordInput || passwordInput.value.trim() === '') { showError(passwordInput, 'Please enter your password.'); valid = false; }
 
             if (valid) {
-                const submitBtn = loginForm.querySelector('button[type="submit"]');
+                const submitBtn = actualForm.querySelector('button[type="submit"]') || loginForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn ? submitBtn.textContent : 'Login';
                 if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Logging in...'; }
                 fetch('/api/login', {
                     method: 'POST',
@@ -552,9 +556,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         // Redirect to dashboard
                         window.location.href = '/dashboard/';
                     }
-                    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Login Now'; }
+                    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }
                 })
-                .catch(err => { alert('Error: ' + err.message); if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Login Now'; } });
+                .catch(err => { alert('Error: ' + err.message); if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; } });
             }
         });
     }
