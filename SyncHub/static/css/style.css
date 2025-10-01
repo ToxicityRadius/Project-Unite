@@ -764,6 +764,85 @@ body {
     }
 }
 
+/* Modal-specific responsive styles */
+.home .figma-login-card {
+    margin: 1rem;
+}
+
+@media (max-width: 968px) {
+    .home .figma-login-card {
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    .home .figma-login-left {
+        padding: 3rem 2rem;
+        text-align: center;
+    }
+
+    .home .figma-login-welcome {
+        position: static;
+        margin-bottom: 0.5rem;
+    }
+
+    .home .figma-login-right {
+        margin: 0 1.3rem 1.3rem 1.3rem;
+        min-height: 15rem;
+    }
+
+    .home .figma-login-title {
+        font-size: 2.5rem;
+    }
+
+    .home .figma-login-subtitle {
+        font-size: 0.5rem;
+        max-width: none;
+    }
+
+    .home .figma-form-input {
+        padding: 0.6rem 2rem;
+        font-size: 1.1rem;
+        text-align: center;
+    }
+
+    .home .figma-login-button {
+        font-size: 1.1rem;
+        align-self: center;
+    }
+
+    .home .figma-pw-toggle {
+        right: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .home .figma-login-left {
+        padding: 2rem 1.5rem;
+    }
+
+    .home .figma-login-title {
+        font-size: 2rem;
+    }
+
+    .home .figma-login-subtitle {
+        font-size: 0.45rem;
+    }
+
+    .home .figma-form-input {
+        padding: 0.5rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    .home .figma-login-button {
+        padding: 0.6rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    .home .figma-pw-toggle {
+        right: 1.2rem;
+    }
+}
+
 /* Signup Page Styles */
 .signup-container {
     min-height: 100vh;
