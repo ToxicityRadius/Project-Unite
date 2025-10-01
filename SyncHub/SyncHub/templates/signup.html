@@ -22,8 +22,8 @@
             <li><a href="#purpose">PURPOSE</a></li>
         </ul>
         <div style="margin-left:auto; display:flex; gap:12px; align-items:center;">
-            <button id="openLogin" class="cta-button" style="background:transparent;color:var(--primary-blue);border:2px solid var(--primary-blue);padding:8px 14px;">Log In</button>
-            <button id="openSignup" class="cta-button">Sign Up</button>
+            <a href="{% url 'login' %}" class="cta-button" style="background:transparent;color:var(--primary-blue);border:2px solid var(--primary-blue);padding:8px 14px;">Log In</a>
+            <a href="{% url 'signup' %}" class="cta-button">Sign Up</a>
             <div id="profile-info" style="display:none;align-items:center;gap:8px;margin-left:12px;">
                 <img id="nav-avatar-img" src="" alt="avatar" style="width:36px;height:36px;border-radius:50%;object-fit:cover;display:none;">
                 <span id="nav-username-display"></span>
@@ -50,7 +50,7 @@
                 
                 <div class="form-group">
                     <input id="signup_password" type="password" name="password" placeholder="Password" class="signup-input" required>
-                    <span tabindex="0" class="pw_hide signup-pw-toggle">👁️</span>
+                    <span tabindex="0" class="pw_hide signup-pw-toggle">���️</span>
                 </div>
                 
                 <div class="form-group">
