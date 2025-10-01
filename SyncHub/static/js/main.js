@@ -464,8 +464,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Signup form submission
-    const signupForm = document.getElementById('signupForm');
+    // Signup form submission (support modal id or page id)
+    const signupForm = document.getElementById('signupForm') || document.getElementById('signupFormPage');
     if (signupForm) {
         signupForm.addEventListener('submit', e => {
             e.preventDefault();
@@ -477,14 +477,14 @@ document.addEventListener('DOMContentLoaded', () => {
             let valid = true;
             clearError(usernameInput); clearError(emailInput); clearError(passwordInput); clearError(confirmPasswordInput);
 
-            if (usernameInput.value.trim() === '') { showError(usernameInput, 'Please enter a username.'); valid = false; }
-            if (!isValidEmail(emailInput.value.trim())) { showError(emailInput, 'Please enter a valid email address.'); valid = false; }
-            if (!isStrongPassword(passwordInput.value.trim())) { showError(passwordInput, 'Password must be at least 8 characters long and include at least one letter and one number.'); valid = false; }
-            if (passwordInput.value.trim() !== confirmPasswordInput.value.trim()) { showError(confirmPasswordInput, 'Passwords do not match.'); valid = false; }
+            if (!usernameInput || usernameInput.value.trim() === '') { showError(usernameInput, 'Please enter a username.'); valid = false; }
+            if (!emailInput || !isValidEmail(emailInput.value.trim())) { showError(emailInput, 'Please enter a valid email address.'); valid = false; }
+            if (!passwordInput || !isStrongPassword(passwordInput.value.trim())) { showError(passwordInput, 'Password must be at least 8 characters long and include at least one letter and one number.'); valid = false; }
+            if (!confirmPasswordInput || passwordInput.value.trim() !== confirmPasswordInput.value.trim()) { showError(confirmPasswordInput, 'Passwords do not match.'); valid = false; }
 
             if (valid) {
                 const submitBtn = signupForm.querySelector('button[type="submit"]');
-                submitBtn.disabled = true; submitBtn.textContent = 'Signing up...';
+                if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Signing up...'; }
                 fetch('/api/signup', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -501,16 +501,21 @@ document.addEventListener('DOMContentLoaded', () => {
                             home.classList.add('hidden');
                             home.style.display = 'none';
                         }
+                        // if this was a page, redirect to login
+                        if (signupForm.id === 'signupFormPage') {
+                            window.location.href = '/login/';
+                            return;
+                        }
                     }
-                    submitBtn.disabled = false; submitBtn.textContent = 'Sign Up Now';
+                    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Sign Up Now'; }
                 })
-                .catch(err => { alert('Error: ' + err.message); submitBtn.disabled = false; submitBtn.textContent = 'Sign Up Now'; });
+                .catch(err => { alert('Error: ' + err.message); if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Sign Up Now'; } });
             }
         });
     }
 
-    // Login form submission
-    const loginForm = document.getElementById('loginForm');
+    // Login form submission (support modal id or page id)
+    const loginForm = document.getElementById('loginForm') || document.getElementById('loginFormPage');
     if (loginForm) {
         loginForm.addEventListener('submit', e => {
             e.preventDefault();
@@ -519,12 +524,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             let valid = true;
             clearError(identifierInput); clearError(passwordInput);
-            if (identifierInput.value.trim() === '') { showError(identifierInput, 'Please enter your username or email.'); valid = false; }
-            if (passwordInput.value.trim() === '') { showError(passwordInput, 'Please enter your password.'); valid = false; }
+            if (!identifierInput || identifierInput.value.trim() === '') { showError(identifierInput, 'Please enter your username or email.'); valid = false; }
+            if (!passwordInput || passwordInput.value.trim() === '') { showError(passwordInput, 'Please enter your password.'); valid = false; }
 
             if (valid) {
                 const submitBtn = loginForm.querySelector('button[type="submit"]');
-                submitBtn.disabled = true; submitBtn.textContent = 'Logging in...';
+                if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Logging in...'; }
                 fetch('/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -547,9 +552,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         // Redirect to dashboard
                         window.location.href = '/dashboard/';
                     }
-                    submitBtn.disabled = false; submitBtn.textContent = 'Login Now';
+                    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Login Now'; }
                 })
-                .catch(err => { alert('Error: ' + err.message); submitBtn.disabled = false; submitBtn.textContent = 'Login Now'; });
+                .catch(err => { alert('Error: ' + err.message); if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Login Now'; } });
             }
         });
     }
