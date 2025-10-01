@@ -484,6 +484,7 @@ body {
     align-items: center;
     padding: 8.3rem 2rem 2rem;
     position: relative;
+    overflow-x: hidden;
 }
 
 .figma-login-card {
@@ -518,6 +519,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 2rem;
+    min-width: 0;
 }
 
 .figma-login-welcome {
@@ -561,7 +563,7 @@ body {
 }
 
 .figma-form-input {
-    padding: 0.7rem 10.31rem 0.7rem 10.31rem;
+    padding: 0.7rem 2rem 0.7rem 2rem;
     border: 4px solid var(--border-color);
     border-radius: 6rem;
     background: var(--background-light);
