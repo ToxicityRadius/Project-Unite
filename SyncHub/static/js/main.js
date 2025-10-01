@@ -338,7 +338,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if (openSignupBtn) {
+    // Helper: only treat as modal trigger if modal exists and element is not an anchor
+    function isModalTrigger(el) {
+        return el && home && el.tagName && el.tagName.toUpperCase() !== 'A';
+    }
+
+    if (isModalTrigger(openSignupBtn)) {
         openSignupBtn.addEventListener('click', e => {
             e.preventDefault();
             if (home) {
@@ -352,7 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if (openLoginBtn) {
+    if (isModalTrigger(openLoginBtn)) {
         openLoginBtn.addEventListener('click', e => {
             e.preventDefault();
             if (home) {
@@ -367,7 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const openSignupMain = document.getElementById('openSignupMain');
-    if (openSignupMain) {
+    if (isModalTrigger(openSignupMain)) {
         openSignupMain.addEventListener('click', e => {
             e.preventDefault();
             if (home) {
@@ -382,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const openLoginFromPage = document.getElementById('openLoginFromPage');
-    if (openLoginFromPage) {
+    if (isModalTrigger(openLoginFromPage)) {
         openLoginFromPage.addEventListener('click', e => {
             e.preventDefault();
             if (home) {
@@ -398,7 +403,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Switch to login form
     const goToLogin = document.getElementById('goToLogin');
-    if (goToLogin) {
+    if (isModalTrigger(goToLogin)) {
         goToLogin.addEventListener('click', e => {
             e.preventDefault();
             document.querySelector('.signup_form').setAttribute('aria-hidden', 'true');
@@ -410,7 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Switch to signup form
     const goToSignup = document.getElementById('goToSignup');
-    if (goToSignup) {
+    if (isModalTrigger(goToSignup)) {
         goToSignup.addEventListener('click', e => {
             e.preventDefault();
             document.querySelector('.signup_form').setAttribute('aria-hidden', 'false');
