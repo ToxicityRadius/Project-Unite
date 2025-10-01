@@ -50,7 +50,7 @@
                 
                 <div class="form-group">
                     <input id="signup_password" type="password" name="password" placeholder="Password" class="signup-input" required>
-                    <span tabindex="0" class="pw_hide signup-pw-toggle">👁️</span>
+                    <span tabindex="0" class="pw_hide signup-pw-toggle">���️</span>
                 </div>
                 
                 <div class="form-group">
@@ -62,36 +62,13 @@
             </form>
             
             <div class="login-prompt">
-                Already have an account? <a href="#" id="openLoginFromPage" class="login-link">Log in here</a>
+                Already have an account? <a href="{% url 'login' %}" class="login-link">Log in here</a>
             </div>
         </div>
     </main>
 
-    <!-- Auth Modal -->
-    <div class="home hidden" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:60;">
-        <div class="form_container" style="background:var(--white);padding:24px;border-radius:12px;max-width:400px;width:95%;position:relative;">
-            <button class="form_close" style="position:absolute;right:16px;top:16px;">Close</button>
-            <!-- Signup Form -->
-            <form id="signupForm" class="signup_form" style="width:100%;" aria-hidden="true">
-                <h3>Sign Up</h3>
-                <div style="margin-bottom:12px;"><input id="signup_username_modal" class="form-input" placeholder="Username"></div>
-                <div style="margin-bottom:12px;"><input id="signup_email_modal" type="email" class="form-input" placeholder="Email"></div>
-                <div style="margin-bottom:12px;position:relative;"><input id="signup_password_modal" type="password" class="form-input" placeholder="Password"><span tabindex="0" class="pw_hide" style="position:absolute;right:12px;top:10px;cursor:pointer;">👁️</span></div>
-                <div style="margin-bottom:12px;position:relative;"><input id="confirm_password_modal" type="password" class="form-input" placeholder="Confirm Password"><span tabindex="0" class="pw_hide" style="position:absolute;right:12px;top:10px;cursor:pointer;">👁️</span></div>
-                <button id="signup_modal" class="login-button" type="submit">Sign Up Now</button>
-                <p id="login_signup_prompt" style="text-align:center;margin-top:12px;font-size:14px;">Already have an account? <a href="#" id="goToLogin" style="color:var(--primary-blue);">Log in</a></p>
-            </form>
-            <!-- Login Form -->
-            <form id="loginForm" class="login_form" style="width:100%;" aria-hidden="false">
-                <h3>Log In</h3>
-                <div style="margin-bottom:12px;"><input id="login_identifier_modal" class="form-input" placeholder="Username or Email"></div>
-                <div style="margin-bottom:12px;position:relative;"><input id="login_password_modal" type="password" class="form-input" placeholder="Password"><span tabindex="0" class="pw_hide" style="position:absolute;right:12px;top:10px;cursor:pointer;">👁️</span></div>
-                <button class="login-button" type="submit">Log In</button>
-                <p style="text-align:center;margin-top:12px;font-size:14px;">Don't have an account? <a href="#" id="goToSignup" style="color:var(--primary-blue);">Sign up</a></p>
-            </form>
-        </div>
-    </div>
 
+    {% include 'partials/auth_modal.html' %}
     <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
