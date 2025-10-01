@@ -23,9 +23,9 @@
                 <h1 class="figma-login-title">PROJECT UNITE</h1>
                 <p class="figma-login-subtitle">INEFFICIENT OFFICER ATTENDANCE LOGGING AND INVENTORY TRACKING</p>
                 
-                <form class="figma-login-form" method="post">
+                <form id="loginFormPage" class="figma-login-form" method="post">
                     {% csrf_token %}
-                    
+
                     <!-- Display Django messages -->
                     {% if messages %}
                         {% for message in messages %}
@@ -34,37 +34,38 @@
                             </div>
                         {% endfor %}
                     {% endif %}
-                    
+
                     <div class="figma-input-wrapper">
-                        <input 
-                            type="text" 
-                            name="username" 
-                            placeholder="username" 
+                        <input
+                            type="text"
+                            id="login_identifier"
+                            name="username"
+                            placeholder="username"
                             class="figma-form-input"
                             required
                         >
                     </div>
-                    
+
                     <div class="figma-input-wrapper">
-                        <input 
-                            type="password" 
-                            name="password" 
-                            placeholder="password" 
+                        <input
+                            type="password"
+                            id="login_password"
+                            name="password"
+                            placeholder="password"
                             class="figma-form-input"
-                            id="password-input"
                             required
                         >
                         <button type="button" class="figma-pw-toggle" onclick="togglePassword()">👁️</button>
                     </div>
-                    
+
                     <button type="submit" class="figma-login-button">Login</button>
                 </form>
-                
+
                 <div class="figma-signup-prompt">
-                    Don't have an account? <a href="#" id="openSignupFromLogin" class="figma-signup-link">Sign up here</a>
+                    Don't have an account? <a href="{% url 'signup' %}" class="figma-signup-link">Sign up here</a>
                 </div>
             </div>
-            
+
             <!-- Right Panel - White with logo -->
             <div class="figma-login-right">
                 <div class="figma-logo-container">
