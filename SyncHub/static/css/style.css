@@ -932,3 +932,12 @@ body {
         transform: translateY(0);
     }
 }
+
+/* Modal form visibility */
+.signup_form[aria-hidden="true"] {
+    display: none;
+}
+
+.login_form[aria-hidden="true"] {
+    display: none;
+}

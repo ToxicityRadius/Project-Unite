@@ -210,8 +210,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const home = document.querySelector('.home');
     const formContainer = document.querySelector('.form_container');
     const formCloseBtn = document.querySelector('.form_close');
-    const signupBtn = document.querySelector('#signup');
-    const loginBtn = document.querySelector('#login');
     const openLoginBtn = document.getElementById('openLogin');
     const openSignupBtn = document.getElementById('openSignup');
     const logoutBtn = document.getElementById('logoutBtn');
@@ -321,13 +319,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (openSignupBtn) {
         openSignupBtn.addEventListener('click', e => {
             e.preventDefault();
-            if (home) home.style.display = 'flex';
-            if (formContainer) formContainer.classList.add('active');
-            document.querySelector('.login_form').setAttribute('aria-hidden', 'true');
+            if (home) {
+                home.classList.remove('hidden');
+                home.style.display = 'flex';
+            }
             document.querySelector('.signup_form').setAttribute('aria-hidden', 'false');
-            // hide login prompt when viewing signup
-            const loginPrompt = document.getElementById('login_signup_prompt');
-            if (loginPrompt) loginPrompt.classList.add('hidden');
+            document.querySelector('.login_form').setAttribute('aria-hidden', 'true');
+            if (formContainer) formContainer.classList.remove('active');
             setFocusToFirstInput('.signup_form');
         });
     }
@@ -335,45 +333,77 @@ document.addEventListener('DOMContentLoaded', () => {
     if (openLoginBtn) {
         openLoginBtn.addEventListener('click', e => {
             e.preventDefault();
-            if (home) home.style.display = 'flex';
-            if (formContainer) formContainer.classList.remove('active');
-            document.querySelector('.login_form').setAttribute('aria-hidden', 'false');
+            if (home) {
+                home.classList.remove('hidden');
+                home.style.display = 'flex';
+            }
             document.querySelector('.signup_form').setAttribute('aria-hidden', 'true');
-            // show prompt to sign up if user hasn't registered
-            const loginPrompt = document.getElementById('login_signup_prompt');
-            try {
-                if (loginPrompt) {
-                    if (localStorage.getItem('registered') !== 'true') loginPrompt.classList.remove('hidden');
-                    else loginPrompt.classList.add('hidden');
-                }
-            } catch (e) {}
+            document.querySelector('.login_form').setAttribute('aria-hidden', 'false');
+            if (formContainer) formContainer.classList.add('active');
             setFocusToFirstInput('.login_form');
         });
     }
 
-    if (signupBtn) {
-        signupBtn.addEventListener('click', e => {
+    const openSignupMain = document.getElementById('openSignupMain');
+    if (openSignupMain) {
+        openSignupMain.addEventListener('click', e => {
             e.preventDefault();
-            if (formContainer) formContainer.classList.add('active');
-            document.querySelector('.login_form').setAttribute('aria-hidden', 'true');
+            if (home) {
+                home.classList.remove('hidden');
+                home.style.display = 'flex';
+            }
             document.querySelector('.signup_form').setAttribute('aria-hidden', 'false');
+            document.querySelector('.login_form').setAttribute('aria-hidden', 'true');
+            if (formContainer) formContainer.classList.remove('active');
             setFocusToFirstInput('.signup_form');
         });
     }
 
-    if (loginBtn) {
-        loginBtn.addEventListener('click', e => {
+    const openLoginFromPage = document.getElementById('openLoginFromPage');
+    if (openLoginFromPage) {
+        openLoginFromPage.addEventListener('click', e => {
             e.preventDefault();
-            if (formContainer) formContainer.classList.remove('active');
-            document.querySelector('.login_form').setAttribute('aria-hidden', 'false');
+            if (home) {
+                home.classList.remove('hidden');
+                home.style.display = 'flex';
+            }
             document.querySelector('.signup_form').setAttribute('aria-hidden', 'true');
+            document.querySelector('.login_form').setAttribute('aria-hidden', 'false');
+            if (formContainer) formContainer.classList.add('active');
             setFocusToFirstInput('.login_form');
+        });
+    }
+
+    // Switch to login form
+    const goToLogin = document.getElementById('goToLogin');
+    if (goToLogin) {
+        goToLogin.addEventListener('click', e => {
+            e.preventDefault();
+            document.querySelector('.signup_form').setAttribute('aria-hidden', 'true');
+            document.querySelector('.login_form').setAttribute('aria-hidden', 'false');
+            if (formContainer) formContainer.classList.add('active');
+            setFocusToFirstInput('.login_form');
+        });
+    }
+
+    // Switch to signup form
+    const goToSignup = document.getElementById('goToSignup');
+    if (goToSignup) {
+        goToSignup.addEventListener('click', e => {
+            e.preventDefault();
+            document.querySelector('.signup_form').setAttribute('aria-hidden', 'false');
+            document.querySelector('.login_form').setAttribute('aria-hidden', 'true');
+            if (formContainer) formContainer.classList.remove('active');
+            setFocusToFirstInput('.signup_form');
         });
     }
 
     if (formCloseBtn) {
         formCloseBtn.addEventListener('click', () => {
-            if (home) home.style.display = 'none';
+            if (home) {
+                home.classList.add('hidden');
+                home.style.display = 'none';
+            }
             if (openLoginBtn) openLoginBtn.focus();
         });
     }
@@ -383,6 +413,7 @@ document.addEventListener('DOMContentLoaded', () => {
         home.addEventListener('click', (e) => {
             // If the click target is the overlay itself (not inside the form), close
             if (e.target === home) {
+                home.classList.add('hidden');
                 home.style.display = 'none';
                 if (openLoginBtn) openLoginBtn.focus();
             }
@@ -396,22 +427,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // link in login form to open signup
-    const goToSignup = document.getElementById('goToSignup');
-    if (goToSignup) {
-        goToSignup.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (formContainer) formContainer.classList.add('active');
-            document.querySelector('.login_form').setAttribute('aria-hidden', 'true');
-            document.querySelector('.signup_form').setAttribute('aria-hidden', 'false');
-            const loginPrompt = document.getElementById('login_signup_prompt');
-            if (loginPrompt) loginPrompt.classList.add('hidden');
-            setFocusToFirstInput('.signup_form');
-        });
-    }
+
 
     window.addEventListener('keydown', e => {
         if ((e.key === 'Escape' || e.key === 'Esc') && home && home.style.display !== 'none') {
+            home.classList.add('hidden');
             home.style.display = 'none';
             if (openLoginBtn) openLoginBtn.focus();
         }
@@ -450,15 +470,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         // mark registered locally
                         try { localStorage.setItem('registered', 'true'); } catch (e) {}
 
-                        document.querySelector('.signup_form').setAttribute('aria-hidden', 'true');
-                        document.querySelector('.login_form').setAttribute('aria-hidden', 'false');
-                        if (formContainer) formContainer.classList.remove('active');
-                        if (home) home.style.display = 'none';
-                        const identifierInput = document.getElementById('login_identifier');
-                        const passwordInputLogin = document.getElementById('login_password');
-                        if (identifierInput) identifierInput.value = usernameInput.value.trim();
-                        if (passwordInputLogin) passwordInputLogin.value = passwordInput.value.trim();
-                        if (identifierInput) identifierInput.focus();
+                        if (home) {
+                            home.classList.add('hidden');
+                            home.style.display = 'none';
+                        }
                     }
                     submitBtn.disabled = false; submitBtn.textContent = 'Sign Up Now';
                 })
@@ -492,7 +507,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(({status, body}) => {
                     alert(body.message);
                     if (status === 200) {
-                        if (home) home.style.display = 'none';
+                        if (home) {
+                            home.classList.add('hidden');
+                            home.style.display = 'none';
+                        }
                         localStorage.setItem('loggedIn', 'true');
                         const identifier = identifierInput.value.trim();
                         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
