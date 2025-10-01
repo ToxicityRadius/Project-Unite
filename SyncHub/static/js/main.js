@@ -409,11 +409,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Switch to login form
     const goToLogin = document.getElementById('goToLogin');
-    if (isModalTrigger(goToLogin)) {
+    if (goToLogin) {
         goToLogin.addEventListener('click', e => {
             e.preventDefault();
-            document.querySelector('.signup_form').setAttribute('aria-hidden', 'true');
-            document.querySelector('.login_form').setAttribute('aria-hidden', 'false');
+            const signupForm = document.querySelector('.signup_form');
+            const loginForm = document.querySelector('.login_form');
+            if (signupForm) signupForm.setAttribute('aria-hidden', 'true');
+            if (loginForm) loginForm.setAttribute('aria-hidden', 'false');
             if (formContainer) formContainer.classList.add('active');
             setFocusToFirstInput('.login_form');
         });
@@ -421,11 +423,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Switch to signup form
     const goToSignup = document.getElementById('goToSignup');
-    if (isModalTrigger(goToSignup)) {
+    if (goToSignup) {
         goToSignup.addEventListener('click', e => {
             e.preventDefault();
-            document.querySelector('.signup_form').setAttribute('aria-hidden', 'false');
-            document.querySelector('.login_form').setAttribute('aria-hidden', 'true');
+            const signupForm = document.querySelector('.signup_form');
+            const loginForm = document.querySelector('.login_form');
+            if (signupForm) signupForm.setAttribute('aria-hidden', 'false');
+            if (loginForm) loginForm.setAttribute('aria-hidden', 'true');
             if (formContainer) formContainer.classList.remove('active');
             setFocusToFirstInput('.signup_form');
         });
