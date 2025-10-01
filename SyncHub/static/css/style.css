@@ -21,7 +21,7 @@ body {
     font-family: 'Poppins', -apple-system, Roboto, Helvetica, sans-serif;
     background: var(--white);
     color: var(--text-gray);
-    line-height: 1.6;
+    line-height: 1.5; /* slightly reduced line height */
     overflow-x: hidden;
 }
 
@@ -61,7 +61,7 @@ body {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding: 2rem 7rem;
+    padding: 1.7rem 6rem; /* reduced padding */
     background: transparent;
     position: relative;
     z-index: 10;
@@ -76,7 +76,7 @@ body {
 .nav-links a {
     color: var(--text-dark);
     text-decoration: none;
-    font-size: 1.35rem;
+    font-size: 1.15rem; /* reduced font size */
     font-weight: 500;
     transition: color 0.3s ease;
 }
@@ -92,46 +92,46 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
+    padding: 1.5rem; /* reduced padding */
     text-align: center;
     position: relative;
 }
 
 .welcome-text {
-    font-size: 1.8rem;
+    font-size: 1.5rem; /* reduced font size */
     font-weight: 500;
     color: var(--text-gray);
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem; /* reduced margin */
 }
 
 .main-title {
-    font-size: clamp(4rem, 12vw, 10.5rem);
+    font-size: clamp(3.5rem, 10vw, 9rem); /* reduced font size */
     font-weight: 800;
     color: var(--primary-blue);
     letter-spacing: -0.04em;
     line-height: 0.9;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem; /* reduced margin */
 }
 
 .subtitle {
-    font-size: 1.3rem;
+    font-size: 1.1rem; /* reduced font size */
     font-weight: 500;
     color: var(--text-gray);
     letter-spacing: 0.03em;
-    margin-bottom: 4rem;
+    margin-bottom: 3rem; /* reduced margin */
     text-transform: uppercase;
 }
 
 .cta-button {
     display: inline-flex;
-    padding: 0.7rem 2rem;
+    padding: 0.6rem 1.7rem; /* reduced padding */
     background: var(--primary-blue);
     color: var(--white);
     text-decoration: none;
-    font-size: 1.35rem;
+    font-size: 1.15rem; /* reduced font size */
     font-weight: 500;
-    border-radius: 6rem;
-    border: 4px solid var(--border-color);
+    border-radius: 5rem; /* slightly reduced border radius */
+    border: 3px solid var(--border-color); /* reduced border width */
     transition: all 0.3s ease;
     cursor: pointer;
 }
@@ -155,18 +155,18 @@ body {
 .login-card {
     display: flex;
     background: var(--primary-blue);
-    border-radius: 3.5rem;
-    border: 5px solid var(--border-color);
+    border-radius: 3rem; /* reduced border radius */
+    border: 4px solid var(--border-color); /* reduced border width */
     overflow: hidden;
-    max-width: 75rem;
+    max-width: 65rem; /* reduced max width */
     width: 100%;
-    min-height: 38rem;
+    min-height: 33rem; /* reduced min height */
     position: relative;
 }
 
 .login-left {
     flex: 1;
-    padding: 3rem;
+    padding: 2.5rem; /* reduced padding */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -176,55 +176,55 @@ body {
 .login-right {
     flex: 1;
     background: var(--white);
-    border-radius: 3.2rem;
-    margin: 1.3rem 1.3rem 1.3rem 0;
+    border-radius: 2.7rem; /* reduced border radius */
+    margin: 1rem 1rem 1rem 0; /* reduced margin */
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
+    padding: 1.5rem; /* reduced padding */
 }
 
 .login-welcome {
-    font-size: 1rem;
+    font-size: 0.85rem; /* reduced font size */
     font-weight: 500;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem; /* reduced margin */
 }
 
 .login-title {
-    font-size: 3.8rem;
+    font-size: 3.2rem; /* reduced font size */
     font-weight: 800;
     letter-spacing: -0.04em;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem; /* reduced margin */
 }
 
 .login-subtitle {
-    font-size: 0.6rem;
+    font-size: 0.5rem; /* reduced font size */
     font-weight: 500;
     letter-spacing: 0.03em;
     text-transform: uppercase;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem; /* reduced margin */
 }
 
 .login-form {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.2rem; /* reduced gap */
     width: 100%;
-    max-width: 28rem;
+    max-width: 24rem; /* reduced max width */
 }
 
 .form-input {
-    padding: 0.6rem 1rem;
-    border: 3px solid var(--border-color);
-    border-radius: 2rem;
+    padding: 0.5rem 0.8rem; /* reduced padding */
+    border: 2px solid var(--border-color); /* reduced border width */
+    border-radius: 1.5rem; /* reduced border radius */
     background: var(--background-light);
-    font-size: 1rem;
+    font-size: 0.85rem; /* reduced font size */
     font-family: 'Poppins', sans-serif;
     color: var(--text-gray);
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.15s ease;
     width: 100%;
-    max-width: 420px;
+    max-width: 600px; /* further increased max width to lengthen input */
 }
 
 .form-input::placeholder {
@@ -238,18 +238,18 @@ body {
 
 /* Modal form buttons slightly smaller to match reduced field sizes */
 .login-button {
-    padding: 0.55rem 1.2rem;
+    padding: 0.45rem 1rem; /* reduced padding */
     background: var(--background-light);
     color: var(--primary-blue);
     border: none;
-    border-radius: 2rem;
-    font-size: 1rem;
+    border-radius: 1.5rem; /* reduced border radius */
+    font-size: 0.85rem; /* reduced font size */
     font-weight: 500;
     font-family: 'Poppins', sans-serif;
     cursor: pointer;
     transition: all 0.2s ease;
     align-self: flex-start;
-    margin-top: 0.75rem;
+    margin-top: 0.6rem; /* reduced margin */
 }
 
 .login-button:hover {
@@ -490,19 +490,19 @@ body {
 .figma-login-card {
     display: flex;
     background: var(--primary-blue);
-    border-radius: 3.44rem;
-    border: 5px solid var(--border-color);
+    border-radius: 3rem; /* reduced border radius */
+    border: 4px solid var(--border-color); /* reduced border width */
     overflow: hidden;
-    max-width: 75.5rem;
+    max-width: 65rem; /* reduced max width */
     width: 100%;
-    min-height: 38.2rem;
+    min-height: 33rem; /* reduced min height */
     position: relative;
     box-shadow: 0 20px 60px rgba(0, 120, 255, 0.15);
 }
 
 .figma-login-left {
     flex: 1;
-    padding: 5.4rem 2.5rem 4rem;
+    padding: 4.5rem 2rem 3rem; /* reduced padding */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -513,38 +513,38 @@ body {
 .figma-login-right {
     flex: 1;
     background: var(--white);
-    border-radius: 3.2rem;
-    margin: 1.3rem 1.3rem 1.3rem 0;
+    border-radius: 2.7rem; /* reduced border radius */
+    margin: 1rem 1rem 1rem 0; /* reduced margin */
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
+    padding: 1.5rem; /* reduced padding */
     min-width: 0;
 }
 
 .figma-login-welcome {
-    font-size: 0.96rem;
+    font-size: 0.8rem; /* reduced font size */
     font-weight: 500;
     margin-bottom: 0rem;
     position: absolute;
-    top: 1.8rem;
-    left: 2.5rem;
+    top: 1.5rem; /* reduced top */
+    left: 2rem; /* reduced left */
 }
 
 .figma-login-title {
-    font-size: 3.78rem;
+    font-size: 3rem; /* reduced font size */
     font-weight: 800;
     letter-spacing: -0.15rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem; /* reduced margin */
     line-height: 0.9;
 }
 
 .figma-login-subtitle {
-    font-size: 0.58rem;
+    font-size: 0.5rem; /* reduced font size */
     font-weight: 500;
     letter-spacing: 0.017rem;
     text-transform: uppercase;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem; /* reduced margin */
     opacity: 0.9;
     max-width: 21.4rem;
 }
@@ -552,9 +552,9 @@ body {
 .figma-login-form {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.5rem; /* reduced gap */
     width: 100%;
-    max-width: 27.56rem;
+    max-width: 24rem; /* reduced max width */
 }
 
 .figma-input-wrapper {
@@ -563,17 +563,18 @@ body {
 }
 
 .figma-form-input {
-    padding: 0.7rem 2rem 0.7rem 2rem;
-    border: 4px solid var(--border-color);
-    border-radius: 6rem;
+    padding: 0.6rem 1.7rem 0.6rem 1.7rem; /* reduced padding */
+    border: 3px solid var(--border-color); /* reduced border width */
+    border-radius: 5rem; /* reduced border radius */
     background: var(--background-light);
-    font-size: 1.34rem;
+    font-size: 1.1rem; /* reduced font size */
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
     color: var(--text-light);
     outline: none;
     transition: all 0.3s ease;
     width: 100%;
+    max-width: 600px; /* further increased max width to lengthen input */
     text-align: center;
 }
 
@@ -603,18 +604,18 @@ body {
 }
 
 .figma-login-button {
-    padding: 0.7rem 2rem;
+    padding: 0.6rem 1.5rem; /* reduced padding */
     background: var(--background-light);
     color: var(--primary-blue);
     border: none;
-    border-radius: 6rem;
-    font-size: 1.34rem;
+    border-radius: 5rem; /* reduced border radius */
+    font-size: 1.1rem; /* reduced font size */
     font-weight: 500;
     font-family: 'Poppins', sans-serif;
     cursor: pointer;
     transition: all 0.3s ease;
     align-self: center;
-    margin-top: 2.2rem;
+    margin-top: 1.8rem; /* reduced margin */
     min-width: 7.6rem;
 }
 
@@ -1047,7 +1048,6 @@ body {
 
 .home .form_container {
     max-height: 90vh;
-    overflow-y: auto;
 }
 
 .fade-in {

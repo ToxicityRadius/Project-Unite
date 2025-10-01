@@ -8,7 +8,10 @@
     <a href="{% url 'inventory:item_add' %}">Add New Item</a>
     <ul>
         {% for item in items %}
-        <li>{{ item.name }} - Quantity: {{ item.quantity }}</li>
+        <li>{{ item.name }} - Quantity: {{ item.quantity }}
+            <a href="{% url 'inventory:item_edit' item.pk %}">Edit</a>
+            <a href="{% url 'inventory:item_delete' item.pk %}">Delete</a>
+        </li>
         {% empty %}
         <li>No items found.</li>
         {% endfor %}

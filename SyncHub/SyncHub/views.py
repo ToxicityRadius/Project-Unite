@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -10,6 +10,9 @@ def landing_page(request):
     """Landing page view"""
     return render(request, 'index.html')
 
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
 def login_page(request):
     """Login page view with authentication (handles form POST and JSON API)"""
     # JSON API login
@@ -90,6 +93,9 @@ def signup_page(request):
 
     return render(request, 'signup.html')
 
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
 def signup_api(request):
     """Signup API endpoint that accepts JSON POST to create a new user"""
     if request.method != 'POST':
@@ -120,3 +126,9 @@ def signup_api(request):
 def dashboard_view(request):
     """Dashboard view - requires authentication"""
     return render(request, 'dashboard.html')
+
+def logout_view(request):
+    """Logout view"""
+    auth_logout(request)
+    messages.success(request, 'You have been logged out.')
+    return redirect('landing')
