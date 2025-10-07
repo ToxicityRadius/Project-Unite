@@ -2,10 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.models import User
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.sessions.models import Session
+from django.utils import timezone
 import json
 
 def landing_page(request):
@@ -138,3 +140,21 @@ def logout_view(request):
     auth_logout(request)
     messages.success(request, 'You have been logged out.')
     return redirect('landing')
+
+def get_logged_in_superusers():
+    """Utility function to get currently logged-in superusers"""
+    sessions = Session.objects.filter(expire_date__gte=timezone.now())
+    user_ids = set()
+    for session in sessions:
+        data = session.get_decoded()
+        user_id = data.get('_auth_user_id')
+        if user_id:
+            user_ids.add(int(user_id))
+    superusers = User.objects.filter(id__in=user_ids, is_superuser=True)
+    return superusers
+
+@user_passes_test(lambda u: u.is_superuser)
+def logged_in_superadmins_view(request):
+    """View to display currently logged-in superadmin accounts"""
+    superusers = get_logged_in_superusers()
+    return render(request, 'logged_in_superadmins.html', {'superusers': superusers})
