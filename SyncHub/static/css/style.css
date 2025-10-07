@@ -662,6 +662,7 @@ body {
 
 /* Modal / auth styles */
 .home { position:fixed; inset:0; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; z-index:60; }
+.home.hidden { display:none !important; }
 .form_container { background:transparent; padding:0; border-radius:0; max-width:75rem; width:95%; position:relative; }
 .auth-card { background:var(--white); padding:1.6rem; border-radius:1.6rem; max-width:32rem; width:100%; margin:0 auto; box-shadow:0 14px 40px rgba(0,120,255,0.08); border:1px solid rgba(0,120,255,0.05); text-align:center; position:relative; }
 .auth-card-white { background:var(--white); }
