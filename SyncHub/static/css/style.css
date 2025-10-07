@@ -646,6 +646,20 @@ body {
     text-align: center;
 }
 
+/* Forgot password link inside login form */
+.figma-forgot-link {
+    text-align: center;
+    margin-bottom: 0.8rem;
+}
+.figma-forgot-link a {
+    color: rgba(255,255,255,0.9);
+    text-decoration: underline;
+    font-weight: 600;
+}
+.figma-forgot-link a:hover {
+    color: #e6f3ff;
+}
+
 .figma-signup-link {
     color: var(--white);
     text-decoration: none;
