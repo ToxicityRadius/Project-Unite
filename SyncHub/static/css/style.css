@@ -679,6 +679,7 @@ body {
 
 /* Modal login overrides to allow wide inputs */
 .modal-login-card { display:flex; background:var(--primary-blue); border-radius:3.44rem; border:5px solid var(--border-color); overflow:hidden; max-width:75rem; width:100%; min-height:30rem; position:relative; box-shadow:0 16px 45px rgba(0,120,255,0.12); }
+.modal-login-card .login_close { position:absolute; right:1.2rem; top:1.2rem; z-index:90; background:rgba(255,255,255,0.95); color:var(--primary-blue); border:none; border-radius:50%; width:40px; height:40px; font-size:1.1rem; cursor:pointer; }
 .modal-login-left { flex:1; padding:3rem 2rem 2rem; display:flex; flex-direction:column; justify-content:flex-start; color:var(--white); position:relative; }
 .modal-login-right { flex:1; background:var(--white); border-radius:2.2rem; margin:0.8rem; display:flex; align-items:center; justify-content:center; padding:1.2rem; }
 .modal-login-form { display:flex; flex-direction:column; gap:0.5rem; width:100%; max-width:28rem; }
