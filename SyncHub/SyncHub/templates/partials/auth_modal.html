@@ -60,7 +60,7 @@
       {% csrf_token %}
       <div class="form-row"><input id="reset_email" name="email" type="email" class="auth-input" placeholder="Email" required autocomplete="email"></div>
       <button type="submit" class="cta-button auth-cta">Send reset link</button>
-      <p class="auth-switch"><a href="{% url 'login' %}" class="auth-link">Back to login</a></p>
+      <p class="auth-switch"><a href="#" id="backToLoginFromReset" class="auth-link">Back to login</a></p>
     </div>
   </form>
 
@@ -127,10 +127,10 @@ document.addEventListener('DOMContentLoaded', function() {
   // Open/close helpers for links inside modal
   const goToSignup = document.getElementById('goToSignup');
   const goToLogin = document.getElementById('goToLogin');
+  const backToLoginFromReset = document.getElementById('backToLoginFromReset');
   if (goToSignup) {
     goToSignup.addEventListener('click', (e) => {
       e.preventDefault();
-      // show signup, hide login
       const signup = document.getElementById('signupForm');
       const login = document.getElementById('loginForm');
       if (signup && login) { signup.setAttribute('aria-hidden', 'false'); login.setAttribute('aria-hidden', 'true'); }
@@ -142,6 +142,14 @@ document.addEventListener('DOMContentLoaded', function() {
       const signup = document.getElementById('signupForm');
       const login = document.getElementById('loginForm');
       if (signup && login) { signup.setAttribute('aria-hidden', 'true'); login.setAttribute('aria-hidden', 'false'); }
+    });
+  }
+  if (backToLoginFromReset) {
+    backToLoginFromReset.addEventListener('click', (e) => {
+      e.preventDefault();
+      const reset = document.getElementById('passwordResetForm');
+      const login = document.getElementById('loginForm');
+      if (reset && login) { reset.setAttribute('aria-hidden', 'true'); login.setAttribute('aria-hidden', 'false'); }
     });
   }
 });
