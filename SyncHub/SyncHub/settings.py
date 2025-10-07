@@ -28,6 +28,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+# Add builder preview origin(s) and other external origins that will host the frontend
+# Replace or extend these entries with any preview/hosting domains you use.
+CSRF_TRUSTED_ORIGINS = [
+    'https://58db0297c58a42b5a7eac88d8fb76038-88f834eb19e64436ba2993dc3.projects.builder.codes',
+]
+
+# If your app is behind a proxy or TLS is terminated by the proxy, enable this so
+# Django knows the original request scheme (useful for CSRF/origin checks)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 
 # Application definition
 
