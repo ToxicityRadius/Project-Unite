@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <title>Officers - Attendance</title>
+</head>
+<body>
+  <nav class="navbar"><ul class="nav-links"><li><a href="{% url 'dashboard' %}">Dashboard</a></li></ul></nav>
+  <main class="dashboard-container">
+    <h1 style="color:var(--white);">Officers</h1>
+    <a href="{% url 'rfid_login:officer_add' %}" class="cta-button">Add Officer</a>
+    <div style="margin-top:1rem;color:var(--white);">
+      <ul>
+        {% for officer in officers %}
+        <li style="margin-bottom:0.5rem">{{ officer.name }} ({{ officer.position }}) - <strong>{{ officer.rfid_tag }}</strong>
+          <a class="cta-button" href="{% url 'rfid_login:officer_edit' officer.pk %}" style="background:transparent;border:2px solid var(--white);color:var(--white);padding:6px 10px;">Edit</a>
+          <a class="cta-button" href="{% url 'rfid_login:officer_delete' officer.pk %}" style="background:transparent;border:2px solid #ff6b6b;color:#ff6b6b;padding:6px 10px;">Delete</a>
+        </li>
+        {% empty %}
+        <li>No officers registered.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </main>
+</body>
+</html>
