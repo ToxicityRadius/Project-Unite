@@ -83,6 +83,15 @@ function showAuthModal(viewId) {
   const homeModal = document.querySelector('.home');
   if (homeModal) homeModal.classList.remove('hidden');
 
+  // If the password reset form lives outside the modal, move it into the modal container
+  if (viewId === 'passwordResetForm') {
+    const resetEl = document.getElementById('passwordResetForm');
+    const container = document.querySelector('.form_container');
+    if (resetEl && container && resetEl.parentElement !== container) {
+      container.appendChild(resetEl);
+    }
+  }
+
   const viewIds = ['signupForm', 'loginForm', 'passwordResetForm'];
   viewIds.forEach(id => {
     const el = document.getElementById(id);
