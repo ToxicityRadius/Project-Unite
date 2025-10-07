@@ -19,7 +19,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
 
     path('api/signup', views.signup_api, name='api_signup'),
-    path('api/login', views.login_page, name='api_login'),
+    path('api/login', views.login_api, name='api_login'),
 ]
 
 if settings.DEBUG:
