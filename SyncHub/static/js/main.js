@@ -237,21 +237,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.getElementById('logoutBtn');
     const pwShowHideIcons = document.querySelectorAll('.pw_hide');
 
-    // Ensure any close buttons hide the modal
-    document.querySelectorAll('.form_close').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (home) {
-                home.classList.add('hidden');
-                home.style.display = 'none';
-            }
-            const signupForm = document.querySelector('.signup_form');
-            const loginForm = document.querySelector('.login_form');
-            if (signupForm) signupForm.setAttribute('aria-hidden', 'true');
-            if (loginForm) loginForm.setAttribute('aria-hidden', 'true');
-        });
-    });
-
     const profileInfo = document.getElementById('profile-info');
     const navAvatarImg = document.getElementById('nav-avatar-img');
     const navUsernameDisplay = document.getElementById('nav-username-display');
@@ -578,7 +563,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (emailRegex.test(identifier)) { localStorage.setItem('email', identifier); localStorage.removeItem('username'); }
                         else { localStorage.setItem('username', identifier); localStorage.removeItem('email'); }
                         toggleAuthButtons();
-                        // Redirect to dashboard
                         window.location.href = '/dashboard/';
                     }
                     if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }
