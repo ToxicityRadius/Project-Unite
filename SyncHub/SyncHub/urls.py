@@ -10,6 +10,7 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('signup/', views.signup_page, name='signup'),
     path('dashboard/', views.dashboard_view, name='dashboard'),
+    path('logged-in-superadmins/', views.logged_in_superadmins_view, name='logged_in_superadmins'),
     path('admin/', admin.site.urls),
     path('inventory/', include('inventory.urls')),
     path('rfid_login/', include('rfid_login.urls')),
