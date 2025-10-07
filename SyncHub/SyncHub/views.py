@@ -4,13 +4,13 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 import json
 
 def landing_page(request):
     """Landing page view"""
     return render(request, 'index.html')
-
-from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def login_page(request):
@@ -92,8 +92,6 @@ def signup_page(request):
             return render(request, 'signup.html')
 
     return render(request, 'signup.html')
-
-from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def signup_api(request):
