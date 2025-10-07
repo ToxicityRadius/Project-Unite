@@ -236,6 +236,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const openSignupBtn = document.getElementById('openSignup');
     const logoutBtn = document.getElementById('logoutBtn');
     const pwShowHideIcons = document.querySelectorAll('.pw_hide');
+    // Track the element that had focus before opening the modal so we can restore it on close
+    let previousFocus = null;
 
     const profileInfo = document.getElementById('profile-info');
     const navAvatarImg = document.getElementById('nav-avatar-img');
@@ -350,6 +352,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 home.classList.remove('hidden');
                 home.style.display = 'flex';
             }
+            // save current focus so it can be restored when modal closes
+            previousFocus = document.activeElement;
             const signupForm = document.querySelector('.signup_form');
             const loginForm = document.querySelector('.login_form');
             if (signupForm) signupForm.setAttribute('aria-hidden', 'false');
@@ -366,6 +370,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 home.classList.remove('hidden');
                 home.style.display = 'flex';
             }
+            // save current focus so it can be restored when modal closes
+            previousFocus = document.activeElement;
             const signupForm = document.querySelector('.signup_form');
             const loginForm = document.querySelector('.login_form');
             if (signupForm) signupForm.setAttribute('aria-hidden', 'true');
@@ -383,6 +389,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 home.classList.remove('hidden');
                 home.style.display = 'flex';
             }
+            // save current focus so it can be restored when modal closes
+            previousFocus = document.activeElement;
             const signupForm = document.querySelector('.signup_form');
             const loginForm = document.querySelector('.login_form');
             if (signupForm) signupForm.setAttribute('aria-hidden', 'false');
@@ -400,6 +408,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 home.classList.remove('hidden');
                 home.style.display = 'flex';
             }
+            // save current focus so it can be restored when modal closes
+            previousFocus = document.activeElement;
             document.querySelector('.signup_form').setAttribute('aria-hidden', 'true');
             document.querySelector('.login_form').setAttribute('aria-hidden', 'false');
             if (formContainer) formContainer.classList.add('active');
@@ -437,11 +447,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (formCloseBtn) {
         formCloseBtn.addEventListener('click', () => {
+            // restore focus before hiding to avoid aria-hidden blocking focused descendants
+            try {
+                if (previousFocus && typeof previousFocus.focus === 'function') {
+                    previousFocus.focus();
+                } else if (openLoginBtn) {
+                    openLoginBtn.focus();
+                } else {
+                    document.body.focus();
+                }
+            } catch (err) {
+                // ignore focus errors
+            }
             if (home) {
                 home.classList.add('hidden');
                 home.style.display = 'none';
             }
-            if (openLoginBtn) openLoginBtn.focus();
+            previousFocus = null;
         });
     }
 
@@ -450,9 +472,15 @@ document.addEventListener('DOMContentLoaded', () => {
         home.addEventListener('click', (e) => {
             // If the click target is the overlay itself (not inside the form), close
             if (e.target === home) {
+                // restore focus before hiding overlay
+                try {
+                    if (previousFocus && typeof previousFocus.focus === 'function') previousFocus.focus();
+                    else if (openLoginBtn) openLoginBtn.focus();
+                    else document.body.focus();
+                } catch (err) {}
                 home.classList.add('hidden');
                 home.style.display = 'none';
-                if (openLoginBtn) openLoginBtn.focus();
+                previousFocus = null;
             }
         });
     }
@@ -468,9 +496,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('keydown', e => {
         if ((e.key === 'Escape' || e.key === 'Esc') && home && home.style.display !== 'none') {
+            // restore focus before hiding modal to prevent aria-hidden focus blocking
+            try {
+                if (previousFocus && typeof previousFocus.focus === 'function') previousFocus.focus();
+                else if (openLoginBtn) openLoginBtn.focus();
+                else document.body.focus();
+            } catch (err) {}
             home.classList.add('hidden');
             home.style.display = 'none';
-            if (openLoginBtn) openLoginBtn.focus();
+            previousFocus = null;
         }
     });
 
