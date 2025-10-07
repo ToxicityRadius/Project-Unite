@@ -554,7 +554,7 @@ body {
     flex-direction: column;
     gap: 0.5rem; /* reduced gap */
     width: 100%;
-    max-width: 24rem; /* reduced max width */
+    max-width: 40rem; /* increased max width to allow longer inputs */
 }
 
 .figma-input-wrapper {
@@ -563,18 +563,18 @@ body {
 }
 
 .figma-form-input {
-    padding: 0.6rem 1.7rem 0.6rem 1.7rem; /* reduced padding */
-    border: 3px solid var(--border-color); /* reduced border width */
-    border-radius: 5rem; /* reduced border radius */
+    padding: 0.8rem 2.4rem; /* slightly increased padding for visual balance */
+    border: 3px solid var(--border-color);
+    border-radius: 5rem;
     background: var(--background-light);
-    font-size: 1.1rem; /* reduced font size */
+    font-size: 1.1rem;
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
     color: var(--text-light);
     outline: none;
     transition: all 0.3s ease;
     width: 100%;
-    max-width: 600px; /* further increased max width to lengthen input */
+    max-width: none; /* allow input to expand to form width */
     text-align: center;
 }
 
@@ -693,8 +693,9 @@ body {
     }
 
     .figma-form-input {
-        padding: 0.7rem 6rem 0.7rem 6rem;
+        padding: 0.7rem 2.5rem;
         font-size: 1.2rem;
+        max-width: none;
     }
 
     .figma-login-left {
