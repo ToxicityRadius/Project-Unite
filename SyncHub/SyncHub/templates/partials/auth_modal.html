@@ -78,6 +78,26 @@ function toggleModalPassword() {
         toggleButton.innerHTML = '[eye]';
     }
 }
+// Public helper to show a specific auth modal view
+function showAuthModal(viewId) {
+  const homeModal = document.querySelector('.home');
+  if (homeModal) homeModal.classList.remove('hidden');
+
+  const viewIds = ['signupForm', 'loginForm', 'passwordResetForm'];
+  viewIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.setAttribute('aria-hidden', id === viewId ? 'false' : 'true');
+  });
+
+  const active = document.getElementById(viewId);
+  if (active) {
+    const input = active.querySelector('input');
+    if (input) input.focus();
+  }
+}
+window.showAuthModal = showAuthModal;
+
 document.addEventListener('DOMContentLoaded', function() {
   const homeModal = document.querySelector('.home');
   const closeButtons = document.querySelectorAll('.form_close');
