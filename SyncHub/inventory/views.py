@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import Group
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Item
 from .forms import ItemForm
 
@@ -23,7 +24,7 @@ def item_add(request):
             return redirect('inventory:item_list')
     else:
         form = ItemForm()
-    return render(request, 'inventory/item_add.html', {'form': form})
+    return render(request, 'inventory/item_form.html', {'form': form, 'action': 'Add Item'})
 
 @login_required
 @admin_required
@@ -36,7 +37,7 @@ def item_edit(request, pk):
             return redirect('inventory:item_list')
     else:
         form = ItemForm(instance=item)
-    return render(request, 'inventory/item_edit.html', {'form': form, 'item': item})
+    return render(request, 'inventory/item_form.html', {'form': form, 'action': 'Edit Item', 'item': item})
 
 @login_required
 @admin_required

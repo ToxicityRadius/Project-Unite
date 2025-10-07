@@ -1,15 +1,24 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Delete Inventory Item</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <title>Delete Item</title>
 </head>
 <body>
-    <h1>Delete Inventory Item: {{ item.name }}</h1>
-    <p>Are you sure you want to delete "{{ item.name }}"?</p>
-    <form method="post">
+  <nav class="navbar"><ul class="nav-links"><li><a href="{% url 'inventory:item_list' %}">Back to Inventory</a></li></ul></nav>
+  <main class="dashboard-container">
+    <div class="dashboard-card">
+      <h2 style="color:var(--white);">Delete Item</h2>
+      <p style="color:var(--white);">Are you sure you want to delete "{{ item.name }}"?</p>
+      <form method="post">
         {% csrf_token %}
-        <button type="submit">Yes, Delete</button>
-    </form>
-    <a href="{% url 'inventory:item_list' %}">Cancel</a>
+        <button type="submit" class="cta-button" style="background:#ff6b6b;border:none;">Yes, Delete</button>
+        <a href="{% url 'inventory:item_list' %}" class="cta-button" style="background:transparent;border:2px solid var(--white);">Cancel</a>
+      </form>
+    </div>
+  </main>
 </body>
 </html>

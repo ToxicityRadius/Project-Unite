@@ -6,6 +6,13 @@
     <title>Log In - PROJECT UNITE</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+      /* Override to ensure login inputs expand to available form width */
+      .figma-login-left .figma-login-form { max-width: 100% !important; width: 100% !important; }
+      .figma-login-form { max-width: 100% !important; width: 100% !important; }
+      .figma-form-input { max-width: 48rem !important; width: 100% !important; padding: 1rem 2.6rem !important; box-sizing: border-box; }
+      .figma-login-button { min-width: 9rem !important; }
+    </style>
 </head>
 <body>
     <!-- Background Design -->
@@ -58,6 +65,9 @@
                         <button type="button" class="figma-pw-toggle" onclick="togglePassword()">��️</button>
                     </div>
 
+                    <div class="figma-forgot-link">
+                        <a href="#" id="goToResetFromLogin" class="auth-link">Forgot your password?</a>
+                    </div>
                     <button type="submit" class="figma-login-button">Login</button>
                 </form>
 
@@ -79,6 +89,7 @@
         </div>
     </main>
 
+    {% include 'partials/auth_modal.html' %}
 
     <script>
         // Password toggle functionality

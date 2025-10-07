@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <title>{{ action }}</title>
+</head>
+<body>
+  <nav class="navbar"><ul class="nav-links"><li><a href="{% url 'rfid_login:officer_list' %}">Back to Officers</a></li></ul></nav>
+  <main class="dashboard-container">
+    <div class="dashboard-card">
+      <h2 style="color:var(--white);">{{ action }}</h2>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="cta-button">{{ action }}</button>
+      </form>
+    </div>
+  </main>
+</body>
+</html>

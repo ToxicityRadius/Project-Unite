@@ -563,7 +563,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (emailRegex.test(identifier)) { localStorage.setItem('email', identifier); localStorage.removeItem('username'); }
                         else { localStorage.setItem('username', identifier); localStorage.removeItem('email'); }
                         toggleAuthButtons();
-                        // Redirect to dashboard
                         window.location.href = '/dashboard/';
                     }
                     if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }

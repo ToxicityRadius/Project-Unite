@@ -554,7 +554,7 @@ body {
     flex-direction: column;
     gap: 0.5rem; /* reduced gap */
     width: 100%;
-    max-width: 24rem; /* reduced max width */
+    max-width: 40rem; /* increased max width to allow longer inputs */
 }
 
 .figma-input-wrapper {
@@ -563,18 +563,18 @@ body {
 }
 
 .figma-form-input {
-    padding: 0.6rem 1.7rem 0.6rem 1.7rem; /* reduced padding */
-    border: 3px solid var(--border-color); /* reduced border width */
-    border-radius: 5rem; /* reduced border radius */
+    padding: 0.8rem 2.4rem; /* slightly increased padding for visual balance */
+    border: 3px solid var(--border-color);
+    border-radius: 5rem;
     background: var(--background-light);
-    font-size: 1.1rem; /* reduced font size */
+    font-size: 1.1rem;
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
     color: var(--text-light);
     outline: none;
     transition: all 0.3s ease;
     width: 100%;
-    max-width: 600px; /* further increased max width to lengthen input */
+    max-width: none; /* allow input to expand to form width */
     text-align: center;
 }
 
@@ -646,6 +646,48 @@ body {
     text-align: center;
 }
 
+/* Forgot password link inside login form */
+.figma-forgot-link {
+    text-align: center;
+    margin-bottom: 0.8rem;
+}
+.figma-forgot-link a {
+    color: rgba(255,255,255,0.9);
+    text-decoration: underline;
+    font-weight: 600;
+}
+.figma-forgot-link a:hover {
+    color: #e6f3ff;
+}
+
+/* Modal / auth styles */
+.home { position:fixed; inset:0; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; z-index:60; }
+.home.hidden { display:none !important; }
+.form_container { background:transparent; padding:0; border-radius:0; max-width:75rem; width:95%; position:relative; }
+.auth-card { background:var(--white); padding:1.6rem; border-radius:1.6rem; max-width:32rem; width:100%; margin:0 auto; box-shadow:0 14px 40px rgba(0,120,255,0.08); border:1px solid rgba(0,120,255,0.05); text-align:center; position:relative; }
+.auth-card-small { max-width:28rem; padding:1.2rem; border-radius:1.4rem; }
+.auth-card-white { background:var(--white); }
+.form_close { position:absolute; right:1rem; top:1rem; z-index:70; background:rgba(255,255,255,0.9); color:var(--primary-blue); border:none; border-radius:50%; width:40px; height:40px; font-size:1.2rem; cursor:pointer; }
+.auth-heading { font-size:2rem; font-weight:800; color:var(--primary-blue); margin-bottom:0.5rem; }
+.auth-sub { font-size:1rem; color:var(--text-gray); margin-bottom:1rem; }
+.form-row { margin-bottom:1rem; }
+.auth-input { padding:0.8rem 1.5rem; border:3px solid var(--border-color); border-radius:6rem; background:var(--background-light); font-size:1rem; width:100%; box-sizing:border-box; }
+.auth-input-with-toggle { position:relative; }
+.auth-input-with-toggle .pw_hide { position:absolute; right:1.2rem; top:50%; transform:translateY(-50%); cursor:pointer; }
+.auth-cta { margin-top:0.5rem; }
+.auth-switch { text-align:center; margin-top:1rem; }
+.auth-link { color:var(--primary-blue); text-decoration:none; font-weight:600; }
+
+/* Modal login overrides to allow wide inputs */
+.modal-login-card { display:flex; background:var(--primary-blue); border-radius:3.44rem; border:5px solid var(--border-color); overflow:hidden; max-width:75rem; width:100%; min-height:30rem; position:relative; box-shadow:0 16px 45px rgba(0,120,255,0.12); }
+.modal-login-card .login_close { position:absolute; right:1.2rem; top:1.2rem; z-index:90; background:rgba(255,255,255,0.95); color:var(--primary-blue); border:none; border-radius:50%; width:40px; height:40px; font-size:1.1rem; cursor:pointer; }
+.modal-login-left { flex:1; padding:3rem 2rem 2rem; display:flex; flex-direction:column; justify-content:flex-start; color:var(--white); position:relative; }
+.modal-login-right { flex:1; background:var(--white); border-radius:2.2rem; margin:0.8rem; display:flex; align-items:center; justify-content:center; padding:1.2rem; }
+.modal-login-form { display:flex; flex-direction:column; gap:0.5rem; width:100%; max-width:28rem; }
+.modal-login-form .auth-input { padding:0.6rem 1.6rem; font-size:1rem; border:3px solid var(--border-color); border-radius:5rem; text-align:center; }
+.figma-pw-toggle { position:absolute; right:2rem; top:50%; transform:translateY(-50%); background:transparent; border:none; font-size:1rem; cursor:pointer; color:var(--text-light); z-index:10; }
+.modal-login-form .figma-login-button { padding:0.6rem 1.6rem; background:var(--background-light); color:var(--primary-blue); border:none; border-radius:5rem; font-size:1rem; font-weight:500; cursor:pointer; align-self:center; margin-top:1rem; min-width:8rem; }
+
 .figma-signup-link {
     color: var(--white);
     text-decoration: none;
@@ -679,8 +721,9 @@ body {
     }
 
     .figma-form-input {
-        padding: 0.7rem 6rem 0.7rem 6rem;
+        padding: 0.7rem 2.5rem;
         font-size: 1.2rem;
+        max-width: none;
     }
 
     .figma-login-left {
@@ -1071,5 +1114,9 @@ body {
 }
 
 .login_form[aria-hidden="true"] {
+    display: none;
+}
+
+.password_reset_form[aria-hidden="true"] {
     display: none;
 }

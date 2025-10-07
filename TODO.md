@@ -1,5 +1,0 @@
-- [x] Create a utility function to get logged-in superusers by querying active sessions
-- [x] Add a view in SyncHub/views.py to display logged-in superadmins, restricted to superusers
-- [x] Create a template to render the list of logged-in superadmins
-- [x] Add URL pattern for the new view in SyncHub/urls.py
-- [ ] Test the implementation

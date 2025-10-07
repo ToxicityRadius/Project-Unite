@@ -1,20 +1,44 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Inventory Items</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <title>Inventory - PROJECT UNITE</title>
 </head>
 <body>
-    <h1>Inventory Items</h1>
-    <a href="{% url 'inventory:item_add' %}">Add New Item</a>
-    <ul>
-        {% for item in items %}
-        <li>{{ item.name }} - Quantity: {{ item.quantity }}
-            <a href="{% url 'inventory:item_edit' item.pk %}">Edit</a>
-            <a href="{% url 'inventory:item_delete' item.pk %}">Delete</a>
-        </li>
-        {% empty %}
-        <li>No items found.</li>
-        {% endfor %}
-    </ul>
+  <nav class="navbar"><ul class="nav-links"><li><a href="{% url 'dashboard' %}">Dashboard</a></li></ul></nav>
+  <main class="dashboard-container">
+    <h1 style="color:var(--white);">Inventory</h1>
+    <a class="cta-button" href="{% url 'inventory:item_add' %}">Add Item</a>
+    <div class="inventory-table" style="margin-top:1.5rem;">
+      <table style="width:100%;border-collapse:collapse;">
+        <thead>
+          <tr style="text-align:left;color:var(--white);opacity:0.95;">
+            <th style="padding:0.8rem;border-bottom:1px solid rgba(255,255,255,0.08)">Name</th>
+            <th style="padding:0.8rem;border-bottom:1px solid rgba(255,255,255,0.08)">Description</th>
+            <th style="padding:0.8rem;border-bottom:1px solid rgba(255,255,255,0.08)">Quantity</th>
+            <th style="padding:0.8rem;border-bottom:1px solid rgba(255,255,255,0.08)">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr style="color:var(--white);">
+            <td style="padding:0.8rem">{{ item.name }}</td>
+            <td style="padding:0.8rem">{{ item.description|default:'-' }}</td>
+            <td style="padding:0.8rem">{{ item.quantity }}</td>
+            <td style="padding:0.8rem">
+              <a class="cta-button" href="{% url 'inventory:item_edit' item.pk %}" style="background:transparent;border:2px solid var(--white);color:var(--white);padding:6px 10px;">Edit</a>
+              <a class="cta-button" href="{% url 'inventory:item_delete' item.pk %}" style="background:transparent;border:2px solid #ff6b6b;color:#ff6b6b;padding:6px 10px;">Delete</a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="4" style="padding:0.8rem;color:var(--white);">No items found.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </main>
 </body>
 </html>

@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
 from . import views
 
 urlpatterns = [
@@ -19,10 +20,8 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
 
     path('api/signup', views.signup_api, name='api_signup'),
-    path('api/login', views.login_page, name='api_login'),
+    path('api/login', views.login_api, name='api_login'),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
-
-

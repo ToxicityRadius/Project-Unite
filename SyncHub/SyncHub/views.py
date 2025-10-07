@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.sessions.models import Session
 from django.utils import timezone
 import json
@@ -12,41 +14,47 @@ def landing_page(request):
     """Landing page view"""
     return render(request, 'index.html')
 
-from django.views.decorators.csrf import csrf_exempt
+def _authenticate_identifier_password(request, identifier, password):
+    """Authenticate by username or email."""
+    user = None
+    if identifier and password:
+        if '@' in identifier:
+            try:
+                user_obj = User.objects.get(email__iexact=identifier)
+                user = authenticate(request, username=user_obj.username, password=password)
+            except User.DoesNotExist:
+                user = None
+        else:
+            user = authenticate(request, username=identifier, password=password)
+    return user
 
 @csrf_exempt
-def login_page(request):
-    """Login page view with authentication (handles form POST and JSON API)"""
-    # JSON API login
-    if request.method == 'POST' and request.content_type == 'application/json':
-        try:
-            payload = json.loads(request.body.decode('utf-8'))
-        except Exception:
-            return JsonResponse({'message': 'Invalid JSON.'}, status=400)
-        identifier = payload.get('identifier') or payload.get('username')
-        password = payload.get('password')
-        # Support login by username or email
-        user = None
-        if identifier and password:
-            if '@' in identifier:
-                try:
-                    user_obj = User.objects.get(email__iexact=identifier)
-                    user = authenticate(request, username=user_obj.username, password=password)
-                except User.DoesNotExist:
-                    user = None
-            else:
-                user = authenticate(request, username=identifier, password=password)
-        if user is not None:
-            auth_login(request, user)
-            return JsonResponse({'message': 'Login successful.'})
-        else:
-            return JsonResponse({'message': 'Invalid credentials.'}, status=400)
+def login_api(request):
+    """JSON API login endpoint."""
+    if request.method != 'POST':
+        return JsonResponse({'message': 'Method not allowed.'}, status=405)
+    if request.content_type != 'application/json':
+        return JsonResponse({'message': 'Content-Type must be application/json.'}, status=400)
+    try:
+        payload = json.loads(request.body.decode('utf-8'))
+    except Exception:
+        return JsonResponse({'message': 'Invalid JSON.'}, status=400)
+    identifier = payload.get('identifier') or payload.get('username')
+    password = payload.get('password')
+    user = _authenticate_identifier_password(request, identifier, password)
+    if user is not None:
+        auth_login(request, user)
+        return JsonResponse({'message': 'Login successful.'})
+    return JsonResponse({'message': 'Invalid credentials.'}, status=400)
 
+
+def login_page(request):
+    """Login page view with form POST handling"""
     # Traditional form POST
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
+        user = _authenticate_identifier_password(request, username, password)
         if user is not None:
             auth_login(request, user)
             messages.success(request, 'Login successful!')
@@ -94,8 +102,6 @@ def signup_page(request):
             return render(request, 'signup.html')
 
     return render(request, 'signup.html')
-
-from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def signup_api(request):
