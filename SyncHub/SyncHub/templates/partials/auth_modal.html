@@ -50,6 +50,20 @@
   </div>
 </div>
 
+
+  <!-- Password Reset Form (modal) -->
+  <form id="passwordResetForm" class="password_reset_form" aria-hidden="true">
+    <div class="auth-card auth-card-small">
+      <button class="form_close" aria-label="Close auth dialog">×</button>
+      <h3 class="auth-heading">Reset password</h3>
+      <p class="auth-sub">Enter your account email to receive a reset link</p>
+      {% csrf_token %}
+      <div class="form-row"><input id="reset_email" name="email" type="email" class="auth-input" placeholder="Email" required autocomplete="email"></div>
+      <button type="submit" class="cta-button auth-cta">Send reset link</button>
+      <p class="auth-switch"><a href="{% url 'login' %}" class="auth-link">Back to login</a></p>
+    </div>
+  </form>
+
 <script>
 // Password toggle for modal
 function toggleModalPassword() {
