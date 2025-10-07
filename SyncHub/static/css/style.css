@@ -665,6 +665,7 @@ body {
 .home.hidden { display:none !important; }
 .form_container { background:transparent; padding:0; border-radius:0; max-width:75rem; width:95%; position:relative; }
 .auth-card { background:var(--white); padding:1.6rem; border-radius:1.6rem; max-width:32rem; width:100%; margin:0 auto; box-shadow:0 14px 40px rgba(0,120,255,0.08); border:1px solid rgba(0,120,255,0.05); text-align:center; position:relative; }
+.auth-card-small { max-width:28rem; padding:1.2rem; border-radius:1.4rem; }
 .auth-card-white { background:var(--white); }
 .form_close { position:absolute; right:1rem; top:1rem; z-index:70; background:rgba(255,255,255,0.9); color:var(--primary-blue); border:none; border-radius:50%; width:40px; height:40px; font-size:1.2rem; cursor:pointer; }
 .auth-heading { font-size:2rem; font-weight:800; color:var(--primary-blue); margin-bottom:0.5rem; }
