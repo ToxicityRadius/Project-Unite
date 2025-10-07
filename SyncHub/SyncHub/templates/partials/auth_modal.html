@@ -160,37 +160,25 @@ document.addEventListener('DOMContentLoaded', function() {
   if (goToSignup) {
     goToSignup.addEventListener('click', (e) => {
       e.preventDefault();
-      const signup = document.getElementById('signupForm');
-      const login = document.getElementById('loginForm');
-      if (signup && login) { signup.setAttribute('aria-hidden', 'false'); login.setAttribute('aria-hidden', 'true'); }
+      showAuthModal('signupForm');
     });
   }
   if (goToLogin) {
     goToLogin.addEventListener('click', (e) => {
       e.preventDefault();
-      const signup = document.getElementById('signupForm');
-      const login = document.getElementById('loginForm');
-      if (signup && login) { signup.setAttribute('aria-hidden', 'true'); login.setAttribute('aria-hidden', 'false'); }
+      showAuthModal('loginForm');
     });
   }
   if (goToResetFromLogin) {
     goToResetFromLogin.addEventListener('click', (e) => {
       e.preventDefault();
-      const reset = document.getElementById('passwordResetForm');
-      const login = document.getElementById('loginForm');
-      if (reset && login) { reset.setAttribute('aria-hidden', 'false'); login.setAttribute('aria-hidden', 'true'); }
-      const homeModal = document.querySelector('.home');
-      if (homeModal) homeModal.classList.remove('hidden');
-      // focus email
-      const el = document.getElementById('reset_email'); if (el) el.focus();
+      showAuthModal('passwordResetForm');
     });
   }
   if (backToLoginFromReset) {
     backToLoginFromReset.addEventListener('click', (e) => {
       e.preventDefault();
-      const reset = document.getElementById('passwordResetForm');
-      const login = document.getElementById('loginForm');
-      if (reset && login) { reset.setAttribute('aria-hidden', 'true'); login.setAttribute('aria-hidden', 'false'); }
+      showAuthModal('loginForm');
     });
   }
 });
