@@ -52,7 +52,7 @@
 
 
   <!-- Password Reset Form (modal) -->
-  <form id="passwordResetForm" class="password_reset_form" aria-hidden="true">
+  <form id="passwordResetForm" class="password_reset_form" aria-hidden="true" action="{% url 'password_reset' %}" method="post">
     <div class="auth-card auth-card-small">
       <button class="form_close" aria-label="Close auth dialog">×</button>
       <h3 class="auth-heading">Reset password</h3>
