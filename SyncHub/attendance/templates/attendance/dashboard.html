@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="officer-list-container">
+        <div class="officer-list-header">
+            <h1 class="officer-list-title">Attendance Dashboard - {{ date }}</h1>
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+            <h2>Today's Summary</h2>
+            <p>Total Officers: {{ total_officers }}</p>
+            <p>Present Today: {{ present_today }}</p>
+            <p>Absent Today: {{ absent_today }}</p>
+        </div>
+
+        <h2>Today's Time Logs</h2>
+        <div class="officer-list-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Officer</th>
+                        <th>RFID Tag</th>
+                        <th>Time In</th>
+                        <th>Time Out</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in today_logs %}
+                    <tr>
+                        <td>{{ log.officer.name }}</td>
+                        <td>{{ log.officer.rfid_tag }}</td>
+                        <td>{{ log.time_in|date:"H:i" }}</td>
+                        <td>{{ log.time_out|date:"H:i" if log.time_out else "Not checked out" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">No time logs for today.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <a href="{% url 'attendance:summary' %}" class="officer-list-add-btn">View Attendance Summary</a>
+            <a href="{% url 'rfid_login:login' %}" class="officer-list-add-btn" style="margin-left: 1rem;">Back to RFID Login</a>
+        </div>
+    </div>
+</body>
+</html>
