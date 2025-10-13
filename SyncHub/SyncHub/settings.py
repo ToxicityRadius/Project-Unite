@@ -85,30 +85,16 @@ WSGI_APPLICATION = 'SyncHub.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-import urllib.parse
-
-DATABASE_URL = os.environ.get('DATABASE_URL')
-if DATABASE_URL:
-    url = urllib.parse.urlparse(DATABASE_URL)
-    # Support both postgresql:// and postgres:// schemes
-    engine = 'django.db.backends.postgresql'
-    DATABASES = {
-        'default': {
-            'ENGINE': engine,
-            'NAME': url.path[1:],
-            'USER': url.username,
-            'PASSWORD': url.password,
-            'HOST': url.hostname,
-            'PORT': url.port or '',
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'ApocalyptoVirus',
+        'HOST': 'db.lmyhkzjrrsexyyybftvz.supabase.co',
+        'PORT': '5432',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+}
 
 
 # Password validation
