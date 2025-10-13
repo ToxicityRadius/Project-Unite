@@ -16,6 +16,7 @@ urlpatterns = [
     path('inventory/', include('inventory.urls')),
     path('rfid_login/', include('rfid_login.urls')),
 
+
     # Password reset
     path('accounts/', include('django.contrib.auth.urls')),
 

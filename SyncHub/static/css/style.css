@@ -617,12 +617,17 @@ body {
     align-self: center;
     margin-top: 1.8rem; /* reduced margin */
     min-width: 7.6rem;
+    text-decoration: none !important;
 }
 
 .figma-login-button:hover {
     background: var(--white);
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+}
+
+a.figma-login-button {
+    text-decoration: none !important;
 }
 
 .figma-logo-container {
@@ -677,16 +682,6 @@ body {
 .auth-cta { margin-top:0.5rem; }
 .auth-switch { text-align:center; margin-top:1rem; }
 .auth-link { color:var(--primary-blue); text-decoration:none; font-weight:600; }
-
-/* Modal login overrides to allow wide inputs */
-.modal-login-card { display:flex; background:var(--primary-blue); border-radius:3.44rem; border:5px solid var(--border-color); overflow:hidden; max-width:75rem; width:100%; min-height:30rem; position:relative; box-shadow:0 16px 45px rgba(0,120,255,0.12); }
-.modal-login-card .login_close { position:absolute; right:1.2rem; top:1.2rem; z-index:90; background:rgba(255,255,255,0.95); color:var(--primary-blue); border:none; border-radius:50%; width:40px; height:40px; font-size:1.1rem; cursor:pointer; }
-.modal-login-left { flex:1; padding:3rem 2rem 2rem; display:flex; flex-direction:column; justify-content:flex-start; color:var(--white); position:relative; }
-.modal-login-right { flex:1; background:var(--white); border-radius:2.2rem; margin:0.8rem; display:flex; align-items:center; justify-content:center; padding:1.2rem; }
-.modal-login-form { display:flex; flex-direction:column; gap:0.5rem; width:100%; max-width:28rem; }
-.modal-login-form .auth-input { padding:0.6rem 1.6rem; font-size:1rem; border:3px solid var(--border-color); border-radius:5rem; text-align:center; }
-.figma-pw-toggle { position:absolute; right:2rem; top:50%; transform:translateY(-50%); background:transparent; border:none; font-size:1rem; cursor:pointer; color:var(--text-light); z-index:10; }
-.modal-login-form .figma-login-button { padding:0.6rem 1.6rem; background:var(--background-light); color:var(--primary-blue); border:none; border-radius:5rem; font-size:1rem; font-weight:500; cursor:pointer; align-self:center; margin-top:1rem; min-width:8rem; }
 
 .figma-signup-link {
     color: var(--white);
@@ -866,25 +861,25 @@ body {
         padding: 2rem 1.5rem;
     }
 
-    .home .figma-login-title {
+    .figma-login-title {
         font-size: 2rem;
     }
 
-    .home .figma-login-subtitle {
+    .figma-login-subtitle {
         font-size: 0.45rem;
     }
 
-    .home .figma-form-input {
+    .figma-form-input {
         padding: 0.5rem 1.5rem;
         font-size: 1rem;
     }
 
-    .home .figma-login-button {
+    .figma-login-button {
         padding: 0.6rem 1.5rem;
         font-size: 1rem;
     }
 
-    .home .figma-pw-toggle {
+    .figma-pw-toggle {
         right: 1.2rem;
     }
 }
@@ -937,7 +932,7 @@ body {
 }
 
 .signup-input {
-    padding: 0.8rem 1.5rem;
+    padding: 0.8rem 3rem 0.8rem 1.5rem;
     border: 3px solid var(--border-color);
     border-radius: 6rem;
     background: var(--background-light);
@@ -1119,4 +1114,79 @@ body {
 
 .password_reset_form[aria-hidden="true"] {
     display: none;
+}
+
+.time-logs-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 20px;
+}
+
+.time-logs-card {
+  background-color: #007bff;
+  border-radius: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  padding: 30px;
+  width: 80%;
+  max-width: 1000px;
+  color: white;
+}
+
+.time-logs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.time-logs-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: white;
+}
+
+.back-btn {
+  background-color: white;
+  color: #007bff;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background-color: #0056d2;
+  color: white;
+}
+
+.time-logs-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  color: #333;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.time-logs-table th, 
+.time-logs-table td {
+  padding: 12px 15px;
+  text-align: center;
+}
+
+.time-logs-table thead {
+  background-color: #f3f3f3;
+  font-weight: 600;
+}
+
+.time-logs-table tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.no-logs {
+  color: #777;
+  text-align: center;
+  padding: 20px 0;
 }

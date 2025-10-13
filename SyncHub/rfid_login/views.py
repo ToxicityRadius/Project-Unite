@@ -10,6 +10,8 @@ class OfficerForm(forms.ModelForm):
         fields = ['name', 'position', 'rfid_tag']
 
 def login_view(request):
+    is_admin = request.user.is_superuser or request.user.groups.filter(name='admin').exists()
+    last_log = None
     if request.method == 'POST':
         rfid_tag = request.POST.get('rfid_tag')
         try:
@@ -26,15 +28,20 @@ def login_view(request):
                 # Time in
                 TimeLog.objects.create(officer=officer, time_in=timezone.now())
                 message = f"Time in recorded for {officer.name}"
-            return render(request, 'rfid_login/login.html', {'message': message})
+            # Get the last log for display
+            last_log = TimeLog.objects.filter(officer=officer).order_by('-date', '-time_in').first()
+            return render(request, 'rfid_login/login.html', {'message': message, 'is_admin': is_admin, 'last_log': last_log})
         except Officer.DoesNotExist:
             message = "Invalid RFID tag"
-            return render(request, 'rfid_login/login.html', {'message': message})
-    return render(request, 'rfid_login/login.html')
+            return render(request, 'rfid_login/login.html', {'message': message, 'is_admin': is_admin, 'last_log': last_log})
+    return render(request, 'rfid_login/login.html', {'is_admin': is_admin, 'last_log': last_log})
 
 def time_log_view(request):
+    is_admin = request.user.is_superuser or request.user.groups.filter(name='admin').exists()
+    if not is_admin:
+        return render(request, 'rfid_login/time_log.html', {'error': 'Access denied. Admin privileges required.', 'is_admin': is_admin})
     time_logs = TimeLog.objects.all().order_by('-date')
-    return render(request, 'rfid_login/time_log.html', {'time_logs': time_logs})
+    return render(request, 'rfid_login/time_log.html', {'time_logs': time_logs, 'is_admin': is_admin})
 
 # Additional simple officer CRUD for UI
 

@@ -1,15 +1,73 @@
+in{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Edit Inventory Item</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <title>Edit Inventory Item - PROJECT UNITE</title>
 </head>
 <body>
-    <h1>Edit Inventory Item: {{ item.name }}</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save Changes</button>
-    </form>
-    <a href="{% url 'inventory:item_list' %}">Back to Item List</a>
+  <!-- Background Design -->
+  <div class="background-design">
+    <img src="https://api.builder.io/api/v1/image/assets/TEMP/69e5a03207d72e05249171283d6b3fef53da98b7?width=3356" alt="" class="bg-logo-1">
+    <img src="https://api.builder.io/api/v1/image/assets/TEMP/5bae535a77c2066496e68aa5ed0ea8132703a86a?width=4062" alt="" class="bg-logo-2">
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <ul class="nav-links">
+      <li><a href="{% url 'landing' %}"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+
+      <li><a href="{% url 'inventory:item_list' %}"><i class="fas fa-boxes"></i> Inventory</a></li>
+      <li><a href="{% url 'rfid_login:login' %}"><i class="fas fa-id-card"></i> RFID Login</a></li>
+
+    </ul>
+  </nav>
+
+  <!-- Edit Item Content -->
+  <main class="dashboard-container fade-in">
+    <h1 style="color:var(--text-dark); text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Edit Inventory Item: {{ item.name }}</h1>
+    <div class="dashboard-grid" style="grid-template-columns: 1fr; max-width: 50rem;">
+      <div class="dashboard-card" style="padding: 3rem;">
+        <form method="post" style="display: flex; flex-direction: column; gap: 2rem;">
+          {% csrf_token %}
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <label for="id_name" style="color: var(--text-dark); font-weight: bold; font-size: 1.1rem;">
+              <i class="fas fa-tag" style="margin-right: 0.5rem;"></i>Item Name
+            </label>
+            <input type="text" id="id_name" name="name" value="{{ item.name }}" required
+                   style="padding: 1rem; border: 2px solid var(--border-color); border-radius: 8px; font-size: 1.1rem; background: var(--background-light);"
+                   placeholder="Enter item name">
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <label for="id_description" style="color: var(--text-dark); font-weight: bold; font-size: 1.1rem;">
+              <i class="fas fa-align-left" style="margin-right: 0.5rem;"></i>Description
+            </label>
+            <textarea id="id_description" name="description" rows="4"
+                      style="padding: 1rem; border: 2px solid var(--border-color); border-radius: 8px; font-size: 1.1rem; background: var(--background-light); resize: vertical;"
+                      placeholder="Enter item description">{{ item.description }}</textarea>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <label for="id_quantity" style="color: var(--text-dark); font-weight: bold; font-size: 1.1rem;">
+              <i class="fas fa-hashtag" style="margin-right: 0.5rem;"></i>Quantity
+            </label>
+            <input type="number" id="id_quantity" name="quantity" value="{{ item.quantity }}" required min="0"
+                   style="padding: 1rem; border: 2px solid var(--border-color); border-radius: 8px; font-size: 1.1rem; background: var(--background-light);"
+                   placeholder="Enter quantity">
+          </div>
+          <button type="submit" class="cta-button" style="font-size: 1.2rem; padding: 1rem 2rem; width: 100%;">
+            <i class="fas fa-save" style="margin-right: 0.5rem;"></i>Save Changes
+          </button>
+        </form>
+        <div style="text-align: center; margin-top: 2rem;">
+          <a href="{% url 'inventory:item_list' %}" class="cta-button" style="background: transparent; color: var(--primary-blue); border: 2px solid var(--primary-blue);">
+            <i class="fas fa-arrow-left" style="margin-right: 0.5rem;"></i>Back to Item List
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
 </body>
 </html>
