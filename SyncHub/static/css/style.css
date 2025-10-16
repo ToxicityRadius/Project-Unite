@@ -59,12 +59,31 @@ body {
 /* Navigation */
 .navbar {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     padding: 1.7rem 6rem; /* reduced padding */
     background: transparent;
     position: relative;
     z-index: 10;
+}
+
+.profile-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-dark);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-btn:hover {
+    color: var(--primary-blue);
+    background: rgba(0, 120, 255, 0.1);
 }
 
 .nav-links {
