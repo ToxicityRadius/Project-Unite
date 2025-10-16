@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import JsonResponse
@@ -216,3 +216,5 @@ def logged_in_superadmins_view(request):
     """View to display currently logged-in superadmin accounts"""
     superusers = get_logged_in_superusers()
     return render(request, 'logged_in_superadmins.html', {'superusers': superusers})
+
+
