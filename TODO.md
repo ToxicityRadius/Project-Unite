@@ -1,10 +1,5 @@
-# TODO: Implement Figma RFID Login Design
-
-## Tasks
-- [ ] Update navigation in login.html to match Figma (RFID logo left, Home/About Us/Purpose right)
-- [ ] Change main content structure to two-column login card (figma-login classes)
-- [ ] Update form: change input placeholder to "put your student number here:"
-- [ ] Add two buttons: "Login" and "View Time Logs"
-- [ ] Remove last_log and message displays for simplicity
-- [ ] Adjust CSS if needed for proper styling
-- [ ] Test the updated page (run server and check layout)
+- [x] Fix password toggle button icon in login.html (replace emoji with SVG)
+- [x] Correct subtitle in auth_modal.html (remove "INEFFICIENT")
+- [x] Standardize modal login form attributes (name to username, add method=post)
+- [x] Fix toggleModalPassword function placeholders with proper SVGs
+- [x] Test login functionality (server started successfully, but browser tool disabled for live testing)
