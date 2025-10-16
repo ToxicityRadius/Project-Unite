@@ -15,6 +15,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('inventory/', include('inventory.urls')),
     path('rfid_login/', include('rfid_login.urls')),
+    path('profile/', include('profile_customization.urls')),
 
 
     # Password reset

@@ -21,6 +21,19 @@
         <img src="https://api.builder.io/api/v1/image/assets/TEMP/5bae535a77c2066496e68aa5ed0ea8132703a86a?width=4062" alt="" class="bg-logo-2">
     </div>
 
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="{% url 'landing' %}"><i class="fas fa-id-card" style="font-size: 24px; color: var(--primary-blue); margin-right: 10px;"></i></a>
+        <ul class="nav-links">
+            <li><a href="{% url 'landing' %}"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+
+            <li><a href="{% url 'inventory:item_list' %}"><i class="fas fa-boxes"></i> Inventory</a></li>
+            <li><a href="{% url 'rfid_login:login' %}"><i class="fas fa-id-card"></i> RFID Login</a></li>
+
+        </ul>
+    </nav>
+
     <!-- Login Content -->
     <main class="figma-login-container fade-in">
         <div class="figma-login-card">

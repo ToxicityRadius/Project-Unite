@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PROJECT UNITE{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="{% url 'landing' %}"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="{% url 'inventory:item_list' %}"><i class="fas fa-boxes"></i> Inventory</a></li>
+            <li><a href="{% url 'rfid_login:login' %}"><i class="fas fa-id-card"></i> RFID Login</a></li>
+        </ul>
+        <ul class="nav-links right">
+            <li><a href="{% url 'profile_customization:profile' %}"><i class="fas fa-user"></i></a></li>
+        </ul>
+    </nav>
+
+    {% block content %}{% endblock %}
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

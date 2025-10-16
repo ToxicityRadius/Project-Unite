@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'inventory',
     'rfid_login',
+    'profile_customization',
 ]
 
 MIDDLEWARE = [
