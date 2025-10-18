@@ -138,61 +138,21 @@ def dashboard_view(request):
 @login_required
 def profile_view(request):
     """Profile view for user customization"""
-    if request.method == 'POST':
-        user = request.user
-        username = request.POST.get('username', '').strip()
-        email = request.POST.get('email', '').strip()
-        first_name = request.POST.get('first_name', '').strip()
-        last_name = request.POST.get('last_name', '').strip()
-        old_password = request.POST.get('old_password', '')
-        new_password = request.POST.get('new_password', '').strip()
-        confirm_password = request.POST.get('confirm_password', '').strip()
+    # Determine user role
+    user_groups = request.user.groups.all()
+    if user_groups.filter(name='admin').exists():
+        role = 'Admin'
+    elif user_groups.filter(name='officer').exists():
+        role = 'Officer'
+    else:
+        role = 'Staff'
 
-        # Basic validation
-        if not username or not email:
-            messages.error(request, 'Username and email are required.')
-            return render(request, 'profile.html')
+    context = {
+        'role': role,
+    }
+    return render(request, 'profile.html', context)
 
-        if User.objects.filter(username__iexact=username).exclude(id=user.id).exists():
-            messages.error(request, 'Username already exists.')
-            return render(request, 'profile.html')
-
-        if User.objects.filter(email__iexact=email).exclude(id=user.id).exists():
-            messages.error(request, 'Email already registered.')
-            return render(request, 'profile.html')
-
-        # Update user fields
-        user.username = username
-        user.email = email
-        user.first_name = first_name
-        user.last_name = last_name
-
-        # Handle password change
-        if new_password:
-            if not user.check_password(old_password):
-                messages.error(request, 'Current password is incorrect.')
-                return render(request, 'profile.html')
-            if new_password != confirm_password:
-                messages.error(request, 'New passwords do not match.')
-                return render(request, 'profile.html')
-            if len(new_password) < 8:
-                messages.error(request, 'New password must be at least 8 characters long.')
-                return render(request, 'profile.html')
-            user.set_password(new_password)
-
-        try:
-            user.save()
-            messages.success(request, 'Profile updated successfully!')
-            # Re-authenticate if password changed
-            if new_password:
-                auth_login(request, user)
-            return redirect('profile')
-        except Exception as e:
-            messages.error(request, f'Error updating profile: {str(e)}')
-            return render(request, 'profile.html')
-
-    return render(request, 'profile.html')
-
+@csrf_exempt
 def logout_view(request):
     """Logout view"""
     auth_logout(request)

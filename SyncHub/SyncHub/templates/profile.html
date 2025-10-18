@@ -1,166 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile - PROJECT UNITE</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <style>
-        .profile-container {
-            max-width: 600px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 10px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-        .profile-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-        .form-group label {
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            color: #333;
-        }
-        .form-group input {
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-        .form-group input:focus {
-            outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-        }
-        .password-section {
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid #ddd;
-        }
-        .password-section h3 {
-            color: #333;
-            margin-bottom: 1rem;
-        }
-        .btn-submit {
-            background: linear-gradient(135deg, #007bff, #0056b3);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            margin-top: 1rem;
-        }
-        .btn-submit:hover {
-            background: linear-gradient(135deg, #0056b3, #004085);
-        }
-        .messages {
-            margin-bottom: 1rem;
-        }
-        .alert {
-            padding: 0.75rem;
-            border-radius: 5px;
-            margin-bottom: 1rem;
-        }
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .alert-error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile Page</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <!-- Background Design -->
-    <div class="background-design">
-        <img src="https://api.builder.io/api/v1/image/assets/TEMP/69e5a03207d72e05249171283d6b3fef53da98b7?width=3356" alt="" class="bg-logo-1">
-        <img src="https://api.builder.io/api/v1/image/assets/TEMP/5bae535a77c2066496e68aa5ed0ea8132703a86a?width=4062" alt="" class="bg-logo-2">
+<body class="bg-[#f9f9f9] min-h-screen font-sans">
+
+  <!-- Background Design -->
+  <div class="background-design">
+    <img src="https://api.builder.io/api/v1/image/assets/TEMP/69e5a03207d72e05249171283d6b3fef53da98b7?width=3356" alt="" class="bg-logo-1">
+    <img src="https://api.builder.io/api/v1/image/assets/TEMP/5bae535a77c2066496e68aa5ed0ea8132703a86a?width=4062" alt="" class="bg-logo-2">
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <ul class="nav-links">
+      <li><a href="{% url 'landing' %}"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+    </ul>
+  </nav>
+
+  <div class="flex items-center justify-center min-h-screen">
+    <div class="flex bg-white shadow-lg rounded-3xl overflow-hidden w-[1100px] h-[600px]">
+
+    <!-- LEFT SIDEBAR -->
+    <div class="bg-[#007bff] w-[300px] flex flex-col items-center justify-center text-white p-6 rounded-3xl">
+      <!-- Profile Icon -->
+      <div class="bg-white rounded-full w-[130px] h-[130px] flex items-center justify-center mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-16 h-16">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9A3.75 3.75 0 1112 5.25 3.75 3.75 0 0115.75 9zM4.5 19.5a8.25 8.25 0 0115 0"/>
+        </svg>
+      </div>
+
+      <!-- Username -->
+      <h2 class="text-xl font-semibold">{{ user.username }}</h2>
+      <p class="text-sm italic mb-8">"{{ user.first_name|default:user.username }}"</p>
+
+      <!-- User Role (Static Display) -->
+      <div class="bg-white text-black font-medium px-6 py-2 rounded-md mb-4 cursor-default">
+        {{ role }}
+      </div>
+
+      <!-- Edit Profile Button -->
+      <button class="bg-white text-[#007bff] font-medium px-6 py-2 rounded-md hover:opacity-80 hover:scale-105 hover:shadow-lg transition-all duration-200">
+        EDIT PROFILE
+      </button>
     </div>
 
-    <!-- Navigation -->
-    <nav class="navbar">
-        <ul class="nav-links">
-            <li><a href="{% url 'landing' %}"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-            <li><a href="{% url 'inventory:item_list' %}"><i class="fas fa-boxes"></i> Inventory</a></li>
-            <li><a href="{% url 'rfid_login:login' %}"><i class="fas fa-id-card"></i> RFID Login</a></li>
-        </ul>
-    </nav>
+    <!-- RIGHT CONTENT -->
+    <div class="flex-1 flex flex-col justify-between p-8 relative">
 
-    <!-- Profile Content -->
-    <main class="profile-container fade-in">
-        <h2>User Profile</h2>
+      <!-- Floating Logo -->
+      <div class="absolute top-6 right-6">
+        <img src="{% static 'img/project-unite-logo.png' %}"
+             alt="Project Unite Logo"
+             class="w-16 h-16 object-contain">
+      </div>
 
-        {% if messages %}
-        <div class="messages">
-            {% for message in messages %}
-            <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-error{% endif %}">
-                {{ message }}
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
+      <!-- Top Header -->
+      <h2 class="text-lg font-semibold text-gray-700 tracking-wide mb-8">LAST ACTIVITY</h2>
 
-        <form method="post" class="profile-form">
-            {% csrf_token %}
+      <!-- Activity Cards -->
+      <div class="flex justify-center w-full">
+        <!-- Create Activity Card -->
+        <button class="bg-[#f5f5f5] rounded-xl shadow-md flex flex-col items-center justify-center py-10 hover:bg-gray-100 hover:scale-105 hover:shadow-lg transition-all duration-200 cursor-pointer w-80">
+          <div class="bg-black text-white rounded-full p-3 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+          </div>
+          <p class="text-sm font-medium text-gray-700">Create a new Activity</p>
+        </button>
+      </div>
 
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" value="{{ user.username }}" required>
-            </div>
+      <!-- Logout Button -->
+      <div class="flex justify-end mt-8">
+        <a href="{% url 'logout' %}" class="bg-[#007bff] text-white px-8 py-2 rounded-full shadow-md hover:bg-blue-600 hover:scale-105 hover:shadow-lg transition-all duration-200 inline-block text-center">LOGOUT</a>
+      </div>
+    </div>
+  </div>
 
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" value="{{ user.email }}" required>
-            </div>
-
-            <div class="form-group">
-                <label for="first_name">First Name:</label>
-                <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}">
-            </div>
-
-            <div class="form-group">
-                <label for="last_name">Last Name:</label>
-                <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}">
-            </div>
-
-            <div class="password-section">
-                <h3>Change Password (Optional)</h3>
-
-                <div class="form-group">
-                    <label for="old_password">Current Password:</label>
-                    <input type="password" id="old_password" name="old_password">
-                </div>
-
-                <div class="form-group">
-                    <label for="new_password">New Password:</label>
-                    <input type="password" id="new_password" name="new_password">
-                </div>
-
-                <div class="form-group">
-                    <label for="confirm_password">Confirm New Password:</label>
-                    <input type="password" id="confirm_password" name="confirm_password">
-                </div>
-            </div>
-
-            <button type="submit" class="btn-submit">Update Profile</button>
-        </form>
-    </main>
-
-    {% include 'partials/auth_modal.html' %}
-    <script src="{% static 'js/main.js' %}"></script>
+  {% include 'partials/auth_modal.html' %}
+  <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
