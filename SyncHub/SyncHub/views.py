@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group, User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import JsonResponse
@@ -8,6 +8,8 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.sessions.models import Session
 from django.utils import timezone
+from .forms import CustomUserCreationForm
+from .models import CustomUser
 import json
 
 def landing_page(request):
@@ -15,17 +17,19 @@ def landing_page(request):
     return render(request, 'index.html')
 
 def _authenticate_identifier_password(request, identifier, password):
-    """Authenticate by username or email."""
+    """Authenticate by student number or email."""
     user = None
     if identifier and password:
-        if '@' in identifier:
-            try:
-                user_obj = User.objects.get(email__iexact=identifier)
-                user = authenticate(request, username=user_obj.username, password=password)
-            except User.DoesNotExist:
-                user = None
-        else:
+        # Try as student number if it's 7 digits
+        if identifier.isdigit() and len(identifier) == 7:
             user = authenticate(request, username=identifier, password=password)
+        else:
+            # Try as email
+            try:
+                user_obj = CustomUser.objects.get(email__iexact=identifier)
+                user = authenticate(request, username=user_obj.student_number, password=password)
+            except CustomUser.DoesNotExist:
+                pass
     return user
 
 @csrf_exempt
@@ -66,42 +70,18 @@ def login_page(request):
 def signup_page(request):
     """Signup page view with form handling"""
     if request.method == 'POST':
-        username = request.POST.get('username', '').strip()
-        email = request.POST.get('email', '').strip()
-        password = request.POST.get('password', '').strip()
-        confirm_password = request.POST.get('confirm_password', '').strip()
-
-        # Basic validation
-        if not username or not email or not password:
-            messages.error(request, 'All fields are required.')
-            return render(request, 'signup.html')
-
-        if password != confirm_password:
-            messages.error(request, 'Passwords do not match.')
-            return render(request, 'signup.html')
-
-        if len(password) < 8:
-            messages.error(request, 'Password must be at least 8 characters long.')
-            return render(request, 'signup.html')
-
-        if User.objects.filter(username__iexact=username).exists():
-            messages.error(request, 'Username already exists.')
-            return render(request, 'signup.html')
-
-        if User.objects.filter(email__iexact=email).exists():
-            messages.error(request, 'Email already registered.')
-            return render(request, 'signup.html')
-
-        try:
-            user = User.objects.create_user(username=username, email=email, password=password)
-            user.save()
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
             messages.success(request, 'Account created successfully! Please log in.')
             return redirect('login')
-        except Exception as e:
-            messages.error(request, f'Error creating account: {str(e)}')
-            return render(request, 'signup.html')
-
-    return render(request, 'signup.html')
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'signup.html', {'form': form})
 
 @csrf_exempt
 def signup_api(request):
@@ -114,17 +94,28 @@ def signup_api(request):
         payload = json.loads(request.body.decode('utf-8'))
     except Exception:
         return JsonResponse({'message': 'Invalid JSON.'}, status=400)
-    username = payload.get('username', '').strip()
+    first_name = payload.get('first_name', '').strip()
+    last_name = payload.get('last_name', '').strip()
     email = payload.get('email', '').strip()
     password = payload.get('password', '').strip()
-    if not username or not email or not password:
+    student_number = payload.get('student_number', '').strip()
+    if not first_name or not last_name or not email or not password or not student_number:
         return JsonResponse({'message': 'All fields are required.'}, status=400)
-    if User.objects.filter(username__iexact=username).exists():
-        return JsonResponse({'message': 'Username already exists.'}, status=400)
-    if User.objects.filter(email__iexact=email).exists():
+    if CustomUser.objects.filter(email__iexact=email).exists():
         return JsonResponse({'message': 'Email already registered.'}, status=400)
+    if CustomUser.objects.filter(student_number=student_number).exists():
+        return JsonResponse({'message': 'Student number already registered.'}, status=400)
+    if not student_number.isdigit() or len(student_number) != 7:
+        return JsonResponse({'message': 'Student number must be exactly 7 digits.'}, status=400)
     try:
-        user = User.objects.create_user(username=username, email=email, password=password)
+        user = CustomUser.objects.create_user(
+            username=student_number,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=password,
+            student_number=student_number
+        )
         user.save()
         return JsonResponse({'message': 'User created successfully.'})
     except Exception as e:

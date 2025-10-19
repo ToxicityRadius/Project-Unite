@@ -8,10 +8,22 @@
         <h3 class="auth-heading">Create Account</h3>
         <p class="auth-sub">Join PROJECT UNITE to manage your inventory and attendance efficiently</p>
         {% csrf_token %}
-        <div class="form-row"><input id="signup_username" name="username" class="auth-input" placeholder="Username" required></div>
+        <div class="form-row"><input id="signup_first_name" name="first_name" class="auth-input" placeholder="First Name" required></div>
+        <div class="form-row"><input id="signup_last_name" name="last_name" class="auth-input" placeholder="Last Name" required></div>
         <div class="form-row"><input id="signup_email" name="email" type="email" class="auth-input" placeholder="Email" required></div>
-        <div class="form-row auth-input-with-toggle"><input id="signup_password" name="password" type="password" class="auth-input" placeholder="Password" required><span tabindex="0" class="pw_hide" aria-label="Toggle password visibility"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="eye-slash-icon" viewBox="0 0 16 16"><path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7 7 0 0 0-2.79.588l.77.771A6 6 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8z"/><path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829z"/><path d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755z"/></svg></span></div>
-        <div class="form-row auth-input-with-toggle"><input id="confirm_password" name="confirm_password" type="password" class="auth-input" placeholder="Confirm Password" required><span tabindex="0" class="pw_hide" aria-label="Toggle password visibility"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="eye-slash-icon" viewBox="0 0 16 16"><path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7 7 0 0 0-2.79.588l.77.771A6 6 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8z"/><path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829z"/><path d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755z"/></svg></span></div>
+        <div class="form-row"><input id="signup_student_number" name="student_number" class="auth-input" placeholder="Student Number (7 digits)" required pattern="\d{7}" title="Must be exactly 7 digits"></div>
+        <div class="form-row">
+            <div class="input_box">
+                <input id="signup_password" name="password" type="password" class="auth-input" placeholder="Password" required>
+                <i class="fas fa-eye-slash toggle-password" tabindex="0" role="button" aria-label="Show password" aria-describedby="signup_password_help"></i>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="input_box">
+                <input id="confirm_password" name="confirm_password" type="password" class="auth-input" placeholder="Confirm Password" required>
+                <i class="fas fa-eye-slash toggle-password" tabindex="0" role="button" aria-label="Show password" aria-describedby="confirm_password_help"></i>
+            </div>
+        </div>
         <button id="signup" class="cta-button auth-cta" type="submit">Create Account</button>
         <p class="auth-switch">Already have an account? <a href="#" id="goToLogin" class="auth-link">Log in</a></p>
       </div>
@@ -30,7 +42,12 @@
           <form class="figma-login-form modal-login-form">
             {% csrf_token %}
             <div class="figma-input-wrapper"><input type="text" id="login_identifier" name="identifier" placeholder="username" class="figma-form-input auth-input" required></div>
-            <div class="figma-input-wrapper auth-input-with-toggle"><input type="password" id="login_password" name="password" placeholder="password" class="figma-form-input auth-input" required><button type="button" class="figma-pw-toggle" aria-label="Toggle password visibility"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="eye-icon"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8z"/><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z"/></svg></button></div>
+            <div class="figma-input-wrapper">
+                <div class="input_box">
+                    <input type="password" id="login_password" name="password" placeholder="password" class="figma-form-input auth-input" required>
+                    <i class="fas fa-eye-slash toggle-password" tabindex="0" role="button" aria-label="Show password" aria-describedby="login_password_help"></i>
+                </div>
+            </div>
             <div class="figma-forgot-link"><a href="#" id="goToResetFromLogin" class="auth-link">Forgot your password?</a></div>
             <button type="submit" class="figma-login-button auth-cta">Login</button>
           </form>
@@ -65,19 +82,6 @@
   </form>
 
 <script>
-// Password toggle for modal
-function toggleModalPassword() {
-    const passwordInput = document.getElementById('login_password');
-    const toggleButton = document.querySelector('.figma-pw-toggle');
-
-    if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        toggleButton.innerHTML = '[eye-open]';
-    } else {
-        passwordInput.type = 'password';
-        toggleButton.innerHTML = '[eye]';
-    }
-}
 // Public helper to show a specific auth modal view
 function showAuthModal(viewId) {
   const homeModal = document.querySelector('.home');
@@ -114,43 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (homeModal) homeModal.classList.add('hidden');
   }));
 
-  // SVG icons
-  const eyeSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="eye-icon"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8z"/><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z"/></svg>';
-  const eyeSlashSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="eye-slash-icon"><path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7 7 0 0 0-2.79.588l.77.771A6 6 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8z"/><path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829z"/><path d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755z"/></svg>';
 
-  // Signup password visibility toggles (.pw_hide)
-  document.querySelectorAll('.pw_hide').forEach(toggle => {
-    toggle.innerHTML = eyeSlashSVG;
-    toggle.addEventListener('click', function(e) {
-      const input = this.parentElement.querySelector('input');
-      if (!input) return;
-      if (input.type === 'password') {
-        input.type = 'text';
-        this.innerHTML = eyeSVG;
-      } else {
-        input.type = 'password';
-        this.innerHTML = eyeSlashSVG;
-      }
-    });
-  });
-
-  // Login password toggle button (.figma-pw-toggle)
-  document.querySelectorAll('.figma-pw-toggle').forEach(button => {
-    // ensure initial icon
-    button.innerHTML = eyeSlashSVG;
-    button.addEventListener('click', function(e) {
-      const wrapper = this.closest('.auth-input-with-toggle') || this.closest('.figma-input-wrapper');
-      const input = wrapper ? wrapper.querySelector('input') : null;
-      if (!input) return;
-      if (input.type === 'password') {
-        input.type = 'text';
-        this.innerHTML = eyeSVG;
-      } else {
-        input.type = 'password';
-        this.innerHTML = eyeSlashSVG;
-      }
-    });
-  });
 
   // Open/close helpers for links inside modal
   const goToSignup = document.getElementById('goToSignup');

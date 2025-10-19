@@ -235,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const openLoginBtn = document.getElementById('openLogin');
     const openSignupBtn = document.getElementById('openSignup');
     const logoutBtn = document.getElementById('logoutBtn');
-    const pwShowHideIcons = document.querySelectorAll('.pw_hide');
+    const togglePasswordIcons = document.querySelectorAll('.toggle-password');
     // Track the element that had focus before opening the modal so we can restore it on close
     let previousFocus = null;
 
@@ -243,32 +243,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const navAvatarImg = document.getElementById('nav-avatar-img');
     const navUsernameDisplay = document.getElementById('nav-username-display');
 
-    pwShowHideIcons.forEach(toggle => {
-        toggle.addEventListener('click', function() {
-            const input = this.parentElement.querySelector('input');
-            if (input.type === 'password') {
-                input.type = 'text';
-                this.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/></svg>';
-            } else {
-                input.type = 'password';
-                this.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-slash" viewBox="0 0 16 16"><path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7 7 0 0 0-2.79.588l.77.771A6 6 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755q-.247.248-.517.486z"/><path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829"/><path d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z"/></svg>';
-            }
-        });
-        toggle.addEventListener('keydown', e => {
+  // Function to toggle password visibility
+  function togglePasswordVisibility(icon) {
+    const input = icon.previousElementSibling;
+    if (!input || input.tagName !== 'INPUT') return;
+    if (input.type === 'password') {
+      input.type = 'text';
+      icon.classList.replace('fa-eye-slash', 'fa-eye');
+      icon.setAttribute('aria-label', 'Hide password');
+    } else {
+      input.type = 'password';
+      icon.classList.replace('fa-eye', 'fa-eye-slash');
+      icon.setAttribute('aria-label', 'Show password');
+    }
+  }
+
+    // Add event listeners for password toggle icons
+    togglePasswordIcons.forEach(icon => {
+        icon.addEventListener('click', () => togglePasswordVisibility(icon));
+        icon.addEventListener('keydown', e => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                const input = toggle.parentElement.querySelector('input');
-                if (input.type === 'password') {
-                    input.type = 'text';
-                    toggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/></svg>';
-                } else {
-                    input.type = 'password';
-                    toggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-slash" viewBox="0 0 16 16"><path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7 7 0 0 0-2.79.588l.77.771A6 6 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755q-.247.248-.517.486z"/><path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829"/><path d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z"/></svg>';
-                }
+                togglePasswordVisibility(icon);
             }
         });
-        // Prevent tab focus on password toggle icons
-        toggle.setAttribute('tabindex', '-1');
     });
 
     function setFocusToFirstInput(formSelector) {
@@ -518,8 +516,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Signup form submission (support modal id or page id)
-    const signupForm = document.getElementById('signupForm') || document.getElementById('signupFormPage');
+    // Signup form submission (only modal)
+    const signupForm = document.getElementById('signupForm');
     if (signupForm) {
         signupForm.addEventListener('submit', e => {
             e.preventDefault();
@@ -568,8 +566,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Login form submission (support modal id or page id)
-    const loginForm = document.getElementById('loginForm') || document.getElementById('loginFormPage');
+    // Login form submission (modal)
+    const loginForm = document.getElementById('loginForm');
     if (loginForm) {
         // For the modal figma design, find the actual form element inside
         const actualForm = loginForm.querySelector('form') || loginForm;
@@ -612,6 +610,92 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }
                 })
                 .catch(err => { alert('Error: ' + err.message); if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; } });
+            }
+        });
+    }
+
+    // Login form submission (page)
+    const loginFormPage = document.getElementById('loginFormPage');
+    if (loginFormPage) {
+        loginFormPage.addEventListener('submit', e => {
+            e.preventDefault();
+            const identifierInput = document.getElementById('login_identifier');
+            const passwordInput = document.getElementById('login_password');
+
+            let valid = true;
+            if (!identifierInput || identifierInput.value.trim() === '') { valid = false; }
+            if (!passwordInput || passwordInput.value.trim() === '') { valid = false; }
+
+            if (valid) {
+                const submitBtn = loginFormPage.querySelector('button[type="submit"]');
+                const originalText = submitBtn ? submitBtn.textContent : 'Login';
+                if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Logging in...'; }
+                fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ identifier: identifierInput.value.trim(), password: passwordInput.value.trim() })
+                })
+                .then(res => res.json().then(data => ({status: res.status, body: data})))
+                .then(({status, body}) => {
+                    alert(body.message);
+                    if (status === 200) {
+                        localStorage.setItem('loggedIn', 'true');
+                        const identifier = identifierInput.value.trim();
+                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (emailRegex.test(identifier)) { localStorage.setItem('email', identifier); localStorage.removeItem('username'); }
+                        else { localStorage.setItem('username', identifier); localStorage.removeItem('email'); }
+                        window.location.href = '/dashboard/';
+                    }
+                    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }
+                })
+                .catch(err => { alert('Error: ' + err.message); if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; } });
+            }
+        });
+    }
+
+    // Signup form submission (page)
+    const signupFormPage = document.getElementById('signupFormPage');
+    if (signupFormPage) {
+        signupFormPage.addEventListener('submit', e => {
+            e.preventDefault();
+            const firstNameInput = document.getElementById('signup_first_name');
+            const lastNameInput = document.getElementById('signup_last_name');
+            const emailInput = document.getElementById('signup_email');
+            const studentNumberInput = document.getElementById('signup_student_number');
+            const passwordInput = document.getElementById('signup_password');
+            const confirmPasswordInput = document.getElementById('confirm_password');
+
+            let valid = true;
+            if (!firstNameInput || firstNameInput.value.trim() === '') { valid = false; }
+            if (!lastNameInput || lastNameInput.value.trim() === '') { valid = false; }
+            if (!emailInput || !isValidEmail(emailInput.value.trim())) { valid = false; }
+            if (!studentNumberInput || studentNumberInput.value.trim() === '') { valid = false; }
+            if (!passwordInput || !isStrongPassword(passwordInput.value.trim())) { valid = false; }
+            if (!confirmPasswordInput || passwordInput.value.trim() !== confirmPasswordInput.value.trim()) { valid = false; }
+
+            if (valid) {
+                const submitBtn = signupFormPage.querySelector('button[type="submit"]');
+                if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Signing up...'; }
+                fetch('/api/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        first_name: firstNameInput.value.trim(),
+                        last_name: lastNameInput.value.trim(),
+                        email: emailInput.value.trim(),
+                        student_number: studentNumberInput.value.trim(),
+                        password: passwordInput.value.trim()
+                    })
+                })
+                .then(res => res.json().then(data => ({status: res.status, body: data})))
+                .then(({status, body}) => {
+                    alert(body.message);
+                    if (status === 200) {
+                        window.location.href = '/login/';
+                    }
+                    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Create Account'; }
+                })
+                .catch(err => { alert('Error: ' + err.message); if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Create Account'; } });
             }
         });
     }
