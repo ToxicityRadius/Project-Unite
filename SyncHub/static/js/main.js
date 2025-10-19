@@ -425,6 +425,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Helper function to toggle required attribute on form inputs
+    function toggleRequiredAttributes(form, isVisible) {
+        if (!form) return;
+        const inputs = form.querySelectorAll('input[required]');
+        inputs.forEach(input => {
+            if (isVisible) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+            }
+        });
+    }
+
     // Switch to login form
     const goToLogin = document.getElementById('goToLogin');
     if (goToLogin) {
@@ -432,8 +445,14 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const signupForm = document.querySelector('.signup_form');
             const loginForm = document.querySelector('.login_form');
-            if (signupForm) signupForm.setAttribute('aria-hidden', 'true');
-            if (loginForm) loginForm.setAttribute('aria-hidden', 'false');
+            if (signupForm) {
+                signupForm.setAttribute('aria-hidden', 'true');
+                toggleRequiredAttributes(signupForm, false);
+            }
+            if (loginForm) {
+                loginForm.setAttribute('aria-hidden', 'false');
+                toggleRequiredAttributes(loginForm, true);
+            }
             if (formContainer) formContainer.classList.add('active');
             setFocusToFirstInput('.login_form');
         });
@@ -446,8 +465,14 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const signupForm = document.querySelector('.signup_form');
             const loginForm = document.querySelector('.login_form');
-            if (signupForm) signupForm.setAttribute('aria-hidden', 'false');
-            if (loginForm) loginForm.setAttribute('aria-hidden', 'true');
+            if (signupForm) {
+                signupForm.setAttribute('aria-hidden', 'false');
+                toggleRequiredAttributes(signupForm, true);
+            }
+            if (loginForm) {
+                loginForm.setAttribute('aria-hidden', 'true');
+                toggleRequiredAttributes(loginForm, false);
+            }
             if (formContainer) formContainer.classList.remove('active');
             setFocusToFirstInput('.signup_form');
         });
@@ -455,6 +480,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (formCloseBtn) {
         formCloseBtn.addEventListener('click', () => {
+            // Blur the close button to avoid aria-hidden focus issues
+            formCloseBtn.blur();
             // restore focus before hiding to avoid aria-hidden blocking focused descendants
             try {
                 if (previousFocus && typeof previousFocus.focus === 'function') {
@@ -521,26 +548,36 @@ document.addEventListener('DOMContentLoaded', () => {
     if (signupForm) {
         signupForm.addEventListener('submit', e => {
             e.preventDefault();
-            const usernameInput = document.getElementById('signup_username');
+            const firstNameInput = document.getElementById('signup_first_name');
+            const lastNameInput = document.getElementById('signup_last_name');
             const emailInput = document.getElementById('signup_email');
+            const studentNumberInput = document.getElementById('signup_student_number');
             const passwordInput = document.getElementById('signup_password');
             const confirmPasswordInput = document.getElementById('confirm_password');
 
             let valid = true;
-            clearError(usernameInput); clearError(emailInput); clearError(passwordInput); clearError(confirmPasswordInput);
+            clearError(firstNameInput); clearError(lastNameInput); clearError(emailInput); clearError(studentNumberInput); clearError(passwordInput); clearError(confirmPasswordInput);
 
-            if (!usernameInput || usernameInput.value.trim() === '') { showError(usernameInput, 'Please enter a username.'); valid = false; }
+            if (!firstNameInput || firstNameInput.value.trim() === '') { showError(firstNameInput, 'Please enter your first name.'); valid = false; }
+            if (!lastNameInput || lastNameInput.value.trim() === '') { showError(lastNameInput, 'Please enter your last name.'); valid = false; }
             if (!emailInput || !isValidEmail(emailInput.value.trim())) { showError(emailInput, 'Please enter a valid email address.'); valid = false; }
+            if (!studentNumberInput || studentNumberInput.value.trim() === '' || !/^\d{7}$/.test(studentNumberInput.value.trim())) { showError(studentNumberInput, 'Please enter a valid 7-digit student number.'); valid = false; }
             if (!passwordInput || !isStrongPassword(passwordInput.value.trim())) { showError(passwordInput, 'Password must be at least 8 characters long and include at least one letter and one number.'); valid = false; }
             if (!confirmPasswordInput || passwordInput.value.trim() !== confirmPasswordInput.value.trim()) { showError(confirmPasswordInput, 'Passwords do not match.'); valid = false; }
 
             if (valid) {
                 const submitBtn = signupForm.querySelector('button[type="submit"]');
-                if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Signing up...'; }
+                if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Creating Account...'; }
                 fetch('/api/signup', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username: usernameInput.value.trim(), email: emailInput.value.trim(), password: passwordInput.value.trim() })
+                    body: JSON.stringify({
+                        first_name: firstNameInput.value.trim(),
+                        last_name: lastNameInput.value.trim(),
+                        email: emailInput.value.trim(),
+                        student_number: studentNumberInput.value.trim(),
+                        password: passwordInput.value.trim()
+                    })
                 })
                 .then(res => res.json().then(data => ({status: res.status, body: data})))
                 .then(({status, body}) => {
@@ -559,9 +596,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             return;
                         }
                     }
-                    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Sign Up Now'; }
+                    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Create Account'; }
                 })
-                .catch(err => { alert('Error: ' + err.message); if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Sign Up Now'; } });
+                .catch(err => { alert('Error: ' + err.message); if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Create Account'; } });
             }
         });
     }

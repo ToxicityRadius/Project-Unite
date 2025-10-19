@@ -11,6 +11,9 @@ from django.utils import timezone
 from .forms import CustomUserCreationForm
 from .models import CustomUser
 import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 def landing_page(request):
     """Landing page view"""
@@ -35,20 +38,33 @@ def _authenticate_identifier_password(request, identifier, password):
 @csrf_exempt
 def login_api(request):
     """JSON API login endpoint."""
+    logger.info(f"Login API request: method={request.method}, content_type={request.content_type}, body_length={len(request.body)}")
     if request.method != 'POST':
+        logger.warning(f"Invalid method: {request.method}")
         return JsonResponse({'message': 'Method not allowed.'}, status=405)
     if request.content_type != 'application/json':
+        logger.warning(f"Invalid content-type: {request.content_type}")
         return JsonResponse({'message': 'Content-Type must be application/json.'}, status=400)
     try:
         payload = json.loads(request.body.decode('utf-8'))
-    except Exception:
+        logger.info(f"Parsed payload: {payload}")
+    except json.JSONDecodeError as e:
+        logger.error(f"JSON decode error: {e}")
+        return JsonResponse({'message': 'Invalid JSON.'}, status=400)
+    except Exception as e:
+        logger.error(f"Unexpected error parsing JSON: {e}")
         return JsonResponse({'message': 'Invalid JSON.'}, status=400)
     identifier = payload.get('identifier') or payload.get('username')
     password = payload.get('password')
+    if not identifier or not password:
+        logger.warning("Missing identifier or password")
+        return JsonResponse({'message': 'Identifier and password are required.'}, status=400)
     user = _authenticate_identifier_password(request, identifier, password)
     if user is not None:
         auth_login(request, user)
+        logger.info(f"Login successful for user: {user.username}")
         return JsonResponse({'message': 'Login successful.'})
+    logger.warning(f"Invalid credentials for identifier: {identifier}")
     return JsonResponse({'message': 'Invalid credentials.'}, status=400)
 
 
@@ -98,9 +114,9 @@ def signup_api(request):
     last_name = payload.get('last_name', '').strip()
     email = payload.get('email', '').strip()
     password = payload.get('password', '').strip()
-    student_number = payload.get('student_number', '').strip()
-    if not first_name or not last_name or not email or not password or not student_number:
-        return JsonResponse({'message': 'All fields are required.'}, status=400)
+    student_number = payload.get('student_number') or payload.get('username', '').strip()
+    if not email or not password or not student_number:
+        return JsonResponse({'message': 'Email, password, and student number are required.'}, status=400)
     if CustomUser.objects.filter(email__iexact=email).exists():
         return JsonResponse({'message': 'Email already registered.'}, status=400)
     if CustomUser.objects.filter(student_number=student_number).exists():
@@ -117,8 +133,10 @@ def signup_api(request):
             student_number=student_number
         )
         user.save()
+        logger.info(f"User created successfully: {student_number}")
         return JsonResponse({'message': 'User created successfully.'})
     except Exception as e:
+        logger.error(f"Error creating user: {e}")
         return JsonResponse({'message': 'Error creating user: %s' % str(e)}, status=500)
 
 @login_required
