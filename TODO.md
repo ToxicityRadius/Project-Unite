@@ -1,7 +1,10 @@
-# TODO: Implement Show/Hide Password Functionality
+# TODO: Add Analytical Reports with Bar Charts to Time Logs
 
 ## Steps to Complete
 
-- [ ] Update `SyncHub/SyncHub/templates/partials/auth_modal.html`: Remove existing `pw_hide` icons and add new `fa-eye-slash` icons next to each password input (signup_password, confirm_password, login_password).
-- [ ] Update `SyncHub/static/js/main.js`: Remove existing password toggle logic and add new clean toggle function that switches between `fa-eye-slash` (hide) and `fa-eye` (show), toggling input type and ensuring accessibility.
-- [ ] Test the functionality: Open the auth modal and verify clicking the icons toggles password visibility correctly.
+- [x] Add a new view `time_reports_view` in `SyncHub/rfid_login/views.py` to aggregate total hours per officer over a date range and prepare JSON data for charts.
+- [x] Add URL pattern in `SyncHub/rfid_login/urls.py` for `/time_reports/`.
+- [x] Create `SyncHub/rfid_login/templates/rfid_login/time_reports.html` with a form for date range selection and canvas for bar charts.
+- [x] Add Chart.js integration in `SyncHub/static/js/main.js` to render bar charts from view data.
+- [x] Update navigation in templates to include link to reports page.
+- [x] Test chart rendering and data aggregation with sample time logs.

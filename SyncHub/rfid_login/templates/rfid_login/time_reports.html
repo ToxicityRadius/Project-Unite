@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Reports - PROJECT UNITE</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Background Design -->
+    <div class="background-design">
+        <img src="https://api.builder.io/api/v1/image/assets/TEMP/69e5a03207d72e05249171283d6b3fef53da98b7?width=3356" alt="" class="bg-logo-1">
+        <img src="https://api.builder.io/api/v1/image/assets/TEMP/5bae535a77c2066496e68aa5ed0ea8132703a86a?width=4062" alt="" class="bg-logo-2">
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="{% url 'landing' %}"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="{% url 'inventory:item_list' %}"><i class="fas fa-boxes"></i> Inventory</a></li>
+            <li><a href="{% url 'rfid_login:login' %}"><i class="fas fa-id-card"></i> RFID Login</a></li>
+            {% if is_admin %}
+            <li><a href="{% url 'rfid_login:time_log' %}"><i class="fas fa-clock"></i> Time Logs</a></li>
+            <li><a href="{% url 'rfid_login:time_reports' %}" class="active"><i class="fas fa-chart-bar"></i> Time Reports</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <!-- Time Reports Content -->
+    <div class="time-reports-container">
+        <div class="time-reports-card">
+            <div class="time-reports-header">
+                <h2>Time Reports</h2>
+                <a href="{% url 'rfid_login:time_log' %}" class="back-btn">Back to Time Logs</a>
+            </div>
+            <div class="filter-form">
+                <form method="get">
+                    <label for="start_date">Start Date:</label>
+                    <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
+                    <label for="end_date">End Date:</label>
+                    <input type="date" id="end_date" name="end_date" value="{{ end_date }}">
+                    <button type="submit">Generate Report</button>
+                </form>
+            </div>
+            <div class="chart-container">
+                <canvas id="hoursChart"></canvas>
+            </div>
+            <div class="summary-table">
+                <h3>Summary</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Officer</th>
+                            <th>Total Hours</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for officer, hours in officer_hours.items %}
+                        <tr>
+                            <td>{{ officer }}</td>
+                            <td>{{ hours|floatformat:2 }} hours</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="2">No data available for the selected period.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {% include 'partials/auth_modal.html' %}
+    <script src="{% static 'js/main.js' %}"></script>
+    <script>
+        // Chart.js bar chart
+        const ctx = document.getElementById('hoursChart').getContext('2d');
+        const hoursChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ labels_json|safe }},
+                datasets: [{
+                    label: 'Total Hours Worked',
+                    data: {{ data_json|safe }},
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Hours'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Officers'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
