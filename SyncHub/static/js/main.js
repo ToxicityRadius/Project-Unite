@@ -571,6 +571,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 fetch('/api/signup', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
                     body: JSON.stringify({
                         first_name: firstNameInput.value.trim(),
                         last_name: lastNameInput.value.trim(),
@@ -626,6 +627,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 fetch('/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
                     body: JSON.stringify({ identifier: identifierInput.value.trim(), password: passwordInput.value.trim() })
                 })
                 .then(res => res.json().then(data => ({status: res.status, body: data})))
@@ -670,6 +672,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 fetch('/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
                     body: JSON.stringify({ identifier: identifierInput.value.trim(), password: passwordInput.value.trim() })
                 })
                 .then(res => res.json().then(data => ({status: res.status, body: data})))

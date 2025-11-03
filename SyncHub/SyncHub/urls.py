@@ -23,6 +23,7 @@ urlpatterns = [
 
     path('api/signup', views.signup_api, name='api_signup'),
     path('api/login', views.login_api, name='api_login'),
+    path('api/auth-status', views.auth_status_api, name='auth_status'),
 ]
 
 if settings.DEBUG:

@@ -186,4 +186,16 @@ def logged_in_superadmins_view(request):
     superusers = get_logged_in_superusers()
     return render(request, 'logged_in_superadmins.html', {'superusers': superusers})
 
+def auth_status_api(request):
+    """API endpoint to check authentication status."""
+    if request.user.is_authenticated:
+        return JsonResponse({
+            'authenticated': True,
+            'username': request.user.username,
+            'email': request.user.email,
+            'first_name': request.user.first_name,
+            'last_name': request.user.last_name,
+        })
+    return JsonResponse({'authenticated': False})
+
 

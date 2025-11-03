@@ -7,15 +7,15 @@ from django import forms
 class OfficerForm(forms.ModelForm):
     class Meta:
         model = Officer
-        fields = ['name', 'position', 'rfid_tag']
+        fields = ['name', 'position', 'rfid_tag', 'student_number']
 
 def login_view(request):
     is_admin = request.user.is_superuser or request.user.groups.filter(name='admin').exists()
     last_log = None
     if request.method == 'POST':
-        rfid_tag = request.POST.get('rfid_tag')
+        student_number = request.POST.get('student_number')
         try:
-            officer = Officer.objects.get(rfid_tag=rfid_tag)
+            officer = Officer.objects.get(student_number=student_number)
             # Check if there's an open time log for today
             today = timezone.now().date()
             time_log = TimeLog.objects.filter(officer=officer, date=today).first()
@@ -32,7 +32,10 @@ def login_view(request):
             last_log = TimeLog.objects.filter(officer=officer).order_by('-date', '-time_in').first()
             return render(request, 'rfid_login/login.html', {'message': message, 'is_admin': is_admin, 'last_log': last_log})
         except Officer.DoesNotExist:
-            message = "Invalid RFID tag"
+            message = "Invalid student number"
+            return render(request, 'rfid_login/login.html', {'message': message, 'is_admin': is_admin, 'last_log': last_log})
+        except ValueError:
+            message = "Invalid student number format"
             return render(request, 'rfid_login/login.html', {'message': message, 'is_admin': is_admin, 'last_log': last_log})
     return render(request, 'rfid_login/login.html', {'is_admin': is_admin, 'last_log': last_log})
 
