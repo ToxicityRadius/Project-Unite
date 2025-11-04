@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Reports - PROJECT UNITE</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Background Design -->
+    <div class="background-design">
+        <img src="https://api.builder.io/api/v1/image/assets/TEMP/69e5a03207d72e05249171283d6b3fef53da98b7?width=3356" alt="" class="bg-logo-1">
+        <img src="https://api.builder.io/api/v1/image/assets/TEMP/5bae535a77c2066496e68aa5ed0ea8132703a86a?width=4062" alt="" class="bg-logo-2">
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="{% url 'landing' %}"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="{% url 'inventory:item_list' %}"><i class="fas fa-boxes"></i> Inventory</a></li>
+            <li><a href="{% url 'rfid_login:login' %}"><i class="fas fa-id-card"></i> RFID Login</a></li>
+            {% if is_admin %}
+            <li><a href="{% url 'rfid_login:time_log' %}"><i class="fas fa-clock"></i> Time Logs</a></li>
+            <li><a href="{% url 'rfid_login:time_reports' %}" class="active"><i class="fas fa-chart-bar"></i> Time Reports</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <!-- Time Reports Content -->
+    <div class="time-reports-container">
+        <div class="time-reports-card">
+            <div class="time-reports-header">
+                <h2>Time Reports</h2>
+                <a href="{% url 'rfid_login:time_log' %}" class="back-btn">Back to Time Logs</a>
+            </div>
+
+            <!-- Chart Section -->
+            <div class="chart-container">
+                <h3>Attendance Overview</h3>
+                <canvas id="attendanceChart"></canvas>
+            </div>
+
+            <!-- Summary Table -->
+            <div class="summary-table-container">
+                <h3>Daily Summary</h3>
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Total Officers</th>
+                            <th>Total Hours</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs_by_date %}
+                        <tr>
+                            <td>{{ log.date|date:"M. j, Y" }}</td>
+                            <td>{{ log.total_officers }}</td>
+                            <td>{{ log.total_hours|floatformat:2 }} hours</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="no-data">No attendance data found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {% include 'partials/auth_modal.html' %}
+    <script src="{% static 'js/main.js' %}"></script>
+    <script>
+        // Chart.js for attendance visualization
+        const ctx = document.getElementById('attendanceChart').getContext('2d');
+        const attendanceChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ dates|safe }},
+                datasets: [{
+                    label: 'Total Officers',
+                    data: {{ officers_count|safe }},
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1,
+                    yAxisID: 'y'
+                }, {
+                    label: 'Total Hours',
+                    data: {{ total_hours_list|safe }},
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'Number of Officers'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'Total Hours'
+                        },
+                        grid: {
+                            drawOnChartArea: false,
+                        },
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

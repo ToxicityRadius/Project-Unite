@@ -24,6 +24,7 @@
             <li><a href="{% url 'rfid_login:login' %}"><i class="fas fa-id-card"></i> RFID Login</a></li>
             {% if is_admin %}
             <li><a href="{% url 'rfid_login:time_log' %}" class="active"><i class="fas fa-clock"></i> Time Logs</a></li>
+            <li><a href="{% url 'rfid_login:time_reports' %}"><i class="fas fa-chart-bar"></i> Time Reports</a></li>
             {% endif %}
         </ul>
     </nav>
@@ -35,6 +36,29 @@
                 <h2>Time Logs</h2>
                 <a href="{% url 'rfid_login:login' %}" class="back-btn">Back to Login</a>
             </div>
+
+            <!-- Filter Form -->
+            <div class="filter-form">
+                <form method="get">
+                    <label for="start_date">Start Date:</label>
+                    <input type="date" id="start_date" name="start_date" value="{{ filters.start_date }}">
+
+                    <label for="end_date">End Date:</label>
+                    <input type="date" id="end_date" name="end_date" value="{{ filters.end_date }}">
+
+                    <label for="officer_id">Officer:</label>
+                    <select id="officer_id" name="officer_id">
+                        <option value="">All Officers</option>
+                        {% for officer in officers %}
+                        <option value="{{ officer.id }}" {% if filters.officer_id == officer.id|stringformat:"s" %}selected{% endif %}>{{ officer.name }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <button type="submit">Filter</button>
+                    <a href="{% url 'rfid_login:time_log' %}">Clear Filters</a>
+                </form>
+            </div>
+
             <table class="time-logs-table">
                 <thead>
                     <tr>
@@ -43,26 +67,34 @@
                         <th>Date</th>
                         <th>Time In</th>
                         <th>Time Out</th>
+                        <th>Total Hours</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for log in time_logs %}
+                    {% for log_entry in time_logs %}
                     <tr>
-                        <td>{{ log.officer.name }}</td>
-                        <td>{{ log.officer.rfid_tag }}</td>
-                        <td>{{ log.date|date:"M. j, Y" }}</td>
-                        <td>{{ log.time_in|date:"M. j, Y, g:i a" }}</td>
+                        <td>{{ log_entry.log.officer.name }}</td>
+                        <td>{{ log_entry.log.officer.rfid_tag }}</td>
+                        <td>{{ log_entry.log.date|date:"M. j, Y" }}</td>
+                        <td>{{ log_entry.log.time_in|date:"M. j, Y, g:i a" }}</td>
                         <td>
-                            {% if log.time_out %}
-                            {{ log.time_out|date:"M. j, Y, g:i a" }}
+                            {% if log_entry.log.time_out %}
+                            {{ log_entry.log.time_out|date:"M. j, Y, g:i a" }}
                             {% else %}
                             None
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if log_entry.total_hours %}
+                            {{ log_entry.total_hours }} hours
+                            {% else %}
+                            N/A
                             {% endif %}
                         </td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="5" class="no-logs">No time logs found.</td>
+                        <td colspan="6" class="no-logs">No time logs found.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
