@@ -36,8 +36,6 @@
                 <h2>Time Logs</h2>
                 <a href="{% url 'rfid_login:login' %}" class="back-btn">Back to Login</a>
             </div>
-
-            <!-- Filter Form -->
             <div class="filter-form">
                 <form method="get">
                     <label for="start_date">Start Date:</label>
@@ -50,12 +48,12 @@
                     <select id="officer_id" name="officer_id">
                         <option value="">All Officers</option>
                         {% for officer in officers %}
-                        <option value="{{ officer.id }}" {% if filters.officer_id == officer.id|stringformat:"s" %}selected{% endif %}>{{ officer.name }}</option>
+                        <option value="{{ officer.id }}" {% if filters.officer_id|stringformat:"s" == officer.id|stringformat:"s" %}selected{% endif %}>{{ officer.name }}</option>
                         {% endfor %}
                     </select>
 
                     <button type="submit">Filter</button>
-                    <a href="{% url 'rfid_login:time_log' %}">Clear Filters</a>
+                    <button type="button" onclick="window.location.href='{% url 'rfid_login:time_log' %}'">Clear Filters</button>
                 </form>
             </div>
 

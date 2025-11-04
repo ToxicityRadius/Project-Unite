@@ -21,7 +21,7 @@ class TimeLog(models.Model):
     officer = models.ForeignKey(Officer, on_delete=models.CASCADE)
     time_in = models.DateTimeField(null=True, blank=True)
     time_out = models.DateTimeField(null=True, blank=True)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField()
 
     def __str__(self):
         return f"{self.officer.name} - {self.date}"

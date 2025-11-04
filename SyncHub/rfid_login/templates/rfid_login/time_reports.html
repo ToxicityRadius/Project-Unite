@@ -37,15 +37,35 @@
                 <a href="{% url 'rfid_login:time_log' %}" class="back-btn">Back to Time Logs</a>
             </div>
 
+            <!-- Filter Form -->
+            <div class="filter-form">
+                <form method="get">
+                    <label for="start_date">Start Date:</label>
+                    <input type="date" id="start_date" name="start_date" value="{{ filters.start_date }}">
+
+                    <label for="end_date">End Date:</label>
+                    <input type="date" id="end_date" name="end_date" value="{{ filters.end_date }}">
+
+                    <button type="submit">Filter</button>
+                    <button type="button" onclick="window.location.href='{% url 'rfid_login:time_reports' %}'">Clear Filters</button>
+                </form>
+            </div>
+
             <!-- Chart Section -->
             <div class="chart-container">
-                <h3>Attendance Overview</h3>
+                <h3>Attendance Overview (By Date)</h3>
                 <canvas id="attendanceChart"></canvas>
             </div>
 
+            <!-- Second Chart Section -->
+            <div class="chart-container">
+                <h3>Total Hours Worked (By Officer)</h3>
+                <canvas id="officerHoursChart"></canvas>
+            </div>
+
             <!-- Summary Table -->
-            <div class="summary-table-container">
-                <h3>Daily Summary</h3>
+            <div class="summary-table-container" style="margin-bottom: 50px;">
+                <h3>Daily Summary (Overall View)</h3>
                 <table class="summary-table">
                     <thead>
                         <tr>
@@ -69,13 +89,38 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Second Summary Table -->
+            <div class="summary-table-container">
+                <h3>Officer Hours Summary</h3>
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Officer Name</th>
+                            <th>Total Hours</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for oh in officer_hours %}
+                        <tr>
+                            <td>{{ oh.0 }}</td>
+                            <td>{{ oh.1|floatformat:2 }} hours</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="2" class="no-data">No officer hours data found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     {% include 'partials/auth_modal.html' %}
     <script src="{% static 'js/main.js' %}"></script>
     <script>
-        // Chart.js for attendance visualization
+        // Chart.js for attendance visualization (by date)
         const ctx = document.getElementById('attendanceChart').getContext('2d');
         const attendanceChart = new Chart(ctx, {
             type: 'bar',
@@ -99,6 +144,24 @@
             },
             options: {
                 responsive: true,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.datasetIndex === 0) {
+                                    label += context.parsed.y + ' officers';
+                                } else {
+                                    label += context.parsed.y + ' hours';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
                 scales: {
                     y: {
                         type: 'linear',
@@ -120,6 +183,48 @@
                         grid: {
                             drawOnChartArea: false,
                         },
+                    }
+                }
+            }
+        });
+
+        // Second chart: Total hours per officer
+        const ctx2 = document.getElementById('officerHoursChart').getContext('2d');
+        const officerHoursChart = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: {{ officer_names|safe }},
+                datasets: [{
+                    label: 'Total Hours',
+                    data: {{ officer_total_hours|safe }},
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += context.parsed.y + ' hours';
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Total Hours'
+                        }
                     }
                 }
             }

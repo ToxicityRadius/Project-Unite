@@ -1245,6 +1245,7 @@ a.figma-login-button {
 .filter-form label {
     font-weight: bold;
     margin-right: 5px;
+    color: #000;
 }
 
 .filter-form input[type="date"],
@@ -1324,6 +1325,7 @@ a.figma-login-button {
     padding: 12px;
     text-align: center;
     border-bottom: 1px solid #dee2e6;
+    color: #333;
 }
 
 .summary-table th {
@@ -1343,46 +1345,48 @@ a.figma-login-button {
 
 /* Time Reports Container */
 .time-reports-container {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 0 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
 }
 
 .time-reports-card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    background-color: #007bff;
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     padding: 30px;
-    margin-bottom: 30px;
+    width: 80%;
+    max-width: 1000px;
+    color: white;
 }
 
 .time-reports-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
-    border-bottom: 2px solid #e9ecef;
-    padding-bottom: 15px;
+    margin-bottom: 25px;
 }
 
 .time-reports-header h2 {
-    margin: 0;
-    color: #333;
-    font-size: 28px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white;
 }
 
 .back-btn {
-    padding: 10px 20px;
-    background-color: #6c757d;
-    color: white;
+    background-color: white;
+    color: #007bff;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 20px;
     text-decoration: none;
-    border-radius: 5px;
-    font-size: 14px;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
 }
 
 .back-btn:hover {
-    background-color: #5a6268;
+    background-color: #0056d2;
+    color: white;
 }
 
 /* Responsive Design */
