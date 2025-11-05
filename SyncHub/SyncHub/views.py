@@ -89,6 +89,9 @@ def signup_page(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            # Assign Officer role to new users
+            officer_group = Group.objects.get(name='Officer')
+            user.groups.add(officer_group)
             messages.success(request, 'Account created successfully! Please log in.')
             return redirect('login')
         else:
@@ -133,6 +136,9 @@ def signup_api(request):
             student_number=student_number
         )
         user.save()
+        # Assign Officer role to new users
+        officer_group = Group.objects.get(name='Officer')
+        user.groups.add(officer_group)
         logger.info(f"User created successfully: {student_number}")
         return JsonResponse({'message': 'User created successfully.'})
     except Exception as e:
@@ -149,9 +155,9 @@ def profile_view(request):
     """Profile view for user customization"""
     # Determine user role
     user_groups = request.user.groups.all()
-    if user_groups.filter(name='admin').exists():
-        role = 'Admin'
-    elif user_groups.filter(name='officer').exists():
+    if user_groups.filter(name='Executive Officer').exists():
+        role = 'Executive Officer'
+    elif user_groups.filter(name='Officer').exists():
         role = 'Officer'
     else:
         role = 'Staff'

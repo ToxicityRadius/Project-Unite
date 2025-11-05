@@ -35,7 +35,7 @@
                 <form method="post" class="figma-login-form">
                     {% csrf_token %}
                     <div class="figma-input-wrapper">
-                        <input type="text" id="student_number" name="student_number" required placeholder="Enter your student number" autofocus class="figma-form-input">
+                        <input type="text" id="officer_id" name="officer_id" required placeholder="Enter your officer ID" autofocus class="figma-form-input">
                     </div>
                     <button type="submit" class="figma-login-button">Login</button>
                     {% if is_admin %}
