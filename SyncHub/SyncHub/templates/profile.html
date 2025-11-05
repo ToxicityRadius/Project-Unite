@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile Page</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#f9f9f9] min-h-screen font-sans">
+
+  <!-- Background Design -->
+  <div class="background-design">
+    <img src="https://api.builder.io/api/v1/image/assets/TEMP/69e5a03207d72e05249171283d6b3fef53da98b7?width=3356" alt="" class="bg-logo-1">
+    <img src="https://api.builder.io/api/v1/image/assets/TEMP/5bae535a77c2066496e68aa5ed0ea8132703a86a?width=4062" alt="" class="bg-logo-2">
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <ul class="nav-links">
+      <li><a href="{% url 'landing' %}"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+    </ul>
+  </nav>
+
+  <div class="flex items-center justify-center min-h-screen">
+    <div class="flex bg-white shadow-lg rounded-3xl overflow-hidden w-[1100px] h-[600px]">
+
+    <!-- LEFT SIDEBAR -->
+    <div class="bg-[#007bff] w-[300px] flex flex-col items-center justify-center text-white p-6 rounded-3xl">
+      <!-- Profile Icon -->
+      <div class="bg-white rounded-full w-[130px] h-[130px] flex items-center justify-center mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-16 h-16">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9A3.75 3.75 0 1112 5.25 3.75 3.75 0 0115.75 9zM4.5 19.5a8.25 8.25 0 0115 0"/>
+        </svg>
+      </div>
+
+      <!-- Username -->
+      <h2 class="text-xl font-semibold">{{ user.username }}</h2>
+      <p class="text-sm italic mb-8">"{{ user.first_name|default:user.username }}"</p>
+
+      <!-- User Role (Static Display) -->
+      <div class="bg-white text-black font-medium px-6 py-2 rounded-md mb-4 cursor-default">
+        {{ role }}
+      </div>
+
+      <!-- Edit Profile Button -->
+      <button class="bg-white text-[#007bff] font-medium px-6 py-2 rounded-md hover:opacity-80 hover:scale-105 hover:shadow-lg transition-all duration-200">
+        EDIT PROFILE
+      </button>
+    </div>
+
+    <!-- RIGHT CONTENT -->
+    <div class="flex-1 flex flex-col justify-between p-8 relative">
+
+      <!-- Floating Logo -->
+      <div class="absolute top-6 right-6">
+        <img src="{% static 'img/project-unite-logo.png' %}"
+             alt="Project Unite Logo"
+             class="w-16 h-16 object-contain">
+      </div>
+
+      <!-- Top Header -->
+      <h2 class="text-lg font-semibold text-gray-700 tracking-wide mb-8">LAST ACTIVITY</h2>
+
+      <!-- Activity Cards -->
+      <div class="flex justify-center w-full">
+        <!-- Create Activity Card -->
+        <button class="bg-[#f5f5f5] rounded-xl shadow-md flex flex-col items-center justify-center py-10 hover:bg-gray-100 hover:scale-105 hover:shadow-lg transition-all duration-200 cursor-pointer w-80">
+          <div class="bg-black text-white rounded-full p-3 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+          </div>
+          <p class="text-sm font-medium text-gray-700">Create a new Activity</p>
+        </button>
+      </div>
+
+      <!-- Logout Button -->
+      <div class="flex justify-end mt-8">
+        <a href="{% url 'logout' %}" class="bg-[#007bff] text-white px-8 py-2 rounded-full shadow-md hover:bg-blue-600 hover:scale-105 hover:shadow-lg transition-all duration-200 inline-block text-center">LOGOUT</a>
+      </div>
+    </div>
+  </div>
+
+  {% include 'partials/auth_modal.html' %}
+  <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

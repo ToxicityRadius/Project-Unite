@@ -11,16 +11,19 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('signup/', views.signup_page, name='signup'),
     path('dashboard/', views.dashboard_view, name='dashboard'),
+    path('profile/', views.profile_view, name='profile'),
     path('logged-in-superadmins/', views.logged_in_superadmins_view, name='logged_in_superadmins'),
     path('admin/', admin.site.urls),
     path('inventory/', include('inventory.urls')),
     path('rfid_login/', include('rfid_login.urls')),
+
 
     # Password reset
     path('accounts/', include('django.contrib.auth.urls')),
 
     path('api/signup', views.signup_api, name='api_signup'),
     path('api/login', views.login_api, name='api_login'),
+    path('api/auth-status', views.auth_status_api, name='auth_status'),
 ]
 
 if settings.DEBUG:

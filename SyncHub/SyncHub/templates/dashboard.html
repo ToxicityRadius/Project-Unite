@@ -17,9 +17,10 @@
     <!-- Navigation -->
     <nav class="navbar">
         <ul class="nav-links">
-            <li><a href="{% url 'landing' %}">HOME</a></li>
-            <li><a href="#about">ABOUT US</a></li>
-            <li><a href="#purpose">PURPOSE</a></li>
+            <li><a href="{% url 'landing' %}"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="{% url 'dashboard' %}" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+
+            <li><a href="{% url 'profile' %}"><i class="fas fa-user"></i> Profile</a></li>
         </ul>
     </nav>
 
@@ -29,13 +30,13 @@
             <!-- Inventory Card -->
             <div class="dashboard-card">
                 <img src="https://api.builder.io/api/v1/image/assets/TEMP/b041c9905323aeed8880ccfb0ba126595e1fdf62?width=596" alt="Inventory Management" class="card-icon">
-                <a href="/inventory/" class="card-button">inventory list</a>
+                <a href="/inventory/" class="card-button">Inventory List</a>
             </div>
 
             <!-- Attendance Card -->
             <div class="dashboard-card">
                 <img src="https://api.builder.io/api/v1/image/assets/TEMP/47b1273de6eda6877c29e75bad1bf426e7a6dcb5?width=568" alt="Attendance Management" class="card-icon">
-                <a href="/rfid_login/" class="card-button">attendance list</a>
+                <a href="/rfid_login/" class="card-button">Attendance Portal</a>
             </div>
         </div>
     </main>

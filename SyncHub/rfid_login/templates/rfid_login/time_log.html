@@ -1,17 +1,106 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Time Logs</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Logs - PROJECT UNITE</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <h1>Time Logs</h1>
-    <ul>
-        {% for log in time_logs %}
-        <li>{{ log.officer.name }} - Date: {{ log.date }} - Time In: {{ log.time_in }} - Time Out: {{ log.time_out }}</li>
-        {% empty %}
-        <li>No time logs found.</li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'rfid_login:login' %}">Back to Login</a>
+    <!-- Background Design -->
+    <div class="background-design">
+        <img src="https://api.builder.io/api/v1/image/assets/TEMP/69e5a03207d72e05249171283d6b3fef53da98b7?width=3356" alt="" class="bg-logo-1">
+        <img src="https://api.builder.io/api/v1/image/assets/TEMP/5bae535a77c2066496e68aa5ed0ea8132703a86a?width=4062" alt="" class="bg-logo-2">
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="{% url 'landing' %}"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+
+            <li><a href="{% url 'inventory:item_list' %}"><i class="fas fa-boxes"></i> Inventory</a></li>
+            <li><a href="{% url 'rfid_login:login' %}"><i class="fas fa-id-card"></i> RFID Login</a></li>
+            {% if is_admin %}
+            <li><a href="{% url 'rfid_login:time_log' %}" class="active"><i class="fas fa-clock"></i> Time Logs</a></li>
+            <li><a href="{% url 'rfid_login:time_reports' %}"><i class="fas fa-chart-bar"></i> Time Reports</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <!-- Time Logs Content -->
+    <div class="time-logs-container">
+        <div class="time-logs-card">
+            <div class="time-logs-header">
+                <h2>Time Logs</h2>
+                <a href="{% url 'rfid_login:login' %}" class="back-btn">Back to Login</a>
+            </div>
+            <div class="filter-form">
+                <form method="get">
+                    <label for="start_date">Start Date:</label>
+                    <input type="date" id="start_date" name="start_date" value="{{ filters.start_date }}">
+
+                    <label for="end_date">End Date:</label>
+                    <input type="date" id="end_date" name="end_date" value="{{ filters.end_date }}">
+
+                    <label for="officer_id">Officer:</label>
+                    <select id="officer_id" name="officer_id">
+                        <option value="">All Officers</option>
+                        {% for officer in officers %}
+                        <option value="{{ officer.id }}" {% if filters.officer_id|stringformat:"s" == officer.id|stringformat:"s" %}selected{% endif %}>{{ officer.name }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <button type="submit">Filter</button>
+                    <button type="button" onclick="window.location.href='{% url 'rfid_login:time_log' %}'">Clear Filters</button>
+                </form>
+            </div>
+
+            <table class="time-logs-table">
+                <thead>
+                    <tr>
+                        <th>Officer</th>
+                        <th>RFID</th>
+                        <th>Date</th>
+                        <th>Time In</th>
+                        <th>Time Out</th>
+                        <th>Total Hours</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log_entry in time_logs %}
+                    <tr>
+                        <td>{{ log_entry.log.officer.name }}</td>
+                        <td>{{ log_entry.log.officer.rfid_tag }}</td>
+                        <td>{{ log_entry.log.date|date:"M. j, Y" }}</td>
+                        <td>{{ log_entry.log.time_in|date:"M. j, Y, g:i a" }}</td>
+                        <td>
+                            {% if log_entry.log.time_out %}
+                            {{ log_entry.log.time_out|date:"M. j, Y, g:i a" }}
+                            {% else %}
+                            None
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if log_entry.total_hours %}
+                            {{ log_entry.total_hours }} hours
+                            {% else %}
+                            N/A
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="no-logs">No time logs found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% include 'partials/auth_modal.html' %}
+    <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>

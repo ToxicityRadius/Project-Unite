@@ -1,6 +1,6 @@
-{% load static %}
+eady{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -8,16 +8,36 @@
   <title>Delete Item</title>
 </head>
 <body>
-  <nav class="navbar"><ul class="nav-links"><li><a href="{% url 'inventory:item_list' %}">Back to Inventory</a></li></ul></nav>
-  <main class="dashboard-container">
-    <div class="dashboard-card">
-      <h2 style="color:var(--white);">Delete Item</h2>
-      <p style="color:var(--white);">Are you sure you want to delete "{{ item.name }}"?</p>
-      <form method="post">
-        {% csrf_token %}
-        <button type="submit" class="cta-button" style="background:#ff6b6b;border:none;">Yes, Delete</button>
-        <a href="{% url 'inventory:item_list' %}" class="cta-button" style="background:transparent;border:2px solid var(--white);">Cancel</a>
-      </form>
+  <!-- Background Design -->
+  <div class="background-design">
+    <img src="https://api.builder.io/api/v1/image/assets/TEMP/69e5a03207d72e05249171283d6b3fef53da98b7?width=3356" alt="" class="bg-logo-1">
+    <img src="https://api.builder.io/api/v1/image/assets/TEMP/5bae535a77c2066496e68aa5ed0ea8132703a86a?width=4062" alt="" class="bg-logo-2">
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <ul class="nav-links">
+      <li><a href="{% url 'landing' %}"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+
+      <li><a href="{% url 'inventory:item_list' %}"><i class="fas fa-boxes"></i> Inventory</a></li>
+      <li><a href="{% url 'rfid_login:login' %}"><i class="fas fa-id-card"></i> RFID Login</a></li>
+
+    </ul>
+  </nav>
+
+  <!-- Delete Confirmation Content -->
+  <main class="dashboard-container fade-in">
+    <div class="dashboard-grid" style="grid-template-columns: 1fr; max-width: 50rem;">
+      <div class="dashboard-card" style="padding: 3rem; text-align: center;">
+        <h2 style="color:var(--text-dark); margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Delete Item</h2>
+        <p style="color:var(--text-gray); margin-bottom: 2rem;">Are you sure you want to delete "<strong>{{ item.name }}</strong>"? This action cannot be undone.</p>
+        <form method="post" style="display: flex; gap: 1rem; justify-content: center;">
+          {% csrf_token %}
+          <button type="submit" class="cta-button" style="background:#d9534f;border:none;color:var(--white);padding:0.75rem 1.5rem;border-radius:0.5rem;cursor:pointer;">Yes, Delete</button>
+          <a href="{% url 'inventory:item_list' %}" class="cta-button" style="background: var(--text-gray); color: var(--white); text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-align: center;">Cancel</a>
+        </form>
+      </div>
     </div>
   </main>
 </body>

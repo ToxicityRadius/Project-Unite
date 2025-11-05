@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'SyncHub',
     'inventory',
     'rfid_login',
 ]
@@ -85,30 +86,12 @@ WSGI_APPLICATION = 'SyncHub.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-import urllib.parse
-
-DATABASE_URL = os.environ.get('DATABASE_URL')
-if DATABASE_URL:
-    url = urllib.parse.urlparse(DATABASE_URL)
-    # Support both postgresql:// and postgres:// schemes
-    engine = 'django.db.backends.postgresql'
-    DATABASES = {
-        'default': {
-            'ENGINE': engine,
-            'NAME': url.path[1:],
-            'USER': url.username,
-            'PASSWORD': url.password,
-            'HOST': url.hostname,
-            'PORT': url.port or '',
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+}
 
 
 # Password validation
@@ -155,6 +138,9 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Custom user model
+AUTH_USER_MODEL = 'SyncHub.CustomUser'
 
 # Email settings — configurable via environment variables for production SMTP
 EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')

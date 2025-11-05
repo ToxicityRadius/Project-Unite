@@ -1,19 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>RFID Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RFID Login - PROJECT UNITE</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <h1>RFID Login</h1>
-    {% if message %}
-    <p>{{ message }}</p>
-    {% endif %}
-    <form method="post">
-        {% csrf_token %}
-        <label for="rfid_tag">RFID Tag:</label>
-        <input type="text" id="rfid_tag" name="rfid_tag" required>
-        <button type="submit">Tap RFID</button>
-    </form>
-    <a href="{% url 'rfid_login:time_log' %}">View Time Logs</a>
+    <!-- Background Design -->
+    <div class="background-design">
+        <img src="https://api.builder.io/api/v1/image/assets/TEMP/69e5a03207d72e05249171283d6b3fef53da98b7?width=3356" alt="" class="bg-logo-1">
+        <img src="https://api.builder.io/api/v1/image/assets/TEMP/5bae535a77c2066496e68aa5ed0ea8132703a86a?width=4062" alt="" class="bg-logo-2">
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="{% url 'landing' %}"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+
+
+
+        </ul>
+    </nav>
+
+    <!-- RFID Login Content -->
+    <main class="figma-login-container">
+        <div class="figma-login-card">
+            <div class="figma-login-left">
+                <div class="figma-login-welcome">Welcome</div>
+                <h1 class="figma-login-title">RFID LOGIN</h1>
+                <p class="figma-login-subtitle">Scan your RFID card to log attendance</p>
+                <form method="post" class="figma-login-form">
+                    {% csrf_token %}
+                    <div class="figma-input-wrapper">
+                        <input type="text" id="officer_id" name="officer_id" required placeholder="Enter your officer ID" autofocus class="figma-form-input">
+                    </div>
+                    <button type="submit" class="figma-login-button">Login</button>
+                    {% if is_admin %}
+                    <a href="{% url 'rfid_login:time_log' %}" class="figma-login-button">View Time Logs</a>
+                    {% endif %}
+                </form>
+            </div>
+            <div class="figma-login-right">
+                <div class="figma-logo-container">
+                    <!-- Placeholder for image or animation -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {% include 'partials/auth_modal.html' %}
+    <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
