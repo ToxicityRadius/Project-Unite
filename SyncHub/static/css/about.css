@@ -1,0 +1,268 @@
+/* About Us Page Styles */
+
+.about-section {
+    min-height: 100vh;
+    background: var(--primary-blue);
+    padding: 3rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.about-section::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 35%;
+    background: var(--white);
+    z-index: 0;
+}
+
+.about-container {
+    max-width: 1400px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.about-intro {
+    color: var(--white);
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1.4;
+    text-transform: uppercase;
+    margin: 0 auto 2rem;
+    max-width: 900px;
+    padding: 0 1rem;
+}
+
+.developers-heading {
+    color: var(--white);
+    text-align: center;
+    font-size: 1.35rem;
+    font-weight: 900;
+    letter-spacing: 0.4rem;
+    margin: 3rem 0 2.5rem;
+}
+
+.developers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 3rem;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.developer-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 3/4;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+    cursor: pointer;
+}
+
+.developer-card.flipped .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 25px;
+    border: 5px solid var(--primary-blue);
+    background: #1E1E2E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.card-back {
+    transform: rotateY(180deg);
+}
+
+.developer-placeholder {
+    color: var(--white);
+    font-size: 8rem;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+.card-inner:hover .developer-placeholder {
+    opacity: 0.5;
+}
+
+.social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.social-link {
+    color: var(--white);
+    font-size: 3rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(0, 120, 255, 0.2);
+}
+
+.social-link:hover {
+    color: var(--primary-blue);
+    background: var(--white);
+    transform: scale(1.1);
+}
+
+.developer-name-btn {
+    padding: 0.7rem 2rem;
+    border-radius: 96px;
+    background: var(--primary-blue);
+    color: var(--white);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.developer-name-btn:hover {
+    background: var(--white);
+    color: var(--primary-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 120, 255, 0.3);
+}
+
+/* Tablet Styles */
+@media (max-width: 1024px) {
+    .about-intro {
+        font-size: 1.4rem;
+        max-width: 700px;
+    }
+    
+    .developers-heading {
+        font-size: 1.2rem;
+        letter-spacing: 0.3rem;
+    }
+    
+    .developers-grid {
+        gap: 2.5rem;
+    }
+    
+    .developer-placeholder {
+        font-size: 6rem;
+    }
+    
+    .social-link {
+        font-size: 2.5rem;
+        width: 70px;
+        height: 70px;
+    }
+    
+    .developer-name-btn {
+        font-size: 1.2rem;
+    }
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .about-section {
+        padding: 2rem 1rem;
+    }
+    
+    .about-section::before {
+        height: 25%;
+    }
+    
+    .about-intro {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .developers-heading {
+        font-size: 1rem;
+        letter-spacing: 0.25rem;
+        margin: 2rem 0 2rem;
+    }
+    
+    .developers-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 0;
+    }
+    
+    .card-inner {
+        max-width: 100%;
+    }
+    
+    .developer-placeholder {
+        font-size: 5rem;
+    }
+    
+    .social-links {
+        gap: 1.5rem;
+    }
+    
+    .social-link {
+        font-size: 2rem;
+        width: 60px;
+        height: 60px;
+    }
+    
+    .developer-name-btn {
+        font-size: 1rem;
+        padding: 0.6rem 1.5rem;
+    }
+}
+
+/* Small Mobile Styles */
+@media (max-width: 480px) {
+    .about-intro {
+        font-size: 0.95rem;
+    }
+    
+    .developers-heading {
+        font-size: 0.9rem;
+        letter-spacing: 0.2rem;
+    }
+    
+    .developer-placeholder {
+        font-size: 4rem;
+    }
+    
+    .social-link {
+        font-size: 1.8rem;
+        width: 55px;
+        height: 55px;
+    }
+    
+    .developer-name-btn {
+        font-size: 0.9rem;
+        padding: 0.5rem 1.2rem;
+    }
+}
