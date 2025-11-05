@@ -1,0 +1,286 @@
+/* Purpose Section Styles */
+
+.purpose-section {
+    min-height: 100vh;
+    background: var(--primary-blue);
+    padding: 4rem 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.purpose-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 32%;
+    background: var(--white);
+    z-index: 0;
+}
+
+.purpose-section::after {
+    content: '';
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 5px;
+    height: 90%;
+    background: var(--white);
+    border-radius: 45px;
+    z-index: 0;
+    opacity: 0.3;
+}
+
+.purpose-container {
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.purpose-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+    margin-bottom: 3rem;
+}
+
+.purpose-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.purpose-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2rem;
+    position: relative;
+}
+
+.purpose-text {
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1.4;
+    text-transform: uppercase;
+    padding: 2rem;
+}
+
+.purpose-primary {
+    color: var(--primary-blue);
+    background: transparent;
+    max-width: 700px;
+}
+
+.purpose-secondary {
+    color: var(--white);
+    text-align: right;
+    max-width: 650px;
+    margin-top: 8rem;
+}
+
+.purpose-logo {
+    position: absolute;
+    top: -6rem;
+    right: 0;
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    opacity: 0.95;
+    z-index: 2;
+}
+
+.developers-selfie-card {
+    width: 100%;
+    max-width: 540px;
+    aspect-ratio: 1.44;
+    background: var(--text-dark);
+    border-radius: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.selfie-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    color: var(--white);
+}
+
+.selfie-placeholder i {
+    font-size: 4rem;
+    opacity: 0.3;
+}
+
+.selfie-placeholder span {
+    font-size: 1.35rem;
+    font-weight: 900;
+    letter-spacing: 0.05rem;
+}
+
+.purpose-footer {
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.purpose-footer p {
+    color: var(--white);
+    font-size: 0.95rem;
+    font-weight: 900;
+    letter-spacing: 0.03rem;
+    text-transform: uppercase;
+}
+
+/* Tablet Styles */
+@media (max-width: 1200px) {
+    .purpose-text {
+        font-size: 1.5rem;
+    }
+    
+    .purpose-logo {
+        max-width: 500px;
+        top: -4rem;
+    }
+    
+    .purpose-secondary {
+        margin-top: 6rem;
+    }
+}
+
+/* Tablet - Portrait */
+@media (max-width: 1024px) {
+    .purpose-section {
+        padding: 3rem 1.5rem 2rem;
+    }
+    
+    .purpose-content {
+        gap: 2rem;
+    }
+    
+    .purpose-text {
+        font-size: 1.3rem;
+        padding: 1.5rem;
+    }
+    
+    .purpose-logo {
+        max-width: 450px;
+        top: -3rem;
+    }
+    
+    .purpose-secondary {
+        margin-top: 5rem;
+    }
+    
+    .developers-selfie-card {
+        max-width: 480px;
+    }
+    
+    .selfie-placeholder i {
+        font-size: 3rem;
+    }
+    
+    .selfie-placeholder span {
+        font-size: 1.15rem;
+    }
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .purpose-section {
+        padding: 2rem 1rem;
+    }
+    
+    .purpose-section::before {
+        height: 20%;
+    }
+    
+    .purpose-section::after {
+        display: none;
+    }
+    
+    .purpose-content {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+    
+    .purpose-left,
+    .purpose-right {
+        align-items: center;
+    }
+    
+    .purpose-text {
+        font-size: 1.1rem;
+        padding: 1rem;
+    }
+    
+    .purpose-primary {
+        max-width: 100%;
+    }
+    
+    .purpose-secondary {
+        text-align: center;
+        max-width: 100%;
+        margin-top: 2rem;
+    }
+    
+    .purpose-logo {
+        position: relative;
+        top: 0;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    
+    .developers-selfie-card {
+        max-width: 100%;
+    }
+    
+    .selfie-placeholder i {
+        font-size: 2.5rem;
+    }
+    
+    .selfie-placeholder span {
+        font-size: 1rem;
+    }
+    
+    .purpose-footer p {
+        font-size: 0.75rem;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .purpose-section {
+        padding: 1.5rem 0.75rem;
+    }
+    
+    .purpose-text {
+        font-size: 0.95rem;
+        padding: 0.75rem;
+    }
+    
+    .purpose-logo {
+        max-width: 300px;
+    }
+    
+    .selfie-placeholder i {
+        font-size: 2rem;
+    }
+    
+    .selfie-placeholder span {
+        font-size: 0.85rem;
+    }
+    
+    .purpose-footer p {
+        font-size: 0.65rem;
+        letter-spacing: 0.02rem;
+    }
+}

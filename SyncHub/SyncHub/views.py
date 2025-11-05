@@ -19,6 +19,10 @@ def landing_page(request):
     """Landing page view"""
     return render(request, 'index.html')
 
+def about_us(request):
+    """About Us page view"""
+    return render(request, 'about_us.html')
+
 def _authenticate_identifier_password(request, identifier, password):
     """Authenticate by student number or email."""
     user = None
@@ -203,5 +207,3 @@ def auth_status_api(request):
             'last_name': request.user.last_name,
         })
     return JsonResponse({'authenticated': False})
-
-
