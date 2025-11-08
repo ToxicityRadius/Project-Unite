@@ -23,6 +23,10 @@ def about_us(request):
     """About Us page view"""
     return render(request, 'about_us.html')
 
+def purpose_page(request):
+    """Purpose page view"""
+    return render(request, 'purpose.html')
+
 def _authenticate_identifier_password(request, identifier, password):
     """Authenticate by student number or email."""
     user = None
