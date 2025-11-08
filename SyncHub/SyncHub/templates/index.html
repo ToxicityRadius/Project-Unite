@@ -41,34 +41,10 @@
         <button id="openSignupMain" class="cta-button">Get Started</button>
     </main>
 
-    <!-- Purpose Section -->
-    <section id="purpose" class="purpose-section">
-        <div class="purpose-container">
-            <div class="purpose-content">
-                <div class="purpose-left">
-                    <p class="purpose-text purpose-primary">
-                        The Purpose our project, Project Unite, was to enhance the efficiency and transparency of the administrative processes of the Supreme Student Council. Our intention is to make the management of data simple and to encourage the use of digital means in student organizations by uniting attendance logging and inventory tracking in a single web-based platform.
-                    </p>
-                    <div class="developers-selfie-card">
-                        <div class="selfie-placeholder">
-                            <i class="fas fa-users"></i>
-                            <span>3 DEVELOPERS SELFIE</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="purpose-right">
-                    <img src="https://api.builder.io/api/v1/image/assets/TEMP/4b35dbd2030ad3fa5b67d23e00340e693a8fed67?width=1347" alt="Project Unite Logo" class="purpose-logo">
-                    <p class="purpose-text purpose-secondary">
-                        As aspiring engineers, we conceive the idea of using the technical knowledge, creativity, and collaboration to build such systems which, apart from their efficient functioning, also have a significant positive impact.
-                        Project Unite is an embodiment of our dedication to innovation, problem-solving, and the relentless pursuit of technological progress.
-                    </p>
-                </div>
-            </div>
-            <footer class="purpose-footer">
-                <p>© 2025 Project Unite | Developed by 3rd Year CpE Students, TIP – Manila | CPE 408B Final Project</p>
-            </footer>
-        </div>
-    </section>
+    <!-- Purpose moved to a dedicated page -->
+    <div style="text-align:center; padding:2rem 0;">
+        <a href="{% url 'purpose' %}" class="cta-button">View Purpose</a>
+    </div>
 
     {% include 'partials/auth_modal.html' %}
     <script src="{% static 'js/main.js' %}"></script>
