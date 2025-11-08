@@ -160,13 +160,65 @@ def dashboard_view(request):
 
 @login_required
 def profile_view(request):
-    """Profile view for user customization"""
-    # Determine user role
+    """Profile view for user customization. Supports GET (render) and POST (JSON update).
+
+    POST expects JSON: { first_name, last_name, role }
+    """
+    # Handle AJAX JSON update
+    if request.method == 'POST' and request.content_type == 'application/json':
+        try:
+            payload = json.loads(request.body.decode('utf-8'))
+        except Exception:
+            return JsonResponse({'message': 'Invalid JSON.'}, status=400)
+        first_name = payload.get('first_name', '').strip()
+        last_name = payload.get('last_name', '').strip()
+        role = payload.get('role', '').strip()
+        user = request.user
+        changed = False
+        if first_name and first_name != user.first_name:
+            user.first_name = first_name
+            changed = True
+        if last_name and last_name != user.last_name:
+            user.last_name = last_name
+            changed = True
+        # Update groups: ensure only one of Officer/Mentee/Staff is assigned
+        try:
+            from django.contrib.auth.models import Group
+            possible = ['Officer', 'Mentee', 'Staff', 'Executive Officer']
+            for gname in possible:
+                try:
+                    g = Group.objects.get(name=gname)
+                    if g in user.groups.all():
+                        user.groups.remove(g)
+                except Group.DoesNotExist:
+                    continue
+            # Add requested role if it exists
+            if role:
+                try:
+                    group = Group.objects.get(name=role)
+                    user.groups.add(group)
+                    changed = True
+                except Group.DoesNotExist:
+                    # ignore if group missing
+                    pass
+        except Exception:
+            pass
+        if changed:
+            try:
+                user.save()
+            except Exception as e:
+                logger.error(f"Error saving user profile: {e}")
+                return JsonResponse({'message': 'Error saving profile.'}, status=500)
+        return JsonResponse({'message': 'Profile updated successfully.'})
+
+    # GET render
     user_groups = request.user.groups.all()
-    if user_groups.filter(name='Officer').exists():
-        role = 'Officer'
-    elif user_groups.filter(name='Executive Officer').exists():
+    if user_groups.filter(name='Executive Officer').exists():
         role = 'Executive Officer'
+    elif user_groups.filter(name='Officer').exists():
+        role = 'Officer'
+    elif user_groups.filter(name='Mentee').exists():
+        role = 'Mentee'
     else:
         role = 'Staff'
 
