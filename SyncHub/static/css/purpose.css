@@ -1,17 +1,19 @@
 .purpose-body {
     margin: 0;
     padding: 0;
-    overflow: hidden;
-    height: 100vh;
-    width: 100vw;
+    /* Allow the page to grow and scroll instead of forcing viewport clipping */
+    overflow-x: hidden;
+    min-height: 100vh;
+    width: 100%;
 }
 
 .purpose-section {
-    height: 100vh;
-    width: 100vw;
+    /* Flexible hero section: use min-height so content can grow on small screens */
+    min-height: 70vh;
+    width: 100%;
     background: var(--primary-blue);
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -23,7 +25,8 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 32vh;
+    /* keep a generous white area at the top but allow content flow */
+    height: 34vh;
     background: var(--white);
     z-index: 0;
 }
@@ -31,7 +34,8 @@
 .purpose-section::after {
     content: '';
     position: absolute;
-    bottom: 10%;
+    /* place the decorative line above the footer area */
+    bottom: 6%;
     left: 50%;
     transform: translateX(-50%) rotate(90deg);
     width: 80vh;
@@ -39,20 +43,21 @@
     background: var(--white);
     border-radius: 45px;
     z-index: 0;
-    opacity: 0.8;
+    opacity: 0.95;
 }
 
 .purpose-container {
     max-width: 1440px;
     width: 95%;
-    height: 90vh;
+    /* let the container grow naturally; use min-height for hero feel */
+    min-height: 60vh;
     margin: 0 auto;
     position: relative;
     z-index: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 2vh 0;
+    padding: 2vh 0 4vh;
 }
 
 .purpose-content {
@@ -270,10 +275,34 @@
 }
 
 .nav-profile {
-    display: none;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
     margin-left: 12px;
+    text-decoration: none;
+}
+
+/* Logout button: make it more legible in the nav (outlined on light backgrounds) */
+.nav-logout {
+    /* Filled style to match primary CTA — more visible */
+    background: var(--primary-blue);
+    color: var(--white);
+    border: 2px solid var(--primary-blue);
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0,120,255,0.12);
+    transition: background 0.18s ease, transform 0.12s ease, box-shadow 0.12s ease;
+}
+.nav-logout:hover {
+    background: #0066dd;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(0,102,221,0.14);
+}
+.nav-logout:focus {
+    outline: 3px solid rgba(0,120,255,0.18);
+    outline-offset: 3px;
 }
 
 .nav-avatar {
@@ -289,10 +318,3 @@
     color: var(--text-dark);
 }
 
-.nav-logout {
-    display: none;
-    background: transparent;
-    border: none;
-    color: var(--text-dark);
-    cursor: pointer;
-}

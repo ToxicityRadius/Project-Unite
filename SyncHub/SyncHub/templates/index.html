@@ -22,14 +22,17 @@
             <li><a href="{% url 'about_us' %}"><i class="fas fa-info-circle"></i> ABOUT US</a></li>
             <li><a href="{% url 'purpose' %}"><i class="fas fa-bullseye"></i> PURPOSE</a></li>
         </ul>
-        <div style="margin-left:auto; display:flex; gap:12px; align-items:center;">
-            <button id="openSignup" class="cta-button" style="background:transparent;color:var(--primary-blue);border:2px solid var(--primary-blue);padding:8px 14px;">Sign Up</button>
-            <button id="openLogin" class="cta-button">Log In</button>
-            <div id="profile-info" style="display:none;align-items:center;gap:8px;margin-left:12px;">
-                <img id="nav-avatar-img" src="" alt="avatar" style="width:36px;height:36px;border-radius:50%;object-fit:cover;display:none;">
-                <span id="nav-username-display"></span>
-            </div>
-            <button id="logoutBtn" style="display:none;background:transparent;border:none;color:var(--text-dark);">Logout</button>
+        <div class="nav-actions">
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="cta-button nav-profile"><i class="fas fa-user"></i> {{ user.first_name }} {{ user.last_name }}</a>
+                <form method="POST" action="{% url 'logout' %}" style="margin:0;">
+                    {% csrf_token %}
+                    <button type="submit" class="cta-button nav-logout">Logout</button>
+                </form>
+            {% else %}
+                <button id="openSignup" class="cta-button nav-signup">Sign Up</button>
+                <button id="openLogin" class="cta-button">Log In</button>
+            {% endif %}
         </div>
     </nav>
 

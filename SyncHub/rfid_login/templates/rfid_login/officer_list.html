@@ -8,7 +8,23 @@
   <title>Officers - Attendance</title>
 </head>
 <body>
-  <nav class="navbar"><ul class="nav-links"><li><a href="{% url 'dashboard' %}">Dashboard</a></li></ul></nav>
+  <nav class="navbar">
+    <ul class="nav-links">
+      <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+    </ul>
+    <div class="nav-actions">
+      {% if user.is_authenticated %}
+        <a href="{% url 'profile' %}" class="cta-button nav-profile"><i class="fas fa-user"></i> {{ user.first_name }} {{ user.last_name }}</a>
+        <form method="POST" action="{% url 'logout' %}" style="margin:0;">
+          {% csrf_token %}
+          <button type="submit" class="cta-button nav-logout">Logout</button>
+        </form>
+      {% else %}
+        <a href="{% url 'signup' %}" class="cta-button nav-signup">Sign Up</a>
+        <a href="{% url 'login' %}" class="cta-button">Log In</a>
+      {% endif %}
+    </div>
+  </nav>
   <main class="dashboard-container">
     <h1 style="color:var(--white);">Officers</h1>
     <a href="{% url 'rfid_login:officer_add' %}" class="cta-button">Add Officer</a>

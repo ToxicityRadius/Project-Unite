@@ -141,7 +141,7 @@ body:not(.purpose-body) {
 }
 
 .subtitle {
-    font-size: 1.1rem; /* reduced font size */
+    font-size: 2rem; /* reduced font size */
     font-weight: 500;
     color: var(--text-gray);
     letter-spacing: 0.03em;
@@ -1396,6 +1396,53 @@ a.figma-login-button {
     color: white;
 }
 
+/* Navigation actions for all pages */
+.nav-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.nav-actions form {
+    display: inline-block;
+}
+
+.nav-signup {
+    background: transparent;
+    color: var(--primary-blue);
+    border: 2px solid var(--primary-blue);
+    padding: 8px 14px;
+}
+
+.nav-profile {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 12px;
+    text-decoration: none;
+}
+
+.nav-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: none;
+}
+
+.nav-username {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.nav-logout {
+    display: inline-block;
+    background: transparent;
+    border: none;
+    color: var(--white);
+    cursor: pointer;
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .filter-form form {
@@ -1414,4 +1461,5 @@ a.figma-login-button {
     .chart-container canvas {
         height: 300px;
     }
+}
 }

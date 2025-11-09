@@ -9,6 +9,7 @@ class CustomUser(AbstractUser):
         validators=[RegexValidator(r'^\d{7}$', 'Student number must be exactly 7 digits.')],
         help_text='Enter a unique 7-digit student number.'
     )
+    bio = models.TextField(blank=True, null=True, help_text='Short bio for the user profile.')
 
     USERNAME_FIELD = 'student_number'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'email']

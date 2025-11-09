@@ -156,7 +156,11 @@ def signup_api(request):
 @login_required
 def dashboard_view(request):
     """Dashboard view - requires authentication"""
-    return render(request, 'dashboard.html')
+    is_executive_or_staff = request.user.groups.filter(name='executive officer').exists() or request.user.groups.filter(name='staff').exists()
+    context = {
+        'is_executive_or_staff': is_executive_or_staff,
+    }
+    return render(request, 'dashboard.html', context)
 
 @login_required
 def profile_view(request):
@@ -173,6 +177,7 @@ def profile_view(request):
         first_name = payload.get('first_name', '').strip()
         last_name = payload.get('last_name', '').strip()
         role = payload.get('role', '').strip()
+        bio = payload.get('bio', '').strip()
         user = request.user
         changed = False
         if first_name and first_name != user.first_name:
@@ -180,6 +185,9 @@ def profile_view(request):
             changed = True
         if last_name and last_name != user.last_name:
             user.last_name = last_name
+            changed = True
+        if bio != user.bio:
+            user.bio = bio
             changed = True
         # Update groups: ensure only one of Officer/Mentee/Staff is assigned
         try:
@@ -195,11 +203,11 @@ def profile_view(request):
             # Add requested role if it exists
             if role:
                 try:
-                    group = Group.objects.get(name=role)
+                    group, created = Group.objects.get_or_create(name=role)
                     user.groups.add(group)
                     changed = True
-                except Group.DoesNotExist:
-                    # ignore if group missing
+                except Exception:
+                    # ignore if error
                     pass
         except Exception:
             pass
@@ -222,8 +230,24 @@ def profile_view(request):
     else:
         role = 'Staff'
 
+    # Get recent RFID activities for the user
+    from rfid_login.models import TimeLog, Officer
+    recent_activities = []
+    try:
+        officer = Officer.objects.get(id=request.user.student_number)
+        logs = TimeLog.objects.filter(officer=officer).order_by('-date', '-time_in')[:10]  # Last 10 activities
+        for log in logs:
+            if log.time_out:
+                activity = f"Time Out: {log.date} at {log.time_out.astimezone().strftime('%I:%M %p')}"
+            else:
+                activity = f"Time In: {log.date} at {log.time_in.astimezone().strftime('%I:%M %p')}"
+            recent_activities.append(activity)
+    except Officer.DoesNotExist:
+        pass
+
     context = {
         'role': role,
+        'recent_activities': recent_activities,
     }
     return render(request, 'profile.html', context)
 

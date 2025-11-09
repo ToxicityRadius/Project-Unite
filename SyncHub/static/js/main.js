@@ -587,14 +587,51 @@ document.addEventListener('DOMContentLoaded', () => {
                         // mark registered locally
                         try { localStorage.setItem('registered', 'true'); } catch (e) {}
 
-                        if (home) {
-                            home.classList.add('hidden');
-                            home.style.display = 'none';
-                        }
-                        // if this was a page, redirect to login
                         if (signupForm.id === 'signupFormPage') {
+                            // For page signup, redirect to login
                             window.location.href = '/login/';
                             return;
+                        } else {
+                            // For modal signup (e.g., from "Get Started"), auto-login and redirect to dashboard
+                            fetch('/api/login', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                credentials: 'include',
+                                body: JSON.stringify({
+                                    identifier: studentNumberInput.value.trim(),
+                                    password: passwordInput.value.trim()
+                                })
+                            })
+                            .then(loginRes => loginRes.json().then(loginData => ({status: loginRes.status, body: loginData})))
+                            .then(({status: loginStatus, body: loginBody}) => {
+                                if (loginStatus === 200) {
+                                    if (home) {
+                                        home.classList.add('hidden');
+                                        home.style.display = 'none';
+                                    }
+                                    localStorage.setItem('loggedIn', 'true');
+                                    const identifier = studentNumberInput.value.trim();
+                                    localStorage.setItem('username', identifier);
+                                    localStorage.removeItem('email');
+                                    toggleAuthButtons();
+                                    window.location.href = '/dashboard/';
+                                } else {
+                                    alert('Signup successful, but login failed: ' + loginBody.message);
+                                    if (home) {
+                                        home.classList.add('hidden');
+                                        home.style.display = 'none';
+                                    }
+                                    window.location.href = '/login/';
+                                }
+                            })
+                            .catch(loginErr => {
+                                alert('Signup successful, but login error: ' + loginErr.message);
+                                if (home) {
+                                    home.classList.add('hidden');
+                                    home.style.display = 'none';
+                                }
+                                window.location.href = '/login/';
+                            });
                         }
                     }
                     if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Create Account'; }

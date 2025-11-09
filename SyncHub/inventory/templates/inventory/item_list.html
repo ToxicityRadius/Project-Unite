@@ -19,10 +19,19 @@
     <ul class="nav-links">
       <li><a href="{% url 'landing' %}"><i class="fas fa-home"></i> Home</a></li>
       <li><a href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-
-
-
     </ul>
+    <div class="nav-actions">
+      {% if user.is_authenticated %}
+        <a href="{% url 'profile' %}" class="cta-button nav-profile"><i class="fas fa-user" style="vertical-align: middle;"></i> {{ user.first_name }} {{ user.last_name }}</a>
+        <form method="POST" action="{% url 'logout' %}" style="margin:0;">
+          {% csrf_token %}
+          <button type="submit" class="cta-button nav-logout">Logout</button>
+        </form>
+      {% else %}
+        <a href="{% url 'signup' %}" class="cta-button nav-signup">Sign Up</a>
+        <a href="{% url 'login' %}" class="cta-button">Log In</a>
+      {% endif %}
+    </div>
   </nav>
 
   <!-- Inventory Content -->
@@ -30,9 +39,6 @@
     <h1 style="color:var(--text-dark); text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Inventory Management</h1>
     <div class="dashboard-grid" style="grid-template-columns: 1fr; max-width: 80rem;">
       <div class="dashboard-card" style="padding: 2rem;">
-        {% if is_admin %}
-        <a class="card-button" href="{% url 'inventory:item_add' %}" style="margin-bottom: 2rem;">Add New Item</a>
-        {% endif %}
         <div class="inventory-table">
           <table style="width:100%;border-collapse:collapse;">
             <thead>
@@ -66,6 +72,9 @@
             </tbody>
           </table>
         </div>
+        {% if is_admin %}
+        <a class="card-button" href="{% url 'inventory:item_add' %}" style="margin-top: 2rem;">Add New Item</a>
+        {% endif %}
       </div>
     </div>
   </main>

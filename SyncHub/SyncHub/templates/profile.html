@@ -22,6 +22,18 @@
       <li><a href="{% url 'landing' %}"><i class="fas fa-home"></i> Home</a></li>
       <li><a href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
     </ul>
+    <div class="nav-actions">
+      {% if user.is_authenticated %}
+        <a href="{% url 'profile' %}" class="cta-button nav-profile"><i class="fas fa-user" style="vertical-align: middle;"></i> {{ user.first_name }} {{ user.last_name }}</a>
+        <form method="POST" action="{% url 'logout' %}" style="margin:0;">
+          {% csrf_token %}
+          <button type="submit" class="cta-button nav-logout">Logout</button>
+        </form>
+      {% else %}
+        <a href="{% url 'signup' %}" class="cta-button nav-signup">Sign Up</a>
+        <a href="{% url 'login' %}" class="cta-button">Log In</a>
+      {% endif %}
+    </div>
   </nav>
 
   <div class="flex items-center justify-center min-h-screen">
@@ -38,7 +50,7 @@
 
       <!-- Username -->
       <h2 class="text-xl font-semibold">{{ request.user.first_name }} {{ request.user.last_name }}</h2>
-      <p class="text-sm italic mb-8">"{{ request.user.username }}"</p>
+      <p class="text-sm italic mb-8">"{{ request.user.bio }}"</p>
 
       <!-- User Role (Static Display) -->
       <div id="rolePill" class="bg-white text-black font-medium px-6 py-2 rounded-md mb-4 cursor-default">
@@ -63,31 +75,30 @@
 
       <!-- PROFILE VIEW -->
       <div id="profileView" class="w-full">
-        <h2 class="text-lg font-semibold text-gray-700 tracking-wide mb-8">LAST ACTIVITY</h2>
+        <h2 class="text-lg font-semibold text-gray-700 tracking-wide mb-8">RECENT ACTIVITIES</h2>
 
-        <div class="flex justify-center w-full">
-          <button class="bg-[#f5f5f5] rounded-xl shadow-md flex flex-col items-center justify-center py-10 hover:bg-gray-100 hover:scale-105 hover:shadow-lg transition-all duration-200 cursor-pointer w-80">
-            <div class="bg-black text-white rounded-full p-3 mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+        {% if recent_activities %}
+        <div class="bg-[#f5f5f5] rounded-xl shadow-md p-6 mb-8 max-h-64 overflow-y-auto">
+          {% for activity in recent_activities %}
+          <div class="flex items-center mb-4 last:mb-0">
+            <div class="bg-[#007bff] text-white rounded-full p-2 mr-4 flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <p class="text-sm font-medium text-gray-700">Create a new Activity</p>
-          </button>
+            <div>
+              <p class="text-sm font-medium text-gray-700">{{ activity }}</p>
+            </div>
+          </div>
+          {% endfor %}
         </div>
-
-        <div class="flex justify-end mt-8">
-          <a href="{% url 'logout' %}" class="bg-[#007bff] text-white px-8 py-2 rounded-full shadow-md hover:bg-blue-600 hover:scale-105 hover:shadow-lg transition-all duration-200 inline-block text-center">LOGOUT</a>
-        </div>
+        {% endif %}
       </div>
 
       <!-- PROFILE EDIT -->
       <div id="profileEdit" class="w-full hidden">
         <div class="mb-6">
-          <div class="flex justify-between items-center">
-            <h2 class="text-2xl font-bold text-gray-800">Edit Profile</h2>
-            <button id="cancelEdit" class="text-sm text-gray-600">Cancel</button>
-          </div>
+          <h2 class="text-2xl font-bold text-gray-800">Edit Profile</h2>
         </div>
 
         <form id="editProfileForm" class="grid grid-cols-2 gap-6">
@@ -104,7 +115,6 @@
             <label class="block text-xs font-semibold text-gray-600 mb-2">Role / Position</label>
             <select id="edit_role" name="role" class="auth-input w-full">
               <option value="Officer" {% if role == 'Officer' %}selected{% endif %}>Officer</option>
-              <option value="Mentee" {% if role == 'Mentee' %}selected{% endif %}>Mentee</option>
               <option value="Staff" {% if role == 'Staff' %}selected{% endif %}>Staff</option>
               <option value="Executive Officer" {% if role == 'Executive Officer' %}selected{% endif %}>Executive Officer</option>
             </select>
@@ -112,10 +122,11 @@
 
           <div>
             <label class="block text-xs font-semibold text-gray-600 mb-2">Bio</label>
-            <input id="edit_bio" name="bio" type="text" value="" class="auth-input w-full" placeholder="Short bio (not persisted)">
+            <input id="edit_bio" name="bio" type="text" value="{{ request.user.bio|default:'' }}" class="auth-input w-full" placeholder="Short bio">
           </div>
 
-          <div class="col-span-2 flex justify-end mt-4">
+          <div class="col-span-2 flex justify-end mt-4 gap-4">
+            <button id="cancelEdit" class="text-gray-600 px-6 py-2 rounded-md border border-gray-300 hover:bg-gray-50">Cancel</button>
             <button type="submit" id="saveProfileBtn" class="bg-[#007bff] text-white px-6 py-2 rounded-md">Save Changes</button>
           </div>
         </form>
@@ -172,6 +183,8 @@
           const role = document.getElementById('edit_role').value;
           const csrftoken = getCookie('csrftoken');
 
+          const bio = document.getElementById('edit_bio').value.trim();
+
           fetch(window.location.pathname, {
             method: 'POST',
             headers: {
@@ -179,7 +192,7 @@
               'X-CSRFToken': csrftoken
             },
             credentials: 'same-origin',
-            body: JSON.stringify({ first_name, last_name, role })
+            body: JSON.stringify({ first_name, last_name, role, bio })
           }).then(res => res.json().then(data => ({ status: res.status, body: data })))
           .then(({status, body}) => {
             alert(body.message || 'Saved');
@@ -188,6 +201,8 @@
               if (usernameElem) usernameElem.textContent = (first_name || '') + ' ' + (last_name || '');
               const rolePill = document.getElementById('rolePill');
               if (rolePill) rolePill.textContent = role;
+              const bioElem = document.querySelector('p.text-sm.italic');
+              if (bioElem) bioElem.textContent = '"' + bio + '"';
               profileEdit.classList.add('hidden');
               profileView.classList.remove('hidden');
             }

@@ -19,9 +19,19 @@
         <ul class="nav-links">
             <li><a href="{% url 'landing' %}"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="{% url 'dashboard' %}" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-
-            <li><a href="{% url 'profile' %}"><i class="fas fa-user"></i> Profile</a></li>
         </ul>
+        <div class="nav-actions">
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="cta-button nav-profile"><i class="fas fa-user"></i> {{ user.first_name }} {{ user.last_name }}</a>
+                <form method="POST" action="{% url 'logout' %}" style="margin:0;">
+                    {% csrf_token %}
+                    <button type="submit" class="cta-button nav-logout">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'signup' %}" class="cta-button nav-signup">Sign Up</a>
+                <a href="{% url 'login' %}" class="cta-button">Log In</a>
+            {% endif %}
+        </div>
     </nav>
 
     <!-- Dashboard Content -->
@@ -36,7 +46,14 @@
             <!-- Attendance Card -->
             <div class="dashboard-card">
                 <img src="https://api.builder.io/api/v1/image/assets/TEMP/47b1273de6eda6877c29e75bad1bf426e7a6dcb5?width=568" alt="Attendance Management" class="card-icon">
-                <a href="/rfid_login/" class="card-button">Attendance Portal</a>
+                {% if is_executive_or_staff %}
+                    <div style="display: flex; gap: 1rem; justify-content: center;">
+                        <a href="{% url 'rfid_login:login' %}" class="card-button">RFID Login</a>
+                        <a href="{% url 'rfid_login:time_log' %}" class="card-button">View Time Logs</a>
+                    </div>
+                {% else %}
+                    <a href="/rfid_login/" class="card-button">Attendance Portal</a>
+                {% endif %}
             </div>
         </div>
     </main>

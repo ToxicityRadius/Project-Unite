@@ -1,12 +1,14 @@
 /* About Us Page Styles */
 
 .about-section {
-    height: 100vh;
+    /* use min-height so content can grow and avoid overlapping fixed nav */
+    min-height: calc(100vh - 76px); /* reserve space for navbar (approx height) */
     background: var(--primary-blue);
-    padding: 2rem 1.5rem;
+    /* add top padding to push content below the navbar */
+    padding: 4.5rem 1.5rem 2rem;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: center; /* center the container horizontally */
     position: relative;
     overflow: hidden;
 }
@@ -36,6 +38,7 @@
     font-weight: 800;
     line-height: 1.4;
     text-transform: uppercase;
+    /* avoid negative margins so intro doesn't overlap the navbar */
     margin: 0 auto 1.5rem;
     max-width: 900px;
     padding: 0 1rem;
@@ -57,6 +60,7 @@
     max-width: 1300px;
     margin: 0 auto;
     padding: 0 1rem;
+    justify-items: center; /* center cards within grid cells */
 }
 
 .developer-card {
@@ -69,8 +73,10 @@
 .card-inner {
     position: relative;
     width: 100%;
-    max-width: min(400px, 25vw);
-    height: clamp(200px, 30vh, 400px);
+    /* increased size for stronger visual presence */
+    max-width: min(700px, 36vw);
+    /* taller cards with responsive clamp: min, preferred (viewport-based), max */
+    height: clamp(320px, 44vh, 640px);
     transition: transform 0.8s;
     transform-style: preserve-3d;
     cursor: pointer;
@@ -101,9 +107,46 @@
 
 .developer-placeholder {
     color: var(--white);
-    font-size: 8rem;
-    opacity: 0.3;
-    transition: opacity 0.3s ease;
+    /* increase the placeholder icon size to match larger cards */
+    font-size: 11rem;
+}
+
+/* Photo inside the front of the card */
+.developer-placeholder {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    /* fill the face of the card so the image can cover the entire area */
+    width: 100%;
+    height: 100%;
+    padding: 0;
+}
+
+.developer-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center; /* center the image within the box */
+    display: block;
+    /* inner radius = card radius (25px) - border width (5px) */
+    border-radius: calc(25px - 5px);
+    z-index: 1; /* sits above the fallback icon */
+}
+
+.fallback-icon {
+    z-index: 0;
+    font-size: inherit;
+    color: rgba(255,255,255,0.25);
+}
+
+/* If image fails to load or is missing, keep the icon visible */
+.developer-photo[alt=""] + .fallback-icon,
+.developer-photo:invalid + .fallback-icon {
+    z-index: 2;
 }
 
 .card-inner:hover .developer-placeholder {
@@ -139,13 +182,14 @@
 }
 
 .developer-name-btn {
-    padding: 0.7rem 2rem;
-    border-radius: 96px;
+    padding: 0.4rem 2rem;
+    padding: 0.5rem 2.2rem;
+    border-radius: 75px;
     background: var(--primary-blue);
     color: var(--white);
     font-family: 'Poppins', sans-serif;
-    font-size: 1.35rem;
-    font-weight: 500;
+    font-size: 2rem;
+    font-weight: 700;
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -164,6 +208,8 @@
     .about-intro {
         font-size: 1.4rem;
         max-width: 700px;
+        /* reset negative margin on smaller viewports to avoid overlap */
+        margin: 0 auto 1.5rem;
     }
     
     .developers-heading {
@@ -176,7 +222,7 @@
     }
     
     .developer-placeholder {
-        font-size: 6rem;
+        font-size: 8rem;
     }
     
     .social-link {
@@ -186,7 +232,7 @@
     }
     
     .developer-name-btn {
-        font-size: 1.2rem;
+        font-size: 1.45rem;
     }
 }
 
@@ -219,10 +265,12 @@
     
     .card-inner {
         max-width: 100%;
+        /* reduced height on smaller screens to keep balanced */
+        height: clamp(260px, 40vh, 520px);
     }
     
     .developer-placeholder {
-        font-size: 5rem;
+        font-size: 7rem;
     }
     
     .social-links {
@@ -236,8 +284,8 @@
     }
     
     .developer-name-btn {
-        font-size: 1rem;
-        padding: 0.6rem 1.5rem;
+        font-size: 1.25rem;
+        padding: 0.7rem 1.8rem;
     }
 }
 
@@ -253,7 +301,7 @@
     }
     
     .developer-placeholder {
-        font-size: 4rem;
+        font-size: 6rem;
     }
     
     .social-link {
@@ -263,7 +311,7 @@
     }
     
     .developer-name-btn {
-        font-size: 0.9rem;
-        padding: 0.5rem 1.2rem;
+        font-size: 1.05rem;
+        padding: 0.6rem 1.35rem;
     }
 }

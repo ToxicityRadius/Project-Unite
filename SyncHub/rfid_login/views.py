@@ -6,6 +6,8 @@ from django.db.models.functions import Extract
 from datetime import timedelta
 from .models import Officer, TimeLog
 from django import forms
+from django.contrib.auth.models import User
+from SyncHub.models import CustomUser
 import json
 
 class OfficerForm(forms.ModelForm):
@@ -19,14 +21,28 @@ def login_view(request):
     if request.method == 'POST':
         officer_id = request.POST.get('officer_id')
         try:
+            # Try to get officer by ID
             officer = Officer.objects.get(id=officer_id)
+        except Officer.DoesNotExist:
+            # If officer doesn't exist, check if it's a CustomUser student_number
+            try:
+                user = CustomUser.objects.get(student_number=officer_id)
+                # Create officer record if it doesn't exist
+                officer, created = Officer.objects.get_or_create(
+                    id=officer_id,
+                    defaults={'name': f"{user.first_name} {user.last_name}", 'position': 'Member'}
+                )
+            except CustomUser.DoesNotExist:
+                message = "Invalid officer ID"
+                return render(request, 'rfid_login/login.html', {'message': message, 'is_admin': is_admin, 'last_log': last_log})
+        try:
             # Check if there's an open time log for today
             today = timezone.now().date()
-            time_log = TimeLog.objects.filter(officer=officer, date=today).first()
-            if time_log and not time_log.time_out:
-                # Time out
-                time_log.time_out = timezone.now()
-                time_log.save()
+            open_time_log = TimeLog.objects.filter(officer=officer, date=today, time_out__isnull=True).first()
+            if open_time_log:
+                # Time out the earliest open log
+                open_time_log.time_out = timezone.now()
+                open_time_log.save()
                 message = f"Time out recorded for {officer.name}"
             else:
                 # Time in
@@ -34,9 +50,6 @@ def login_view(request):
                 message = f"Time in recorded for {officer.name}"
             # Get the last log for display
             last_log = TimeLog.objects.filter(officer=officer).order_by('-date', '-time_in').first()
-            return render(request, 'rfid_login/login.html', {'message': message, 'is_admin': is_admin, 'last_log': last_log})
-        except Officer.DoesNotExist:
-            message = "Invalid officer ID"
             return render(request, 'rfid_login/login.html', {'message': message, 'is_admin': is_admin, 'last_log': last_log})
         except ValueError:
             message = "Invalid officer ID format"
@@ -92,20 +105,15 @@ def time_reports_view(request):
     if not is_admin:
         return render(request, 'rfid_login/time_reports.html', {'error': 'Access denied. Admin privileges required.', 'is_admin': is_admin})
 
+    is_executive_or_staff = request.user.groups.filter(name='executive officer').exists() or request.user.groups.filter(name='staff').exists()
+
     # Get filter parameters from GET request
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
 
     # Base queryset for logs_by_date
     logs_by_date = TimeLog.objects.values('date').annotate(
-        total_officers=Count('officer', distinct=True),
-        total_hours=Sum(
-            Case(
-                When(time_out__isnull=False, then=(timezone.now() - timezone.now())),  # Placeholder
-                default=0,
-                output_field=FloatField()
-            )
-        )
+        total_officers=Count('officer', distinct=True)
     )
 
     # Apply filters
@@ -165,6 +173,7 @@ def time_reports_view(request):
         'officer_names': json.dumps(officer_names),
         'officer_total_hours': json.dumps(officer_total_hours),
         'is_admin': is_admin,
+        'is_executive_or_staff': is_executive_or_staff,
         'filters': {'start_date': start_date, 'end_date': end_date}
     })
 
