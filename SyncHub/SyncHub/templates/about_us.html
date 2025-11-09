@@ -7,6 +7,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/about.css' %}">
+    <link rel="stylesheet" href="{% static 'css/purpose.css' %}">
 </head>
 <body>
     <!-- Navigation -->
@@ -16,15 +17,16 @@
             <li><a href="{% url 'about_us' %}"><i class="fas fa-info-circle"></i> ABOUT US</a></li>
             <li><a href="{% url 'purpose' %}"><i class="fas fa-bullseye"></i> PURPOSE</a></li>
         </ul>
-        <div style="margin-left:auto; display:flex; gap:12px; align-items:center;">
+        <div class="nav-actions">
             {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="cta-button nav-profile"><i class="fas fa-user"></i> {{ user.first_name }} {{ user.last_name }}</a>
                 <form method="POST" action="{% url 'logout' %}" style="margin:0;">
                     {% csrf_token %}
-                    <button type="submit" class="cta-button" style="background:transparent;color:var(--primary-blue);border:2px solid var(--primary-blue);">Logout</button>
+                    <button type="submit" class="cta-button nav-logout">Logout</button>
                 </form>
             {% else %}
-                <a href="{% url 'signup' %}" class="cta-button" style="background:transparent;color:var(--primary-blue);border:2px solid var(--primary-blue);padding:8px 14px;text-decoration:none;">Sign Up</a>
-                <a href="{% url 'login' %}" class="cta-button" style="text-decoration:none;">Log In</a>
+                <a href="{% url 'signup' %}" class="cta-button nav-signup">Sign Up</a>
+                <a href="{% url 'login' %}" class="cta-button">Log In</a>
             {% endif %}
         </div>
     </nav>
@@ -44,8 +46,10 @@
                     <div class="card-inner">
                         <div class="card-front">
                             <div class="developer-placeholder">
-                                <i class="fas fa-user-circle"></i>
-                            </div>
+                                    <i class="fas fa-user-circle fallback-icon" aria-hidden="true"></i>
+                                    <!-- Replace the src with a real image or template variable (e.g. developer.photo_url) -->
+                                    <img class="developer-photo" src="{% static 'img/dev-placeholder.png' %}" alt="Developer Name">
+                                </div>
                         </div>
                         <div class="card-back">
                             <div class="social-links">
@@ -69,8 +73,9 @@
                     <div class="card-inner">
                         <div class="card-front">
                             <div class="developer-placeholder">
-                                <i class="fas fa-user-circle"></i>
-                            </div>
+                                    <i class="fas fa-user-circle fallback-icon" aria-hidden="true"></i>
+                                    <img class="developer-photo" src="https://raw.githubusercontent.com/DBMS-S1/RecipeChecker/main/Pictures/dex.png" alt="Dexter Soriano">
+                                </div>
                         </div>
                         <div class="card-back">
                             <div class="social-links">
@@ -86,7 +91,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="developer-name-btn">DEVELOPER NAME</button>
+                    <button class="developer-name-btn">Dexter Soriano</button>
                 </div>
 
                 <!-- Developer Card 3 -->
@@ -94,8 +99,9 @@
                     <div class="card-inner">
                         <div class="card-front">
                             <div class="developer-placeholder">
-                                <i class="fas fa-user-circle"></i>
-                            </div>
+                                    <i class="fas fa-user-circle fallback-icon" aria-hidden="true"></i>
+                                    <img class="developer-photo" src="{% static 'img/dev-placeholder.png' %}" alt="Developer Name">
+                                </div>
                         </div>
                         <div class="card-back">
                             <div class="social-links">

@@ -20,13 +20,22 @@
         <ul class="nav-links">
             <li><a href="{% url 'landing' %}"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-            <li><a href="{% url 'inventory:item_list' %}"><i class="fas fa-boxes"></i> Inventory</a></li>
-            <li><a href="{% url 'rfid_login:login' %}"><i class="fas fa-id-card"></i> RFID Login</a></li>
             {% if is_admin %}
             <li><a href="{% url 'rfid_login:time_log' %}"><i class="fas fa-clock"></i> Time Logs</a></li>
-            <li><a href="{% url 'rfid_login:time_reports' %}" class="active"><i class="fas fa-chart-bar"></i> Time Reports</a></li>
             {% endif %}
         </ul>
+        <div class="nav-actions">
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="cta-button nav-profile"><i class="fas fa-user"></i> {{ user.first_name }} {{ user.last_name }}</a>
+                <form method="POST" action="{% url 'logout' %}" style="margin:0;">
+                    {% csrf_token %}
+                    <button type="submit" class="cta-button nav-logout">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'signup' %}" class="cta-button nav-signup">Sign Up</a>
+                <a href="{% url 'login' %}" class="cta-button">Log In</a>
+            {% endif %}
+        </div>
     </nav>
 
     <!-- Time Reports Content -->
@@ -34,7 +43,7 @@
         <div class="time-reports-card">
             <div class="time-reports-header">
                 <h2>Time Reports</h2>
-                <a href="{% url 'rfid_login:time_log' %}" class="back-btn">Back to Time Logs</a>
+                <a href="{% url 'rfid_login:login' %}" class="back-btn">Back to Login</a>
             </div>
 
             <!-- Filter Form -->
@@ -54,13 +63,13 @@
             <!-- Chart Section -->
             <div class="chart-container">
                 <h3>Attendance Overview (By Date)</h3>
-                <canvas id="attendanceChart"></canvas>
+                <canvas id="attendanceChart" data-dates='{{ dates|safe }}' data-officers='{{ officers_count|safe }}' data-hours='{{ total_hours_list|safe }}'></canvas>
             </div>
 
             <!-- Second Chart Section -->
             <div class="chart-container">
                 <h3>Total Hours Worked (By Officer)</h3>
-                <canvas id="officerHoursChart"></canvas>
+                <canvas id="officerHoursChart" data-names='{{ officer_names|safe }}' data-hours='{{ officer_total_hours|safe }}'></canvas>
             </div>
 
             <!-- Summary Table -->
@@ -120,115 +129,130 @@
     {% include 'partials/auth_modal.html' %}
     <script src="{% static 'js/main.js' %}"></script>
     <script>
+        /* eslint-disable */
         // Chart.js for attendance visualization (by date)
-        const ctx = document.getElementById('attendanceChart').getContext('2d');
-        const attendanceChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: {{ dates|safe }},
-                datasets: [{
-                    label: 'Total Officers',
-                    data: {{ officers_count|safe }},
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1,
-                    yAxisID: 'y'
-                }, {
-                    label: 'Total Hours',
-                    data: {{ total_hours_list|safe }},
-                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1,
-                    yAxisID: 'y1'
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.dataset.label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
-                                if (context.datasetIndex === 0) {
-                                    label += context.parsed.y + ' officers';
-                                } else {
-                                    label += context.parsed.y + ' hours';
-                                }
-                                return label;
-                            }
-                        }
-                    }
+        const attendanceCanvas = document.getElementById('attendanceChart');
+        const dates = JSON.parse(attendanceCanvas.dataset.dates);
+        const officersCount = JSON.parse(attendanceCanvas.dataset.officers);
+        const totalHoursList = JSON.parse(attendanceCanvas.dataset.hours);
+
+        if (dates && dates.length > 0) {
+            const ctx = attendanceCanvas.getContext('2d');
+            const attendanceChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: 'Total Officers',
+                        data: officersCount,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1,
+                        yAxisID: 'y'
+                    }, {
+                        label: 'Total Hours',
+                        data: totalHoursList,
+                        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1,
+                        yAxisID: 'y1'
+                    }]
                 },
-                scales: {
-                    y: {
-                        type: 'linear',
-                        display: true,
-                        position: 'left',
-                        title: {
-                            display: true,
-                            text: 'Number of Officers'
+                options: {
+                    responsive: true,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.datasetIndex === 0) {
+                                        label += context.parsed.y + ' officers';
+                                    } else {
+                                        label += context.parsed.y + ' hours';
+                                    }
+                                    return label;
+                                }
+                            }
                         }
                     },
-                    y1: {
-                        type: 'linear',
-                        display: true,
-                        position: 'right',
-                        title: {
+                    scales: {
+                        y: {
+                            type: 'linear',
                             display: true,
-                            text: 'Total Hours'
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Number of Officers'
+                            }
                         },
-                        grid: {
-                            drawOnChartArea: false,
-                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Total Hours'
+                            },
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
 
         // Second chart: Total hours per officer
-        const ctx2 = document.getElementById('officerHoursChart').getContext('2d');
-        const officerHoursChart = new Chart(ctx2, {
-            type: 'bar',
-            data: {
-                labels: {{ officer_names|safe }},
-                datasets: [{
-                    label: 'Total Hours',
-                    data: {{ officer_total_hours|safe }},
-                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.dataset.label || '';
-                                if (label) {
-                                    label += ': ';
+        const officerCanvas = document.getElementById('officerHoursChart');
+        const officerNames = JSON.parse(officerCanvas.dataset.names);
+        const officerTotalHours = JSON.parse(officerCanvas.dataset.hours);
+
+        if (officerNames && officerNames.length > 0) {
+            const ctx2 = officerCanvas.getContext('2d');
+            const officerHoursChart = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: officerNames,
+                    datasets: [{
+                        label: 'Total Hours',
+                        data: officerTotalHours,
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += context.parsed.y + ' hours';
+                                    return label;
                                 }
-                                label += context.parsed.y + ' hours';
-                                return label;
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Total Hours'
                             }
                         }
                     }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Total Hours'
-                        }
-                    }
                 }
-            }
-        });
+            });
+        }
+        /* eslint-enable */
     </script>
 </body>
 </html>

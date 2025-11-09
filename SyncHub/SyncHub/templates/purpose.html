@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Purpose - Project Unite</title>
-    {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/purpose.css' %}">
 </head>
@@ -24,13 +23,16 @@
             <li><a href="{% url 'purpose' %}"><i class="fas fa-bullseye"></i> PURPOSE</a></li>
         </ul>
         <div class="nav-actions">
-            <button id="openSignup" class="cta-button nav-signup">Sign Up</button>
-            <button id="openLogin" class="cta-button nav-login">Log In</button>
-            <div id="profile-info" class="nav-profile">
-                <img id="nav-avatar-img" class="nav-avatar" src="" alt="avatar">
-                <span id="nav-username-display" class="nav-username"></span>
-            </div>
-            <button id="logoutBtn" class="nav-logout">Logout</button>
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="cta-button nav-profile"><i class="fas fa-user" style="vertical-align: middle;"></i> {{ user.first_name }} {{ user.last_name }}</a>
+                <form method="POST" action="{% url 'logout' %}" style="margin:0;">
+                    {% csrf_token %}
+                    <button type="submit" class="cta-button nav-logout">Logout</button>
+                </form>
+            {% else %}
+                <button id="openSignup" class="cta-button nav-signup">Sign Up</button>
+                <button id="openLogin" class="cta-button">Log In</button>
+            {% endif %}
         </div>
     </nav>
     <section class="purpose-section">
@@ -40,9 +42,9 @@
                     <p class="purpose-text purpose-primary">
                         The Purpose our project, Project Unite, was to enhance the efficiency and transparency of the administrative processes of the Supreme Student Council. Our intention is to make the management of data simple and to encourage the use of digital means in student organizations by uniting attendance logging and inventory tracking in a single web-based platform.
                     </p>
-                    <div class="developers-selfie-card">
+                    <div class="developers-selfie-card" role="img" aria-label="Developers selfie placeholder">
                         <div class="selfie-placeholder">
-                            <i class="fas fa-users"></i>
+                            <i class="fas fa-users" aria-hidden="true"></i>
                             <span>3 DEVELOPERS SELFIE</span>
                         </div>
                     </div>
