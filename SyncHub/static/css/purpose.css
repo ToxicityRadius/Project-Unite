@@ -1,5 +1,3 @@
-/* Purpose Page - Single Viewport Design */
-
 .purpose-body {
     margin: 0;
     padding: 0;
@@ -254,4 +252,47 @@
         font-size: 0.5rem;
         letter-spacing: 0.02rem;
     }
+}
+
+/* Navigation actions specific to purpose page */
+.nav-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.nav-signup {
+    background: transparent;
+    color: var(--primary-blue);
+    border: 2px solid var(--primary-blue);
+    padding: 8px 14px;
+}
+
+.nav-profile {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    margin-left: 12px;
+}
+
+.nav-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: none;
+}
+
+.nav-username {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.nav-logout {
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--text-dark);
+    cursor: pointer;
 }
