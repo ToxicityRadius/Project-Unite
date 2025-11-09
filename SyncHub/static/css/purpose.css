@@ -1,11 +1,22 @@
-/* Purpose Section Styles */
+/* Purpose Page - Single Viewport Design */
+
+.purpose-body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
 
 .purpose-section {
-    min-height: 100vh;
+    height: 100vh;
+    width: 100vw;
     background: var(--primary-blue);
-    padding: 4rem 2rem 2rem;
     position: relative;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .purpose-section::before {
@@ -14,7 +25,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 32%;
+    height: 32vh;
     background: var(--white);
     z-index: 0;
 }
@@ -22,24 +33,28 @@
 .purpose-section::after {
     content: '';
     position: absolute;
-    bottom: 50%;
+    bottom: 10%;
     left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 5px;
-    height: 90%;
+    transform: translateX(-50%) rotate(90deg);
+    width: 80vh;
+    height: 5px;
     background: var(--white);
     border-radius: 45px;
     z-index: 0;
-    opacity: 0.3;
+    opacity: 0.8;
 }
 
 .purpose-container {
     max-width: 1440px;
-    width: 100%;
+    width: 95%;
+    height: 90vh;
     margin: 0 auto;
     position: relative;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2vh 0;
 }
 
 .purpose-content {
@@ -47,29 +62,32 @@
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
     align-items: start;
-    margin-bottom: 3rem;
+    flex: 1;
+    padding-top: 5vh;
 }
 
 .purpose-left {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    justify-content: flex-start;
 }
 
 .purpose-right {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 2rem;
+    gap: 1rem;
     position: relative;
+    justify-content: flex-start;
 }
 
 .purpose-text {
-    font-size: 1.8rem;
+    font-size: clamp(1.2rem, 2vw, 1.8rem);
     font-weight: 800;
     line-height: 1.4;
     text-transform: uppercase;
-    padding: 2rem;
+    padding: 1rem;
 }
 
 .purpose-primary {
@@ -82,15 +100,15 @@
     color: var(--white);
     text-align: right;
     max-width: 650px;
-    margin-top: 8rem;
+    margin-top: 2rem;
 }
 
 .purpose-logo {
     position: absolute;
-    top: -6rem;
+    top: -8vh;
     right: 0;
     width: 100%;
-    max-width: 600px;
+    max-width: min(45vw, 600px);
     height: auto;
     opacity: 0.95;
     z-index: 2;
@@ -99,13 +117,12 @@
 .developers-selfie-card {
     width: 100%;
     max-width: 540px;
-    aspect-ratio: 1.44;
+    height: clamp(200px, 25vh, 380px);
     background: var(--text-dark);
     border-radius: 45px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 2rem;
 }
 
 .selfie-placeholder {
@@ -117,90 +134,54 @@
 }
 
 .selfie-placeholder i {
-    font-size: 4rem;
+    font-size: clamp(2rem, 4vw, 4rem);
     opacity: 0.3;
 }
 
 .selfie-placeholder span {
-    font-size: 1.35rem;
+    font-size: clamp(0.9rem, 1.5vw, 1.35rem);
     font-weight: 900;
     letter-spacing: 0.05rem;
 }
 
 .purpose-footer {
     text-align: center;
-    padding: 2rem 1rem;
+    padding: 1rem;
 }
 
 .purpose-footer p {
     color: var(--white);
-    font-size: 0.95rem;
+    font-size: clamp(0.65rem, 1vw, 0.95rem);
     font-weight: 900;
     letter-spacing: 0.03rem;
     text-transform: uppercase;
 }
 
 /* Tablet Styles */
-@media (max-width: 1200px) {
-    .purpose-text {
-        font-size: 1.5rem;
-    }
-    
-    .purpose-logo {
-        max-width: 500px;
-        top: -4rem;
-    }
-    
-    .purpose-secondary {
-        margin-top: 6rem;
-    }
-}
-
-/* Tablet - Portrait */
 @media (max-width: 1024px) {
-    .purpose-section {
-        padding: 3rem 1.5rem 2rem;
-    }
-    
     .purpose-content {
         gap: 2rem;
+        padding-top: 3vh;
     }
     
     .purpose-text {
-        font-size: 1.3rem;
-        padding: 1.5rem;
+        padding: 0.8rem;
     }
     
     .purpose-logo {
-        max-width: 450px;
-        top: -3rem;
+        max-width: 400px;
+        top: -5vh;
     }
     
     .purpose-secondary {
-        margin-top: 5rem;
-    }
-    
-    .developers-selfie-card {
-        max-width: 480px;
-    }
-    
-    .selfie-placeholder i {
-        font-size: 3rem;
-    }
-    
-    .selfie-placeholder span {
-        font-size: 1.15rem;
+        margin-top: 1rem;
     }
 }
 
 /* Mobile Styles */
 @media (max-width: 768px) {
-    .purpose-section {
-        padding: 2rem 1rem;
-    }
-    
     .purpose-section::before {
-        height: 20%;
+        height: 20vh;
     }
     
     .purpose-section::after {
@@ -209,7 +190,8 @@
     
     .purpose-content {
         grid-template-columns: 1fr;
-        gap: 3rem;
+        gap: 1.5rem;
+        padding-top: 2vh;
     }
     
     .purpose-left,
@@ -218,69 +200,58 @@
     }
     
     .purpose-text {
-        font-size: 1.1rem;
-        padding: 1rem;
+        padding: 0.5rem;
     }
     
     .purpose-primary {
         max-width: 100%;
+        text-align: center;
     }
     
     .purpose-secondary {
         text-align: center;
         max-width: 100%;
-        margin-top: 2rem;
+        margin-top: 0.5rem;
     }
     
     .purpose-logo {
         position: relative;
         top: 0;
-        max-width: 400px;
+        max-width: min(80vw, 400px);
         margin: 0 auto;
     }
     
     .developers-selfie-card {
         max-width: 100%;
-    }
-    
-    .selfie-placeholder i {
-        font-size: 2.5rem;
-    }
-    
-    .selfie-placeholder span {
-        font-size: 1rem;
+        height: clamp(150px, 20vh, 250px);
     }
     
     .purpose-footer p {
-        font-size: 0.75rem;
+        font-size: 0.6rem;
     }
 }
 
 /* Small Mobile */
 @media (max-width: 480px) {
-    .purpose-section {
-        padding: 1.5rem 0.75rem;
+    .purpose-container {
+        width: 98%;
+        height: 95vh;
     }
     
-    .purpose-text {
-        font-size: 0.95rem;
-        padding: 0.75rem;
+    .purpose-content {
+        gap: 1rem;
     }
     
     .purpose-logo {
-        max-width: 300px;
+        max-width: 70vw;
     }
     
-    .selfie-placeholder i {
-        font-size: 2rem;
-    }
-    
-    .selfie-placeholder span {
-        font-size: 0.85rem;
+    .developers-selfie-card {
+        height: clamp(120px, 18vh, 200px);
     }
     
     .purpose-footer p {
-        font-size: 0.65rem;
+        font-size: 0.5rem;
         letter-spacing: 0.02rem;
     }
 }
