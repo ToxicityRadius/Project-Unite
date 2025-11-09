@@ -1,13 +1,14 @@
 /* About Us Page Styles */
 
 .about-section {
-    min-height: 100vh;
+    height: 100vh;
     background: var(--primary-blue);
-    padding: 3rem 2rem;
+    padding: 2rem 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
+    overflow: hidden;
 }
 
 .about-section::before {
@@ -31,11 +32,11 @@
 .about-intro {
     color: var(--white);
     text-align: center;
-    font-size: 1.6rem;
+    font-size: clamp(1.1rem, 2vw, 1.6rem);
     font-weight: 800;
     line-height: 1.4;
     text-transform: uppercase;
-    margin: 0 auto 2rem;
+    margin: 0 auto 1.5rem;
     max-width: 900px;
     padding: 0 1rem;
 }
@@ -43,16 +44,16 @@
 .developers-heading {
     color: var(--white);
     text-align: center;
-    font-size: 1.35rem;
+    font-size: clamp(1rem, 1.8vw, 1.35rem);
     font-weight: 900;
     letter-spacing: 0.4rem;
-    margin: 3rem 0 2.5rem;
+    margin: 2rem 0 1.5rem;
 }
 
 .developers-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 3rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
     max-width: 1300px;
     margin: 0 auto;
     padding: 0 1rem;
@@ -62,14 +63,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
 }
 
 .card-inner {
     position: relative;
     width: 100%;
-    max-width: 400px;
-    aspect-ratio: 3/4;
+    max-width: min(400px, 25vw);
+    height: clamp(200px, 30vh, 400px);
     transition: transform 0.8s;
     transform-style: preserve-3d;
     cursor: pointer;
