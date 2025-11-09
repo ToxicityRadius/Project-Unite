@@ -134,7 +134,7 @@
     display: block;
     /* inner radius = card radius (25px) - border width (5px) */
     border-radius: calc(25px - 5px);
-    z-index: 1; /* sits above the fallback icon */
+    z-index: 1; 
 }
 
 .fallback-icon {
@@ -143,7 +143,6 @@
     color: rgba(255,255,255,0.25);
 }
 
-/* If image fails to load or is missing, keep the icon visible */
 .developer-photo[alt=""] + .fallback-icon,
 .developer-photo:invalid + .fallback-icon {
     z-index: 2;
