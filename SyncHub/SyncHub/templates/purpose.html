@@ -9,6 +9,29 @@
     <link rel="stylesheet" href="{% static 'css/purpose.css' %}">
 </head>
 <body class="purpose-body">
+    <!-- Background Design -->
+    <div class="background-design">
+        <img src="https://api.builder.io/api/v1/image/assets/TEMP/69e5a03207d72e05249171283d6b3fef53da98b7?width=3356" alt="" class="bg-logo-1">
+        <img src="https://api.builder.io/api/v1/image/assets/TEMP/5bae535a77c2066496e68aa5ed0ea8132703a86a?width=4062" alt="" class="bg-logo-2">
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="{% url 'landing' %}"><i class="fas fa-home"></i> HOME</a></li>
+            <li><a href="{% url 'about_us' %}"><i class="fas fa-info-circle"></i> ABOUT US</a></li>
+            <li><a href="{% url 'purpose' %}"><i class="fas fa-bullseye"></i> PURPOSE</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button id="openSignup" class="cta-button nav-signup">Sign Up</button>
+            <button id="openLogin" class="cta-button nav-login">Log In</button>
+            <div id="profile-info" class="nav-profile">
+                <img id="nav-avatar-img" class="nav-avatar" src="" alt="avatar">
+                <span id="nav-username-display" class="nav-username"></span>
+            </div>
+            <button id="logoutBtn" class="nav-logout">Logout</button>
+        </div>
+    </nav>
     <section class="purpose-section">
         <div class="purpose-container">
             <div class="purpose-content">
