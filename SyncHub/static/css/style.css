@@ -22,8 +22,15 @@ body {
     font-family: 'Poppins', -apple-system, Roboto, Helvetica, sans-serif;
     background: var(--white);
     color: var(--text-gray);
-    line-height: 1.5; /* slightly reduced line height */
+    line-height: 1.5;
     overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+body:not(.purpose-body) {
+    height: 100vh;
+    overflow-y: auto;
 }
 
 /* Background Design */
@@ -107,12 +114,12 @@ body {
 
 /* Landing Page */
 .landing-container {
-    min-height: 100vh;
+    height: calc(100vh - 100px);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 1.5rem; /* reduced padding */
+    padding: 1rem;
     text-align: center;
     position: relative;
 }
