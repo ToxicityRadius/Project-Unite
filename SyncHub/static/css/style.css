@@ -349,13 +349,13 @@ body:not(.purpose-body) {
     background: var(--white);
     border: 5px solid var(--primary-blue);
     border-radius: 2.2rem;
-    padding: 3rem;
+    padding: 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    min-height: 31rem;
+    min-height: clamp(20rem, 40vh, 31rem);
 }
 
 .dashboard-card:hover {
@@ -364,9 +364,9 @@ body:not(.purpose-body) {
 }
 
 .card-icon {
-    width: 18rem;
-    height: 18rem;
-    margin-bottom: 2rem;
+    width: clamp(12rem, 20vw, 18rem);
+    height: clamp(12rem, 20vw, 18rem);
+    margin-bottom: 1.5rem;
     object-fit: contain;
 }
 
