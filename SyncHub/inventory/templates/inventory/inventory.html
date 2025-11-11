@@ -1,0 +1,431 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'inventory/inventory.css' %}" />
+    <style id="sections-styles">
+      /* CSS for section section:Inventory */
+      #inventory-section {
+        width: 100%;
+        position: relative;
+        z-index: 1;
+      }
+
+      .inventory-container {
+        background-color: var(--color-white);
+        border: 5px solid var(--color-border);
+        border-radius: 45px;
+        padding: 40px 50px;
+        width: 100%;
+        max-width: 1424px;
+        margin: 0 auto;
+      }
+
+      .inventory-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 50px;
+        gap: 20px;
+      }
+
+      .header-left,
+      .header-right {
+        display: flex;
+        align-items: center;
+        flex: 1;
+      }
+
+      .header-left {
+        justify-content: flex-start;
+        gap: 16px;
+      }
+
+      .header-right {
+        justify-content: flex-end;
+      }
+
+      .inventory-title {
+        font-family: var(--font-main);
+        font-weight: 800;
+        font-size: 60px;
+        line-height: 1;
+        letter-spacing: -2.4px;
+        margin: 0;
+        text-align: center;
+        flex-shrink: 0;
+      }
+
+      .btn {
+        font-family: var(--font-main);
+        font-weight: 500;
+        font-size: 16px;
+        border-radius: 96px;
+        padding: 11px 32px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      .btn-primary {
+        background-color: var(--color-primary);
+        color: var(--color-white);
+        border: none;
+      }
+
+      .btn-secondary {
+        background-color: var(--color-white);
+        color: var(--color-primary);
+        border: 1px solid var(--color-primary);
+        font-size: 15px;
+      }
+
+      .icon-btn {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .icon-btn img {
+        width: 28px;
+        height: 28px;
+      }
+
+      .table-wrapper {
+        box-shadow: 0px 0px 15px 4px rgba(0, 0, 0, 0.1);
+        overflow-x: auto;
+      }
+
+      .inventory-table {
+        display: grid;
+        grid-template-columns: 2fr 2fr 1fr 3fr;
+        min-width: 900px;
+      }
+
+      .table-header,
+      .table-row,
+      .add-row {
+        display: contents; /* Makes children direct members of the grid */
+      }
+
+      .table-col {
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+      }
+
+      .table-header .table-col {
+        font-weight: 700;
+        font-size: 21px;
+        line-height: 1.5;
+      }
+
+      .inventory-table .table-row:nth-of-type(odd) .table-col {
+        background-color: #f1f1f1;
+      }
+
+      .table-row .table-col {
+        font-weight: 400;
+        font-size: 16px;
+      }
+
+      .add-row .table-col {
+        padding-top: 25px;
+        padding-bottom: 10px;
+      }
+
+      .add-btn {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+      }
+
+      .add-btn img {
+        width: 21px;
+        height: 21px;
+      }
+
+      .delete-icon {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        padding: 4px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .delete-mode .delete-icon {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .delete-icon:hover {
+        background-color: rgba(220, 53, 69, 0.1);
+      }
+
+      .delete-icon img {
+        width: 20px;
+        height: 20px;
+        filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+      }
+
+      .edit-mode .display-text {
+        border: 1px solid #007bff;
+        padding: 4px;
+        border-radius: 4px;
+        background-color: #f8f9fa;
+        cursor: text;
+      }
+
+      .empty-state {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 40px 20px;
+        color: var(--color-border);
+        font-size: 18px;
+      }
+
+      .add-button-container {
+        grid-column: 1 / -1;
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+      }
+
+      .edit-mode .add-button-container {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .add-single-btn {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+      }
+
+      .add-single-btn img {
+        width: 24px;
+        height: 24px;
+      }
+
+      /* Responsive Styles */
+      @media (max-width: 1200px) {
+        .inventory-header {
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 30px;
+        }
+        .header-left,
+        .header-right {
+          flex-basis: 100%;
+          justify-content: center;
+        }
+        .header-left {
+          order: 2;
+        }
+        .inventory-title {
+          order: 1;
+          flex-basis: 100%;
+        }
+        .header-right {
+          order: 3;
+        }
+      }
+
+      @media (max-width: 992px) {
+        .inventory-container {
+          padding: 30px;
+        }
+        .inventory-table {
+          display: block;
+          min-width: 0;
+        }
+        .table-header {
+          display: none;
+        }
+        .table-row {
+          display: block;
+          border-bottom: 1px solid #ddd;
+          padding: 10px 0;
+        }
+        .inventory-table .table-row:nth-of-type(odd) .table-col {
+          background-color: transparent;
+        }
+        .table-row:last-of-type {
+          border-bottom: none;
+        }
+        .table-col {
+          display: flex;
+          justify-content: space-between;
+          padding: 8px 10px;
+          text-align: right;
+        }
+        .table-col::before {
+          content: attr(data-label);
+          font-weight: 700;
+          text-align: left;
+          padding-right: 15px;
+        }
+        .add-row {
+          display: flex;
+          justify-content: space-around;
+          padding-top: 20px;
+          border-top: 1px solid #ddd;
+        }
+        .add-row .table-col {
+          display: inline-block;
+        }
+        .add-row .table-col::before {
+          display: none;
+        }
+        .empty-state {
+          padding: 20px;
+          font-size: 16px;
+        }
+        .add-button-container {
+          padding: 15px;
+        }
+      }
+
+      @media (max-width: 576px) {
+        body {
+          padding: 20px 10px;
+        }
+        .inventory-container {
+          padding: 20px 15px;
+        }
+        .inventory-title {
+          font-size: 40px;
+        }
+        .btn {
+          font-size: 14px;
+          padding: 10px 24px;
+        }
+        .table-col {
+          flex-direction: column;
+          align-items: flex-start;
+          text-align: left;
+        }
+        .table-col::before {
+          margin-bottom: 5px;
+        }
+        .empty-state {
+          font-size: 14px;
+        }
+      }
+    </style>
+    <script src="{% static 'inventory/inventory.js' %}"></script>
+  </head>
+  <body>
+    {% csrf_token %}
+    <section id="inventory-section">
+      <div class="inventory-container">
+        <header class="inventory-header">
+            <div class="header-left">
+              <button class="icon-btn" id="edit-mode-btn">
+                <img
+                  src="{% static 'inventory/images/af17d7a9a051336b2e0b5198b9242c4744829877.png' %}"
+                  alt="Edit"
+                />
+              </button>
+              {% if is_admin %}
+              <button class="icon-btn" id="delete-mode-btn">
+                <img
+                  src="{% static 'inventory/images/f2a618d9d063a5a882d9001a79266c8923e43b84.png' %}"
+                  alt="Delete"
+                />
+              </button>
+              {% endif %}
+          
+              <button
+                class="btn btn-secondary"
+                id="save-changes-btn"
+                style="display: none"
+              >
+                SAVE CHANGES
+              </button>
+            </div>
+          
+            <h1 class="inventory-title">INVENTORY</h1>
+          
+            <div class="header-right">
+              <a href="{% url 'login' %}" class="btn btn-primary">Back to Login</a>
+            </div>
+          </header>
+        </header>
+
+        <div class="table-wrapper">
+          <div class="inventory-table">
+            <div class="table-header">
+              <div class="table-col">ITEM</div>
+              <div class="table-col">DESCRIPTION</div>
+              <div class="table-col">QUANTITY</div>
+              <div class="table-col">DATE ADDED</div>
+            </div>
+
+            {% for item in items %}
+            <div class="table-row" data-item-id="{{ item.id }}">
+              <div class="table-col" data-label="ITEM">
+                <span class="display-text">{{ item.name }}</span>
+              </div>
+              <div class="table-col" data-label="DESCRIPTION">
+                <span class="display-text">{{ item.description|default:'NONE' }}</span>
+              </div>
+              <div class="table-col" data-label="QUANTITY">
+                <span class="display-text">{{ item.quantity }}</span>
+              </div>
+              <div class="table-col" data-label="DATE ADDED">{{ item.date_added|date:"M d, Y, g:i a" }}
+                {% if is_admin %}
+                <button class="delete-icon" data-item-id="{{ item.id }}" title="Delete item">
+                  <img src="{% static 'inventory/images/f2a618d9d063a5a882d9001a79266c8923e43b84.png' %}" alt="Delete" />
+                </button>
+                {% endif %}
+              </div>
+            </div>
+            {% empty %}
+            <div class="empty-state">
+              <p>No items found. Click the edit button to add your first item!</p>
+            </div>
+            {% endfor %}
+
+            <div class="add-button-container">
+              <button class="add-single-btn" id="add-single-btn">
+                <img src="{% static 'inventory/images/a01ffede1eba194682a64d6b496148abb64b8d6a.png' %}" alt="Add item" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
