@@ -116,6 +116,7 @@
         display: grid;
         grid-template-columns: 2fr 2fr 1fr 3fr;
         min-width: 900px;
+        margin: 0 auto;
       }
 
       .table-header,
@@ -347,8 +348,34 @@
     <script src="{% static 'inventory/inventory.js' %}"></script>
   </head>
   <body>
+    <!-- Background Design -->
+    <div class="background-design">
+        <img src="https://api.builder.io/api/v1/image/assets/TEMP/69e5a03207d72e05249171283d6b3fef53da98b7?width=3356" alt="" class="bg-logo-1">
+        <img src="https://api.builder.io/api/v1/image/assets/TEMP/5bae535a77c2066496e68aa5ed0ea8132703a86a?width=4062" alt="" class="bg-logo-2">
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000;">
+        <ul class="nav-links">
+            <li><a href="{% url 'landing' %}"><i class="fas fa-home"></i> HOME</a></li>
+            <li><a href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> DASHBOARD</a></li>
+            <li><a href="{% url 'inventory:item_list' %}"><i class="fas fa-boxes"></i> INVENTORY</a></li>
+        </ul>
+        <div class="nav-actions">
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="cta-button nav-profile"><i class="fas fa-user"></i> {{ user.first_name }} {{ user.last_name }}</a>
+                <form method="POST" action="{% url 'logout' %}" style="margin:0;">
+                    {% csrf_token %}
+                    <button type="submit" class="cta-button nav-logout">Logout</button>
+                </form>
+            {% else %}
+                <button id="openSignup" class="cta-button nav-signup">Sign Up</button>
+                <button id="openLogin" class="cta-button">Log In</button>
+            {% endif %}
+        </div>
+    </nav>
     {% csrf_token %}
-    <section id="inventory-section">
+    <section id="inventory-section" style="padding-top: 150px;">
       <div class="inventory-container">
         <header class="inventory-header">
             <div class="header-left">
@@ -379,7 +406,7 @@
             <h1 class="inventory-title">INVENTORY</h1>
           
             <div class="header-right">
-              <a href="{% url 'login' %}" class="btn btn-primary">Back to Login</a>
+              <a href="{% url 'dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
             </div>
           </header>
         </header>
