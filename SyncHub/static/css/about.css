@@ -1,10 +1,13 @@
 /* About Us Page Styles */
 
+/* Make navbar white on About Us page */
+.navbar {
+    background: white;
+}
+
 .about-section {
-    /* use min-height so content can grow and avoid overlapping fixed nav */
-    min-height: calc(100vh - 76px); /* reserve space for navbar (approx height) */
+    min-height: calc(80vh - 76px); /* reserve space for navbar (approx height) */
     background: var(--primary-blue);
-    /* add top padding to push content below the navbar */
     padding: 4.5rem 1.5rem 2rem;
     display: flex;
     align-items: flex-start;
@@ -15,7 +18,7 @@
 
 .about-section::before {
     content: '';
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;

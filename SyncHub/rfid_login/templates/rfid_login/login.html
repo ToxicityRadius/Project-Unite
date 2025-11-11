@@ -46,16 +46,20 @@
                     <div class="figma-input-wrapper">
                         <input type="text" id="officer_id" name="officer_id" required placeholder="Enter your officer ID" autofocus class="figma-form-input">
                     </div>
-                    <button type="submit" class="figma-login-button">Login</button>
-                    {% if is_admin %}
-                    <a href="{% url 'rfid_login:time_log' %}" class="figma-login-button">View Time Logs</a>
-                    {% endif %}
+                    <div class="button-container">
+                        <button type="submit" class="figma-login-button">Login</button>
+                        {% if is_admin %}
+                        <a href="{% url 'rfid_login:time_log' %}" class="figma-login-button">View Time Logs</a>
+                        {% endif %}
+                    </div>
                 </form>
+                <br>
+                <br>
                 {% if message %}
                 <p class="message">{{ message }}</p>
                 {% endif %}
                 {% if last_log %}
-                <p class="last-log">Last log: {{ last_log.date }} - Time In: {{ last_log.time_in|date:"g:i a" }}{% if last_log.time_out %} - Time Out: {{ last_log.time_out|date:"g:i a" }}{% endif %}</p>
+                <p class="last-log">Last log: {{ last_log.date }} <br> Time In: {{ last_log.time_in|date:"g:i a" }}{% if last_log.time_out %} <br> Time Out: {{ last_log.time_out|date:"g:i a" }}{% endif %}</p>
                 {% endif %}
             </div>
             <div class="figma-login-right">

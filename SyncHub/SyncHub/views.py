@@ -71,44 +71,17 @@ def login_api(request):
     if user is not None:
         auth_login(request, user)
         logger.info(f"Login successful for user: {user.username}")
-        return JsonResponse({'message': 'Login successful.'})
+        return JsonResponse({
+            'message': 'Login successful.',
+            'user': {
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email,
+                'username': user.username,
+            }
+        })
     logger.warning(f"Invalid credentials for identifier: {identifier}")
     return JsonResponse({'message': 'Invalid credentials.'}, status=400)
-
-
-def login_page(request):
-    """Login page view with form POST handling"""
-    # Traditional form POST
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = _authenticate_identifier_password(request, username, password)
-        if user is not None:
-            auth_login(request, user)
-            messages.success(request, 'Login successful!')
-            return redirect('dashboard')
-        else:
-            messages.error(request, 'Invalid username or password.')
-    return render(request, 'login.html')
-
-def signup_page(request):
-    """Signup page view with form handling"""
-    if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            # Assign Officer role to new users
-            officer_group, created = Group.objects.get_or_create(name='Officer')
-            user.groups.add(officer_group)
-            messages.success(request, 'Account created successfully! Please log in.')
-            return redirect('login')
-        else:
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f"{field}: {error}")
-    else:
-        form = CustomUserCreationForm()
-    return render(request, 'signup.html', {'form': form})
 
 @csrf_exempt
 def signup_api(request):
@@ -287,3 +260,22 @@ def auth_status_api(request):
             'last_name': request.user.last_name,
         })
     return JsonResponse({'authenticated': False})
+
+def password_reset_validate_email(request):
+    """Custom password reset view that validates email without sending reset link"""
+    if request.method == 'POST':
+        email = request.POST.get('email', '').strip()
+        if not email:
+            messages.error(request, 'Please enter an email address.')
+            return render(request, 'registration/password_reset_form.html')
+
+        try:
+            user = CustomUser.objects.get(email__iexact=email)
+            messages.success(request, f'Email validation successful. Your account email is confirmed as {email}.')
+            # You can redirect to login or another page here
+            return redirect('landing')
+        except CustomUser.DoesNotExist:
+            messages.error(request, 'No account found with this email address.')
+            return render(request, 'registration/password_reset_form.html')
+
+    return render(request, 'registration/password_reset_form.html')

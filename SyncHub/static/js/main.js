@@ -307,8 +307,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function toggleAuthButtons() {
         if (localStorage.getItem('loggedIn') === 'true') {
-            if (openLoginBtn) openLoginBtn.style.display = 'none';
-            if (openSignupBtn) openSignupBtn.style.display = 'none';
             if (logoutBtn) logoutBtn.style.display = 'inline-block';
             if (profileInfo) profileInfo.style.display = 'flex';
             if (navAvatarImg) {
@@ -318,12 +316,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             if (navUsernameDisplay) {
+                const fullName = localStorage.getItem('full_name');
                 const username = localStorage.getItem('username') || localStorage.getItem('email') || 'User';
-                navUsernameDisplay.textContent = username;
+                navUsernameDisplay.textContent = fullName || username;
             }
         } else {
-            if (openLoginBtn) openLoginBtn.style.display = 'inline-block';
-            if (openSignupBtn) openSignupBtn.style.display = 'inline-block';
             if (logoutBtn) logoutBtn.style.display = 'none';
             if (profileInfo) profileInfo.style.display = 'none';
             if (navAvatarImg) { navAvatarImg.src = ''; navAvatarImg.style.display = 'none'; }
@@ -339,6 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.removeItem('username');
             localStorage.removeItem('avatar');
             localStorage.removeItem('email');
+            localStorage.removeItem('full_name');
             toggleAuthButtons();
             window.location.href = '/';
         });
@@ -404,6 +402,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (loginForm) loginForm.setAttribute('aria-hidden', 'true');
                 if (formContainer) formContainer.classList.remove('active');
                 setFocusToFirstInput('.signup_form');
+            }
+        });
+    }
+
+    const getStarted = document.getElementById('getStarted');
+    if (getStarted) {
+        getStarted.addEventListener('click', e => {
+            e.preventDefault();
+            if (localStorage.getItem('loggedIn') === 'true') {
+                window.location.href = '/dashboard/';
+            } else {
+                if (home) {
+                    home.classList.remove('hidden');
+                    home.style.display = 'flex';
+                }
+                // save current focus so it can be restored when modal closes
+                previousFocus = document.activeElement;
+                const signupForm = document.querySelector('.signup_form');
+                const loginForm = document.querySelector('.login_form');
+                if (signupForm) signupForm.setAttribute('aria-hidden', 'true');
+                if (loginForm) loginForm.setAttribute('aria-hidden', 'false');
+                if (formContainer) formContainer.classList.add('active');
+                setFocusToFirstInput('.login_form');
             }
         });
     }
@@ -680,6 +701,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                         if (emailRegex.test(identifier)) { localStorage.setItem('email', identifier); localStorage.removeItem('username'); }
                         else { localStorage.setItem('username', identifier); localStorage.removeItem('email'); }
+                        // Store full name if available in response
+                        if (body.user && body.user.first_name && body.user.last_name) {
+                            localStorage.setItem('full_name', body.user.first_name + ' ' + body.user.last_name);
+                        }
                         toggleAuthButtons();
                         window.location.href = '/dashboard/';
                     }
@@ -713,18 +738,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify({ identifier: identifierInput.value.trim(), password: passwordInput.value.trim() })
                 })
                 .then(res => res.json().then(data => ({status: res.status, body: data})))
-                .then(({status, body}) => {
-                    alert(body.message);
-                    if (status === 200) {
-                        localStorage.setItem('loggedIn', 'true');
-                        const identifier = identifierInput.value.trim();
-                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                        if (emailRegex.test(identifier)) { localStorage.setItem('email', identifier); localStorage.removeItem('username'); }
-                        else { localStorage.setItem('username', identifier); localStorage.removeItem('email'); }
-                        window.location.href = '/dashboard/';
+            .then(({status, body}) => {
+                alert(body.message);
+                if (status === 200) {
+                    localStorage.setItem('loggedIn', 'true');
+                    const identifier = identifierInput.value.trim();
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (emailRegex.test(identifier)) { localStorage.setItem('email', identifier); localStorage.removeItem('username'); }
+                    else { localStorage.setItem('username', identifier); localStorage.removeItem('email'); }
+                    // Store full name if available in response
+                    if (body.user && body.user.first_name && body.user.last_name) {
+                        localStorage.setItem('full_name', body.user.first_name + ' ' + body.user.last_name);
                     }
-                    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }
-                })
+                    window.location.href = '/dashboard/';
+                }
+                if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }
+            })
                 .catch(err => { alert('Error: ' + err.message); if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; } });
             }
         });

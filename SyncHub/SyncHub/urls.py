@@ -9,9 +9,7 @@ urlpatterns = [
     path('', views.landing_page, name='landing'),
     path('about/', views.about_us, name='about_us'),
     path('purpose/', views.purpose_page, name='purpose'),
-    path('login/', views.login_page, name='login'),
     path('logout/', views.logout_view, name='logout'),
-    path('signup/', views.signup_page, name='signup'),
     path('dashboard/', views.dashboard_view, name='dashboard'),
     path('profile/', views.profile_view, name='profile'),
     path('logged-in-superadmins/', views.logged_in_superadmins_view, name='logged_in_superadmins'),
@@ -21,6 +19,7 @@ urlpatterns = [
 
 
     # Password reset
+    path('accounts/password_reset/', views.password_reset_validate_email, name='password_reset'),
     path('accounts/', include('django.contrib.auth.urls')),
 
     path('api/signup', views.signup_api, name='api_signup'),

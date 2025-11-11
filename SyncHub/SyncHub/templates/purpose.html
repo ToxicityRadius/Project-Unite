@@ -13,180 +13,7 @@
     />
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     <link rel="stylesheet" href="{% static 'css/purpose.css' %}" />
-    <style id="sections-styles">
-      /* CSS for section section:Purpose */
-      .page-wrapper {
-        max-width: 1440px;
-        margin: 0 auto;
-        position: relative;
-      }
 
-      .purpose-section {
-        background-color: var(--color-white);
-        padding: 80px 60px;
-        min-height: 462px;
-      }
-
-      .purpose-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 20px;
-      }
-
-      .purpose-text {
-        color: var(--color-primary);
-        font-size: 28.827px;
-        font-weight: 800;
-        line-height: 1.4;
-        max-width: 709px;
-        margin: 0;
-      }
-
-      .logo-wrapper {
-        margin-top: -88px; /* Based on figma y-positions: text y:80, logo y:-8 */
-        flex-shrink: 0;
-      }
-
-      .logo-image {
-        width: 673.67px;
-        height: auto;
-        display: block;
-      }
-
-      @media (max-width: 1350px) {
-        .purpose-container {
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
-        }
-        .logo-wrapper {
-          margin-top: 50px;
-        }
-        .purpose-text {
-          max-width: 90%;
-        }
-      }
-
-      @media (max-width: 768px) {
-        .purpose-section {
-          padding: 40px 20px;
-        }
-        .logo-wrapper {
-          width: 80%;
-          max-width: 450px;
-          margin-top: 30px;
-        }
-        .logo-image {
-          width: 100%;
-        }
-        .purpose-text {
-          font-size: 24px;
-          max-width: 100%;
-        }
-      }
-
-      /* CSS for section section:Vision */
-      .vision-section {
-        padding: 50px 81px 50px 93px;
-      }
-
-      .vision-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 70px;
-      }
-
-      .dev-photo-placeholder {
-        width: 546px;
-        height: 380px;
-        flex-shrink: 0;
-        background-color: var(--color-dark);
-        border-radius: 45px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .dev-photo-text {
-        color: var(--color-white);
-        font-size: 21.39px;
-        font-weight: 900;
-        line-height: 1.5;
-        text-align: center;
-      }
-
-      .vision-text {
-        font-size: 28.827px;
-        font-weight: 800;
-        line-height: 1.4;
-        text-align: right;
-        max-width: 650px;
-        margin: 0;
-      }
-
-      @media (max-width: 1200px) {
-        .vision-container {
-          flex-direction: column-reverse;
-          gap: 40px;
-        }
-        .vision-text {
-          text-align: center;
-        }
-      }
-
-      @media (max-width: 768px) {
-        .vision-section {
-          padding: 40px 20px;
-        }
-        .dev-photo-placeholder {
-          width: 100%;
-          max-width: 546px;
-          height: auto;
-          aspect-ratio: 546 / 380;
-          padding: 20px;
-        }
-        .vision-text {
-          font-size: 24px;
-        }
-      }
-
-      /* CSS for section section:Footer */
-      .site-footer {
-        padding: 0 60px 40px;
-      }
-
-      .footer-container {
-        margin: 0 auto;
-      }
-
-      .footer-divider {
-        height: 5px;
-        width: 100%;
-        background-color: var(--color-white);
-        border-radius: 45px;
-        margin: 20px 0 35px;
-      }
-
-      .copyright-text {
-        font-size: 14.75px;
-        font-weight: 900;
-        letter-spacing: 0.44px;
-        text-align: center;
-        margin: 0;
-        line-height: 1.5;
-      }
-
-      @media (max-width: 768px) {
-        .site-footer {
-          padding: 0 20px 30px;
-        }
-        .copyright-text {
-          font-size: 12px;
-        }
-      }
-    </style>
     <script src="{% static 'js/purpose.js' %}" defer></script>
   </head>
   <body>
@@ -205,14 +32,14 @@
         </ul>
         <div class="nav-actions">
             {% if user.is_authenticated %}
-                <a href="{% url 'profile' %}" class="cta-button nav-profile"><i class="fas fa-user"></i> {{ user.first_name }} {{ user.last_name }}</a>
+                <a href="{% url 'profile' %}" class="cta-button nav-profile"><i class="fas fa-user" style="vertical-align: middle;"></i> {{ user.first_name }} {{ user.last_name }}</a>
                 <form method="POST" action="{% url 'logout' %}" style="margin:0;">
                     {% csrf_token %}
                     <button type="submit" class="cta-button nav-logout">Logout</button>
                 </form>
             {% else %}
+                <button id="openLogin" class="cta-button nav-signup">Log In</button>
                 <button id="openSignup" class="cta-button nav-signup">Sign Up</button>
-                <button id="openLogin" class="cta-button">Log In</button>
             {% endif %}
         </div>
     </nav>
@@ -221,7 +48,7 @@
       <section id="purpose" class="purpose-section">
         <div class="purpose-container">
           <p class="purpose-text">
-            The Purpose our project, Project Unite, was to enhance the
+            The Purpose of our project, Project Unite, is to enhance the
             efficiency and transparency of the administrative processes of the
             Supreme Student Council. Our intention is to make the management of
             data simple and to encourage the use of digital means in student
@@ -262,5 +89,8 @@
         </p>
       </div>
     </footer>
+    {% include 'partials/auth_modal.html' %}
+    <script src="{% static 'js/purpose.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
   </body>
 </html>

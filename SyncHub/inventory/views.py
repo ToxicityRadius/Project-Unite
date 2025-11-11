@@ -36,8 +36,8 @@ def item_list(request):
 
             elif action == 'delete':
                 item_ids = data.get('item_ids', [])
-                Item.objects.filter(id__in=item_ids).delete()
-                return JsonResponse({'success': True})
+                deleted_count = Item.objects.filter(id__in=item_ids).delete()[0]
+                return JsonResponse({'success': True, 'deleted_count': deleted_count, 'item_ids': item_ids})
 
             elif action == 'create':
                 name = data.get('name')
@@ -58,15 +58,34 @@ def item_list(request):
 
             elif action == 'save':
                 items_data = data.get('items', [])
-                # Clear existing items and save new ones
-                Item.objects.all().delete()
+                new_items_data = data.get('new_items', [])
+
+                # Update existing items
                 for item_data in items_data:
                     if item_data['name'].strip():  # Only save if name is not empty
+                        try:
+                            item = Item.objects.get(id=item_data['id'])
+                            item.name = item_data['name']
+                            item.description = item_data['description'] or ''
+                            item.quantity = int(item_data['quantity']) if str(item_data['quantity']).isdigit() else 0
+                            item.save()
+                        except Item.DoesNotExist:
+                            # If item doesn't exist, create it
+                            Item.objects.create(
+                                name=item_data['name'],
+                                description=item_data['description'] or '',
+                                quantity=int(item_data['quantity']) if str(item_data['quantity']).isdigit() else 0
+                            )
+
+                # Create new items
+                for new_item_data in new_items_data:
+                    if new_item_data['name'].strip():  # Only save if name is not empty
                         Item.objects.create(
-                            name=item_data['name'],
-                            description=item_data['description'] or '',
-                            quantity=int(item_data['quantity']) if item_data['quantity'].isdigit() else 0
+                            name=new_item_data['name'],
+                            description=new_item_data['description'] or '',
+                            quantity=int(new_item_data['quantity']) if str(new_item_data['quantity']).isdigit() else 0
                         )
+
                 return JsonResponse({'success': True})
 
         except Exception as e:

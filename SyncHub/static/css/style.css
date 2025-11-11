@@ -69,7 +69,7 @@ body:not(.purpose-body) {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.7rem 6rem; /* reduced padding */
+    padding: 1.5rem 5rem; /* reduced padding */
     background: transparent;
     position: relative;
     z-index: 10;
@@ -124,6 +124,12 @@ body:not(.purpose-body) {
     position: relative;
 }
 
+.landing-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
 .welcome-text {
     font-size: 1.5rem; /* reduced font size */
     font-weight: 500;
@@ -141,24 +147,24 @@ body:not(.purpose-body) {
 }
 
 .subtitle {
-    font-size: 2rem; /* reduced font size */
+    font-size: 2rem; 
     font-weight: 500;
     color: var(--text-gray);
     letter-spacing: 0.03em;
-    margin-bottom: 3rem; /* reduced margin */
+    margin-bottom: 3rem; 
     text-transform: uppercase;
 }
 
 .cta-button {
     display: inline-flex;
-    padding: 0.6rem 1.7rem; /* reduced padding */
+    padding: 0.6rem 1.7rem; 
     background: var(--primary-blue);
     color: var(--white);
     text-decoration: none;
-    font-size: 1.15rem; /* reduced font size */
+    font-size: 1.15rem; 
     font-weight: 500;
-    border-radius: 5rem; /* slightly reduced border radius */
-    border: 3px solid var(--border-color); /* reduced border width */
+    border-radius: 5rem; 
+    border: 3px solid var(--border-color); 
     transition: all 0.3s ease;
     cursor: pointer;
 }
@@ -496,7 +502,7 @@ body:not(.purpose-body) {
 
 /* Figma Login Design */
 .figma-login-container {
-    min-height: 100vh;
+    min-height: 40vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -611,6 +617,14 @@ body:not(.purpose-body) {
 
 
 
+.button-container {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.8rem;
+}
+
 .figma-login-button {
     padding: 0.6rem 1.5rem; /* reduced padding */
     background: var(--background-light);
@@ -623,7 +637,6 @@ body:not(.purpose-body) {
     cursor: pointer;
     transition: all 0.3s ease;
     align-self: center;
-    margin-top: 1.8rem; /* reduced margin */
     min-width: 7.6rem;
     text-decoration: none !important;
 }
@@ -1409,13 +1422,19 @@ a.figma-login-button {
 }
 
 .nav-signup {
-    background: transparent;
+    background: var(--white);
     color: var(--primary-blue);
     border: 2px solid var(--primary-blue);
-    padding: 8px 14px;
+    padding: 0.6rem 1.7rem;
+    border-radius: 5rem;
+    font-size: 1.15rem;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.nav-profile {
+.nav-profile, .nav-logout {
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -1436,13 +1455,6 @@ a.figma-login-button {
     color: var(--text-dark);
 }
 
-.nav-logout {
-    display: inline-block;
-    background: transparent;
-    border: none;
-    color: var(--white);
-    cursor: pointer;
-
 /* Responsive Design */
 @media (max-width: 768px) {
     .filter-form form {
@@ -1461,5 +1473,4 @@ a.figma-login-button {
     .chart-container canvas {
         height: 300px;
     }
-}
 }
