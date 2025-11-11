@@ -75,6 +75,9 @@
             <h1 class="inventory-title">INVENTORY</h1>
           
             <div class="header-right">
+              {% if is_admin %}
+              <a href="{% url 'inventory:inventory_reports' %}" class="btn btn-secondary">View Reports</a>
+              {% endif %}
               <a href="{% url 'dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
             </div>
           </header>
@@ -85,6 +88,7 @@
               <div class="table-col">ITEM</div>
               <div class="table-col">DESCRIPTION</div>
               <div class="table-col">QUANTITY</div>
+              <div class="table-col">LOCATION</div>
               <div class="table-col">DATE ADDED</div>
             </div>
 
@@ -98,6 +102,9 @@
               </div>
               <div class="table-col" data-label="QUANTITY">
                 <span class="display-text">{{ item.quantity }}</span>
+              </div>
+              <div class="table-col" data-label="LOCATION">
+                <span class="display-text">{{ item.location|default:'NONE' }}</span>
               </div>
               <div class="table-col" data-label="DATE ADDED">{{ item.date_added|date:"M d, Y, g:i a" }}
                 {% if is_admin %}

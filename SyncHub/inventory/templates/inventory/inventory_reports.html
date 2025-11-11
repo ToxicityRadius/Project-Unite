@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Reports - PROJECT UNITE</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Background Design -->
+    <div class="background-design">
+        <img src="https://api.builder.io/api/v1/image/assets/TEMP/69e5a03207d72e05249171283d6b3fef53da98b7?width=3356" alt="" class="bg-logo-1">
+        <img src="https://api.builder.io/api/v1/image/assets/TEMP/5bae535a77c2066496e68aa5ed0ea8132703a86a?width=4062" alt="" class="bg-logo-2">
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="{% url 'landing' %}"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            {% if is_admin %}
+            <li><a href="{% url 'inventory:item_list' %}"><i class="fas fa-boxes"></i> Inventory</a></li>
+            {% endif %}
+        </ul>
+        <div class="nav-actions">
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="cta-button nav-profile"><i class="fas fa-user"></i> {{ user.first_name }} {{ user.last_name }}</a>
+                <form method="POST" action="{% url 'logout' %}" style="margin:0;">
+                    {% csrf_token %}
+                    <button type="submit" class="cta-button nav-logout">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'signup' %}" class="cta-button nav-signup">Sign Up</a>
+                <a href="{% url 'login' %}" class="cta-button">Log In</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- Inventory Reports Content -->
+    <div class="time-reports-container">
+        <div class="time-reports-card">
+            <div class="time-reports-header">
+                <h2>Inventory Reports</h2>
+                <a href="{% url 'inventory:item_list' %}" class="back-btn">Back to Inventory</a>
+            </div>
+
+            <!-- Filter Form -->
+            <div class="filter-form">
+                <form method="get">
+                    <label for="start_date">Start Date:</label>
+                    <input type="date" id="start_date" name="start_date" value="{{ filters.start_date }}">
+
+                    <label for="end_date">End Date:</label>
+                    <input type="date" id="end_date" name="end_date" value="{{ filters.end_date }}">
+
+                    <button type="submit">Filter</button>
+                    <button type="button" onclick="window.location.href='{% url 'inventory:inventory_reports' %}'">Clear Filters</button>
+                </form>
+            </div>
+
+            <!-- Chart Section -->
+            <div class="chart-container">
+                <h3>Items Added Overview (By Date)</h3>
+                <canvas id="itemsChart" data-dates='{{ dates|safe }}' data-items='{{ items_count|safe }}' data-quantities='{{ total_quantities_list|safe }}'></canvas>
+            </div>
+
+            <!-- Second Chart Section -->
+            <div class="chart-container">
+                <h3>Total Quantity (By Item)</h3>
+                <canvas id="itemQuantitiesChart" data-names='{{ item_names|safe }}' data-quantities='{{ item_total_quantities|safe }}'></canvas>
+            </div>
+
+            <!-- Summary Table -->
+            <div class="summary-table-container" style="margin-bottom: 50px;">
+                <h3>Daily Summary (Items Added)</h3>
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Items Added</th>
+                            <th>Total Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items_by_date %}
+                        <tr>
+                            <td>{{ item.date_added__date|date:"M. j, Y" }}</td>
+                            <td>{{ item.total_items }}</td>
+                            <td>{{ item.total_quantity }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="no-data">No inventory data found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Second Summary Table -->
+            <div class="summary-table-container">
+                <h3>Item Quantity Summary</h3>
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Total Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for iq in item_quantities %}
+                        <tr>
+                            <td>{{ iq.0 }}</td>
+                            <td>{{ iq.1 }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="2" class="no-data">No item quantity data found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {% include 'partials/auth_modal.html' %}
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'inventory/inventory_reports.js' %}"></script>
+</body>
+</html>
