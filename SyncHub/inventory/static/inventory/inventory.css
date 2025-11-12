@@ -62,7 +62,6 @@ body {
 
 .header-right {
   justify-content: flex-end;
-  gap: 10px;
 }
 
 .inventory-title {
@@ -124,37 +123,49 @@ body {
 
 .inventory-table {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  grid-gap: 0px;
-  min-width: fit-content;
-  margin: 0;
+  grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr;
+  width: 100%;
+  min-width: 0;
+  margin: 0 auto;
+}
+
+.inventory-table .table-col:nth-child(1) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  justify-content: center; 
+  padding-left: 0;
+}
+.inventory-table .table-col:nth-child(4) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.inventory-table .table-col[data-label="DESCRIPTION"] {
+  white-space: normal;
+  text-align: left;
+  padding-left: 12px;
 }
 
 .table-header,
 .table-row,
 .add-row {
-  display: contents; /* Makes children direct members of the grid */
+  display: contents;
 }
 
 .table-col {
-  padding: 16px 5px;
+  padding: 16px 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   position: relative;
-  white-space: nowrap;
-  flex-direction: row;
-}
-
-.table-col[data-label="DATE ADDED"] {
-  justify-content: space-between;
 }
 
 .table-header .table-col {
   font-weight: 700;
   font-size: 21px;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 .inventory-table .table-row:nth-of-type(odd) .table-col {
@@ -184,12 +195,21 @@ body {
 }
 
 .delete-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
   background: none;
   border: none;
   padding: 4px;
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.2s;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.delete-mode .delete-icon {
   opacity: 1;
   pointer-events: auto;
 }
@@ -276,50 +296,53 @@ body {
     padding: 30px;
   }
   .inventory-table {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    min-width: auto;
-    margin: 0 auto;
+    display: block;
+    min-width: 0;
   }
   .table-header {
-    display: contents;
+    display: none;
   }
   .table-row {
-    display: contents;
+    display: block;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
   }
   .inventory-table .table-row:nth-of-type(odd) .table-col {
-    background-color: #f1f1f1;
+    background-color: transparent;
+  }
+  .table-row:last-of-type {
+    border-bottom: none;
   }
   .table-col {
-    padding: 16px 5px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    position: relative;
-    white-space: nowrap;
-  }
-  .table-col[data-label="DATE ADDED"] {
     justify-content: space-between;
+    padding: 8px 10px;
+    text-align: right;
+  }
+  .table-col::before {
+    content: attr(data-label);
+    font-weight: 700;
+    text-align: left;
+    padding-right: 15px;
   }
   .add-row {
-    display: contents;
+    display: flex;
+    justify-content: space-around;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+  }
+  .add-row .table-col {
+    display: inline-block;
+  }
+  .add-row .table-col::before {
+    display: none;
   }
   .empty-state {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 40px 20px;
-    color: var(--color-border);
-    font-size: 18px;
+    padding: 20px;
+    font-size: 16px;
   }
   .add-button-container {
-    grid-column: 1 / -1;
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s;
+    padding: 15px;
   }
 }
 
@@ -338,13 +361,12 @@ body {
     padding: 10px 24px;
   }
   .table-col {
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
   }
-  .table-col[data-label="DATE ADDED"] {
-    justify-content: space-between;
+  .table-col::before {
+    margin-bottom: 5px;
   }
   .empty-state {
     font-size: 14px;

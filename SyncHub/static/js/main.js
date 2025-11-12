@@ -278,11 +278,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showError(input, message) {
         if (!input) return;
-        let errorElem = input.parentElement.querySelector('.error-message');
+
+        let container = input.parentElement;
+        if (container && container.classList && container.classList.contains('input_box') && container.parentElement) {
+            container = container.parentElement;
+        }
+        if (!container) container = input.parentElement;
+        let errorElem = container.querySelector('.error-message');
         if (!errorElem) {
             errorElem = document.createElement('div');
             errorElem.className = 'error-message';
-            input.parentElement.appendChild(errorElem);
+            container.appendChild(errorElem);
         }
         errorElem.textContent = message;
         input.setAttribute('aria-invalid', 'true');
@@ -290,7 +296,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function clearError(input) {
         if (!input) return;
-        const errorElem = input.parentElement.querySelector('.error-message');
+        let container = input.parentElement;
+        if (container && container.classList && container.classList.contains('input_box') && container.parentElement) {
+            container = container.parentElement;
+        }
+        const errorElem = container ? container.querySelector('.error-message') : null;
         if (errorElem) errorElem.textContent = '';
         input.removeAttribute('aria-invalid');
     }

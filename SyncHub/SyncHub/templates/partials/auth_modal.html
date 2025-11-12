@@ -149,5 +149,60 @@ document.addEventListener('DOMContentLoaded', function() {
       showAuthModal('loginForm');
     });
   }
+  
+  // Enhance auth inputs inside modal: placeholders, classes, and password toggle
+  (function enhanceAuthModal() {
+    // Add placeholders/aria/autocomplete and ensure auth inputs have the figma/auth classes
+    const pwSelectors = ['#signup_password', '#confirm_password', '#login_password'];
+    pwSelectors.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.add('figma-input');
+      el.classList.add('auth-input');
+      if (!el.getAttribute('placeholder')) {
+        if (id === 'confirm_password') el.setAttribute('placeholder', 'Confirm Password');
+        else el.setAttribute('placeholder', 'Password');
+      }
+      el.setAttribute('aria-label', el.getAttribute('placeholder'));
+      el.setAttribute('autocomplete', 'current-password');
+    });
+
+    // Delegate toggle handler for icons inside the modal
+    function toggleInputVisibility(icon) {
+      if (!icon) return;
+      const wrapper = icon.closest('.input_box');
+      const input = wrapper ? wrapper.querySelector('input') : null;
+      if (!input) return;
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+        icon.setAttribute('aria-label', 'Hide password');
+      } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+        icon.setAttribute('aria-label', 'Show password');
+      }
+    }
+
+    document.addEventListener('click', function(e) {
+      const icon = e.target.closest && e.target.closest('.toggle-password');
+      if (icon) {
+        e.preventDefault();
+        toggleInputVisibility(icon);
+      }
+    });
+
+    document.addEventListener('keydown', function(e) {
+      const isToggleKey = e.key === 'Enter' || e.key === ' ';
+      if (!isToggleKey) return;
+      const icon = e.target.closest && e.target.closest('.toggle-password');
+      if (icon) {
+        e.preventDefault();
+        toggleInputVisibility(icon);
+      }
+    });
+  })();
 });
 </script>

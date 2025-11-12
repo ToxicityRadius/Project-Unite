@@ -146,15 +146,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Custom user model
 AUTH_USER_MODEL = 'SyncHub.CustomUser'
 
-# Email settings — configured for Supabase SMTP
+# Email settings — configured for Gmail SMTP
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.supabase.com'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'Project UNITE'
-EMAIL_HOST_PASSWORD = 'dexteraz23'
+EMAIL_HOST_USER = 'daenerys23.1986@gmail.com'
+EMAIL_HOST_PASSWORD = 'qqrlhkofzgprmdue'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
-DEFAULT_FROM_EMAIL = 'noreply@project-unite.com'
+DEFAULT_FROM_EMAIL = 'daenerys23.1986@gmail.com'
 
 # Login URLs
 LOGIN_URL = '/'

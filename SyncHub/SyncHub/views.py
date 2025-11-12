@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.contrib.auth.models import Group, User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.forms import PasswordResetForm
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
@@ -262,20 +263,21 @@ def auth_status_api(request):
     return JsonResponse({'authenticated': False})
 
 def password_reset_validate_email(request):
-    """Custom password reset view that validates email without sending reset link"""
+    """Custom password reset view that sends actual reset link via email"""
     if request.method == 'POST':
-        email = request.POST.get('email', '').strip()
-        if not email:
-            messages.error(request, 'Please enter an email address.')
-            return render(request, 'registration/password_reset_form.html')
-
-        try:
-            user = CustomUser.objects.get(email__iexact=email)
-            messages.success(request, f'Email validation successful. Your account email is confirmed as {email}.')
-            # You can redirect to login or another page here
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            form.save(
+                request=request,
+                use_https=request.is_secure(),
+                email_template_name='registration/password_reset_email.html',
+                subject_template_name='registration/password_reset_subject.txt',
+                html_email_template_name='registration/password_reset_email.html',
+            )
+            messages.success(request, 'Password reset email sent. Check your inbox.')
             return redirect('landing')
-        except CustomUser.DoesNotExist:
-            messages.error(request, 'No account found with this email address.')
-            return render(request, 'registration/password_reset_form.html')
-
-    return render(request, 'registration/password_reset_form.html')
+        else:
+            messages.error(request, 'Invalid email address.')
+    else:
+        form = PasswordResetForm()
+    return render(request, 'registration/password_reset_form.html', {'form': form})

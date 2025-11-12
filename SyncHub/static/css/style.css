@@ -725,6 +725,7 @@ a.figma-login-button {
     margin-bottom: 1rem;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
+    
 }
 
 /* Responsive Design for Figma Login */
@@ -1070,9 +1071,13 @@ a.figma-login-button {
 .input_box {
     position: relative;
     width: 100%;
+
+    display: flex;
+    align-items: center;
 }
 
 .input_box .toggle-password {
+
     position: absolute;
     right: 1rem;
     top: 50%;
@@ -1082,6 +1087,12 @@ a.figma-login-button {
     cursor: pointer;
     transition: color 0.3s ease;
     z-index: 1;
+}
+
+.input_box .auth-input,
+.input_box .figma-form-input,
+.input_box .signup-input {
+    flex: 1 1 auto;
 }
 
 .input_box .toggle-password:hover {
@@ -1472,5 +1483,143 @@ a.figma-login-button {
 
     .chart-container canvas {
         height: 300px;
+    }
+}
+
+/* Unified auth input/button styles (moved from inline template styles) */
+.figma-input,
+.auth-input,
+.figma-form-input,
+.form-input {
+    display: block;
+    width: 420px; /* increased width to accommodate the icon and long values */
+    max-width: 86%;
+    padding: 12px 18px;
+    padding-right: 54px; /* increased space for the password toggle icon */
+    margin: 10px 0;
+    border-radius: 8px;
+    background: #ffffff;
+    border: none;
+    font-size: 16px;
+    font-weight: 700;
+    color: #0b3d7a;
+    box-shadow: 0 6px 18px rgba(11, 77, 122, 0.06);
+}
+
+.figma-input::placeholder,
+.auth-input::placeholder,
+.figma-form-input::placeholder,
+.form-input::placeholder {
+    color: #9aa8c6;
+    font-weight: 600;
+}
+
+.figma-input:focus,
+.auth-input:focus,
+.figma-form-input:focus,
+.form-input:focus {
+    outline: none;
+    box-shadow: 0 6px 18px rgba(11, 77, 122, 0.12), 0 0 0 4px rgba(11,77,122,0.06);
+}
+
+/* Style for primary auth action buttons to match the visual design */
+.figma-login-button,
+.auth-cta,
+.login-button,
+.cta-button {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 10px 26px;
+    border-radius: 28px;
+    background: #ffffff;
+    color: #0b69ff;
+    border: none;
+    font-weight: 700;
+    box-shadow: 0 6px 18px rgba(11, 77, 122, 0.06);
+    cursor: pointer;
+}
+
+.figma-login-button:focus,
+.auth-cta:focus,
+.login-button:focus,
+.cta-button:focus {
+    outline: none;
+    box-shadow: 0 6px 18px rgba(11, 77, 122, 0.12), 0 0 0 4px rgba(11,69,255,0.06);
+}
+
+@media (max-width: 520px) {
+    .figma-input,
+    .auth-input,
+    .figma-form-input,
+    .form-input {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+/* Target Django default rendered password inputs in reset form */
+input#id_new_password1,
+input#id_new_password2,
+input[name="new_password1"],
+input[name="new_password2"] {
+    display: block;
+    width: 420px; /* increased width */
+    max-width: 86%;
+    padding: 12px 18px;
+    padding-right: 54px; /* leave room for the toggle icon */
+    margin: 10px 0;
+    border-radius: 8px;
+    background: #ffffff;
+    border: none;
+    font-size: 16px;
+    font-weight: 700;
+    color: #0b3d7a;
+    box-shadow: 0 6px 18px rgba(11, 77, 122, 0.06);
+}
+
+input#id_new_password1:focus,
+input#id_new_password2:focus,
+input[name="new_password1"]:focus,
+input[name="new_password2"]:focus {
+    outline: none;
+    box-shadow: 0 6px 18px rgba(11, 77, 122, 0.12), 0 0 0 4px rgba(11,77,122,0.06);
+}
+
+@media (max-width: 520px) {
+    input#id_new_password1,
+    input#id_new_password2,
+    input[name="new_password1"],
+    input[name="new_password2"] {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+/* Positioning for input wrapper and password toggle icon */
+.input_box {
+    position: relative;
+}
+
+.input_box .toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #6b7fae;
+    font-size: 1.05rem;
+    padding: 6px;
+}
+
+.input_box .toggle-password:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(11, 69, 255, 0.06);
+    border-radius: 6px;
+}
+
+/* Ensure small screens keep the icon inside */
+@media (max-width: 520px) {
+    .input_box .toggle-password {
+        right: 10px;
     }
 }

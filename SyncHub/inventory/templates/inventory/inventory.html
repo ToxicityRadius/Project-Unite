@@ -11,8 +11,8 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="{% static 'inventory/inventory.css' %}" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'inventory/inventory.css' %}" />
 
     <script src="{% static 'inventory/inventory.js' %}"></script>
   </head>
@@ -89,7 +89,7 @@
               <div class="table-col">DESCRIPTION</div>
               <div class="table-col">QUANTITY</div>
               <div class="table-col">LOCATION</div>
-              <div class="table-col" style="display: flex; justify-content: space-between;">DATE ADDED</div>
+              <div class="table-col">DATE ADDED</div>
             </div>
 
             {% for item in items %}
