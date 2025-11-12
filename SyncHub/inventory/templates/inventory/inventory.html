@@ -11,8 +11,8 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     <link rel="stylesheet" href="{% static 'inventory/inventory.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 
     <script src="{% static 'inventory/inventory.js' %}"></script>
   </head>
@@ -76,7 +76,7 @@
           
             <div class="header-right">
               {% if is_admin %}
-              <a href="{% url 'inventory:inventory_reports' %}" class="btn btn-secondary">View Reports</a>
+              <a href="{% url 'inventory:inventory_reports' %}" class="btn btn-secondary" style="margin-right: 10px;">View Reports</a>
               {% endif %}
               <a href="{% url 'dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
             </div>
@@ -89,7 +89,7 @@
               <div class="table-col">DESCRIPTION</div>
               <div class="table-col">QUANTITY</div>
               <div class="table-col">LOCATION</div>
-              <div class="table-col">DATE ADDED</div>
+              <div class="table-col" style="display: flex; justify-content: space-between;">DATE ADDED</div>
             </div>
 
             {% for item in items %}
@@ -106,7 +106,8 @@
               <div class="table-col" data-label="LOCATION">
                 <span class="display-text">{{ item.location|default:'NONE' }}</span>
               </div>
-              <div class="table-col" data-label="DATE ADDED">{{ item.date_added|date:"M d, Y, g:i a" }}
+              <div class="table-col" data-label="DATE ADDED">
+                <span class="display-text">{{ item.date_added|date:"M d, Y g:i a" }}</span>
                 {% if is_admin %}
                 <button class="delete-icon" data-item-id="{{ item.id }}" title="Delete item">
                   <img src="{% static 'inventory/images/f2a618d9d063a5a882d9001a79266c8923e43b84.png' %}" alt="Delete" />

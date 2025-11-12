@@ -180,6 +180,9 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="table-col" data-label="QUANTITY">
                 <input type="number" class="edit-input" placeholder="0" min="0" style="width: 100%; border: 1px solid #007bff; border-radius: 4px; padding: 4px;">
             </div>
+            <div class="table-col" data-label="LOCATION">
+                <input type="text" class="edit-input" placeholder="Location" style="width: 100%; border: 1px solid #007bff; border-radius: 4px; padding: 4px;">
+            </div>
             <div class="table-col" data-label="DATE ADDED">
                 <button class="delete-icon" data-item-id="new" title="Remove item">
                     <img src="{% static 'inventory/images/f2a618d9d063a5a882d9001a79266c8923e43b84.png' %}" alt="Delete" />
@@ -207,13 +210,16 @@ document.addEventListener('DOMContentLoaded', function() {
                                  cols[1].querySelector('.edit-input')?.value.trim() || '';
                 const quantity = cols[2].querySelector('.display-text')?.textContent.trim() ||
                                cols[2].querySelector('.edit-input')?.value.trim() || '0';
+                const location = cols[3].querySelector('.display-text')?.textContent.trim() ||
+                               cols[3].querySelector('.edit-input')?.value.trim() || '';
 
                 if (name) {
                     items.push({
                         id: itemId,
                         name: name,
                         description: description,
-                        quantity: parseInt(quantity) || 0
+                        quantity: parseInt(quantity) || 0,
+                        location: location
                     });
                 }
             }
@@ -225,12 +231,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const name = cols[0].querySelector('.edit-input')?.value.trim() || '';
             const description = cols[1].querySelector('.edit-input')?.value.trim() || '';
             const quantity = cols[2].querySelector('.edit-input')?.value.trim() || '0';
+            const location = cols[3].querySelector('.edit-input')?.value.trim() || '';
 
             if (name) {
                 newItems.push({
                     name: name,
                     description: description,
-                    quantity: parseInt(quantity) || 0
+                    quantity: parseInt(quantity) || 0,
+                    location: location
                 });
             }
         });
