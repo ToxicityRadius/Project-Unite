@@ -32,11 +32,11 @@ body {
 
 .inventory-container {
   background-color: var(--color-white);
-  border: 5px solid var(--color-border);
-  border-radius: 45px;
-  padding: 40px 50px;
+  border: 3px solid var(--color-border);
+  border-radius: 30px;
+  padding: 25px 35px;
   width: 100%;
-  max-width: 1424px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -44,7 +44,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 50px;
+  margin-bottom: 35px;
   gap: 20px;
 }
 
@@ -67,9 +67,9 @@ body {
 .inventory-title {
   font-family: var(--font-main);
   font-weight: 800;
-  font-size: 60px;
+  font-size: 48px;
   line-height: 1;
-  letter-spacing: -2.4px;
+  letter-spacing: -1.9px;
   margin: 0;
   text-align: center;
   flex-shrink: 0;
@@ -154,7 +154,7 @@ body {
 }
 
 .table-col {
-  padding: 16px 20px;
+  padding: 12px 16px;
   display: flex;
   align-items: center;
   justify-content: center;

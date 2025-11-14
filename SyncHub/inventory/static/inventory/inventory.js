@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentMode = null;
     let originalValues = new Map();
 
-    // Edit mode functionality - direct inline editing with Enter to save
+    // Edit mode functionality - replace spans with input fields
     editModeBtn.addEventListener('click', function() {
         if (currentMode === 'edit') {
             // Exit edit mode
@@ -14,14 +14,12 @@ document.addEventListener('DOMContentLoaded', function() {
             currentMode = null;
             editModeBtn.style.opacity = '1';
 
-            // Remove edit styling and event listeners
-            document.querySelectorAll('.display-text').forEach(text => {
-                text.contentEditable = 'false';
-                text.style.border = 'none';
-                text.style.padding = '0';
-                text.style.backgroundColor = 'transparent';
-                text.removeEventListener('keydown', handleEnterKey);
-                text.removeEventListener('blur', handleBlur);
+            // Replace inputs back to spans
+            document.querySelectorAll('.edit-input').forEach(input => {
+                const span = document.createElement('span');
+                span.className = 'display-text';
+                span.textContent = input.value;
+                input.parentNode.replaceChild(span, input);
             });
         } else {
             // Enter edit mode
@@ -33,13 +31,15 @@ document.addEventListener('DOMContentLoaded', function() {
             currentMode = 'edit';
             editModeBtn.style.opacity = '0.5';
 
-            // Store original values and make all display texts editable
-            document.querySelectorAll('.display-text').forEach(text => {
-                originalValues.set(text, text.textContent);
-                text.contentEditable = 'true';
-                text.style.cursor = 'text';
-                text.addEventListener('keydown', handleEnterKey);
-                text.addEventListener('blur', handleBlur);
+            // Replace spans with input fields
+            document.querySelectorAll('.display-text').forEach(span => {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'edit-input';
+                input.value = span.textContent;
+                input.addEventListener('keydown', handleEnterKey);
+                input.addEventListener('blur', handleBlur);
+                span.parentNode.replaceChild(input, span);
             });
         }
     });
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
             saveSingleChange(this);
         } else if (event.key === 'Escape') {
             // Cancel edit and restore original value
-            this.textContent = originalValues.get(this);
+            this.value = originalValues.get(this);
             this.blur();
         }
     }
@@ -64,13 +64,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Save a single change
     function saveSingleChange(element) {
         const row = element.closest('.table-row');
-        const displayTexts = row.querySelectorAll('.display-text');
+        const editInputs = row.querySelectorAll('.edit-input');
         const itemId = row.getAttribute('data-item-id');
 
-        if (displayTexts.length >= 3) {
-            const name = displayTexts[0].textContent.trim();
-            const description = displayTexts[1].textContent.trim();
-            const quantity = displayTexts[2].textContent.trim();
+        if (editInputs.length >= 3) {
+            const name = editInputs[0].value.trim();
+            const description = editInputs[1].value.trim();
+            const quantity = editInputs[2].value.trim();
 
             // Validate data
             if (!name) {
@@ -103,17 +103,12 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Update original values
-                    originalValues.set(displayTexts[0], name);
-                    originalValues.set(displayTexts[1], description);
-                    originalValues.set(displayTexts[2], quantity);
-
-                    // Remove edit styling
-                    displayTexts.forEach(text => {
-                        text.contentEditable = 'false';
-                        text.style.border = 'none';
-                        text.style.padding = '0';
-                        text.style.backgroundColor = 'transparent';
+                    // Replace inputs back to spans
+                    editInputs.forEach(input => {
+                        const span = document.createElement('span');
+                        span.className = 'display-text';
+                        span.textContent = input.value;
+                        input.parentNode.replaceChild(span, input);
                     });
 
                     // Exit edit mode
@@ -123,14 +118,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     alert('Error saving changes: ' + data.error);
                     // Restore original value
-                    element.textContent = originalValues.get(element);
+                    element.value = originalValues.get(element);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
                 alert('Error saving changes');
                 // Restore original value
-                element.textContent = originalValues.get(element);
+                element.value = originalValues.get(element);
             });
         }
     }
@@ -207,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add single item functionality
     addSingleBtn.addEventListener('click', function() {
-        // Create a new row with empty fields
+        // Create a new row with empty input fields
         const table = document.querySelector('.inventory-table');
         const newRow = document.createElement('div');
         newRow.className = 'table-row new-item-row';
@@ -215,13 +210,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         newRow.innerHTML = `
             <div class="table-col" data-label="ITEM">
-                <span class="display-text new-item-name"></span>
+                <input type="text" class="new-item-input new-item-name" placeholder="Item name">
             </div>
             <div class="table-col" data-label="DESCRIPTION">
-                <span class="display-text new-item-description"></span>
+                <input type="text" class="new-item-input new-item-description" placeholder="Description">
             </div>
             <div class="table-col" data-label="QUANTITY">
-                <span class="display-text new-item-quantity"></span>
+                <input type="number" class="new-item-input new-item-quantity" placeholder="Quantity">
             </div>
             <div class="table-col" data-label="DATE ADDED">
                 <span class="new-item-date">New Item</span>
@@ -232,20 +227,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const addButtonContainer = document.querySelector('.add-button-container');
         table.insertBefore(newRow, addButtonContainer);
 
-        // Make the new row editable immediately
-        const displayTexts = newRow.querySelectorAll('.display-text');
-        displayTexts.forEach(text => {
-            text.contentEditable = 'true';
-            text.style.border = '1px solid #007bff';
-            text.style.padding = '4px';
-            text.style.borderRadius = '4px';
-            text.style.backgroundColor = '#f8f9fa';
-            text.style.cursor = 'text';
-            text.addEventListener('keydown', handleNewItemEnter);
+        // Style the inputs and add event listeners
+        const inputs = newRow.querySelectorAll('.new-item-input');
+        inputs.forEach(input => {
+            input.addEventListener('keydown', handleNewItemEnter);
+            input.addEventListener('blur', handleNewItemBlur);
         });
 
         // Focus on the name field
-        displayTexts[0].focus();
+        inputs[0].focus();
     });
 
     // Handle Enter key for new items
@@ -263,10 +253,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle blur for new items - only save if all fields are filled
     function handleNewItemBlur() {
         const row = this.closest('.table-row');
-        const displayTexts = row.querySelectorAll('.display-text');
-        const name = displayTexts[0].textContent.trim();
-        const description = displayTexts[1].textContent.trim();
-        const quantity = displayTexts[2].textContent.trim();
+        const inputs = row.querySelectorAll('.new-item-input');
+        const name = inputs[0].value.trim();
+        const description = inputs[1].value.trim();
+        const quantity = inputs[2].value.trim();
 
         // Only save if all fields have content
         if (name && description && quantity) {
@@ -277,23 +267,23 @@ document.addEventListener('DOMContentLoaded', function() {
     // Save new item
     function saveNewItem(element) {
         const row = element.closest('.table-row');
-        const displayTexts = row.querySelectorAll('.display-text');
+        const inputs = row.querySelectorAll('.new-item-input');
 
-        if (displayTexts.length >= 3) {
-            const name = displayTexts[0].textContent.trim();
-            const description = displayTexts[1].textContent.trim();
-            const quantity = displayTexts[2].textContent.trim();
+        if (inputs.length >= 3) {
+            const name = inputs[0].value.trim();
+            const description = inputs[1].value.trim();
+            const quantity = inputs[2].value.trim();
 
             // Validate data
             if (!name) {
                 alert('Item name cannot be empty');
-                displayTexts[0].focus();
+                inputs[0].focus();
                 return;
             }
 
             if (isNaN(quantity) || quantity < 0) {
                 alert('Quantity must be a valid number');
-                displayTexts[2].focus();
+                inputs[2].focus();
                 return;
             }
 
