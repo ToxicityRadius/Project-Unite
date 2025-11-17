@@ -12,6 +12,14 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+import sys
+
+# Ensure the outer SyncHub folder (containing apps like inventory, rfid_login)
+# is on sys.path so it can be imported from the repo root. This is needed when
+# running on hosting platforms that execute from the repository root.
+OUTER_SYNC_HUB = Path(__file__).resolve().parent.parent
+if str(OUTER_SYNC_HUB) not in sys.path:
+    sys.path.insert(0, str(OUTER_SYNC_HUB))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
