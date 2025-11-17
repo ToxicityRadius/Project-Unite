@@ -53,6 +53,29 @@
     max-height: 400px;
   }
 
+  /* Image used inside the developer-photo placeholder */
+  .dev-photo-image {
+    width: 100%;
+    height: 100%;
+    max-width: 546px;
+    max-height: 380px;
+    display: block;
+    border-radius: 45px;
+    object-fit: cover;
+  }
+
+  .dev-photo-placeholder {
+    width: 546px;
+    height: 380px;
+    flex-shrink: 0;
+    background-color: var(--color-dark);
+    border-radius: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
   .purpose-text {
     color: var(--color-primary);
     font-size: 27px;
