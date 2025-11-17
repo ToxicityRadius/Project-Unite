@@ -21,16 +21,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-d*1s36i5b#92mq8+lg$2g)ffagwvcses1cq09+^p@7&nra3ny%'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-d*1s36i5b#92mq8+lg$2g)ffagwvcses1cq09+^p@7&nra3ny%')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',') if os.getenv('ALLOWED_HOSTS') else ['*']
 
 # Add builder preview origin(s) and other external origins that will host the frontend
 # Replace or extend these entries with any preview/hosting domains you use.
-CSRF_TRUSTED_ORIGINS = [
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',') if os.getenv('CSRF_TRUSTED_ORIGINS') else [
     'https://58db0297c58a42b5a7eac88d8fb76038-88f834eb19e64436ba2993dc3.projects.builder.codes',
 ]
 
@@ -86,15 +86,10 @@ WSGI_APPLICATION = 'SyncHub.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+import dj_database_url
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres.wayatttpewdyistfbevl',
-        'PASSWORD': 'ApocalyptoVirus',
-        'HOST': 'aws-1-ap-southeast-1.pooler.supabase.com',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(default=os.getenv('DATABASE_URL', 'postgresql://postgres.wayatttpewdyistfbevl:ApocalyptoVirus@aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres'))
 }
 
 
@@ -150,11 +145,11 @@ AUTH_USER_MODEL = 'SyncHub.CustomUser'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'daenerys23.1986@gmail.com'
-EMAIL_HOST_PASSWORD = 'qqrlhkofzgprmdue'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'daenerys23.1986@gmail.com')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'qqrlhkofzgprmdue')
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
-DEFAULT_FROM_EMAIL = 'daenerys23.1986@gmail.com'
+DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER', 'daenerys23.1986@gmail.com')
 
 # Login URLs
 LOGIN_URL = '/'
