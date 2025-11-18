@@ -377,8 +377,10 @@ document.addEventListener('DOMContentLoaded', () => {
             previousFocus = document.activeElement;
             const signupForm = document.querySelector('.signup_form');
             const loginForm = document.querySelector('.login_form');
+            const passwordResetForm = document.getElementById('passwordResetForm');
             if (signupForm) signupForm.setAttribute('aria-hidden', 'false');
             if (loginForm) loginForm.setAttribute('aria-hidden', 'true');
+            if (passwordResetForm) passwordResetForm.setAttribute('aria-hidden', 'true');
             if (formContainer) formContainer.classList.remove('active');
             setFocusToFirstInput('.signup_form');
         });
@@ -395,8 +397,10 @@ document.addEventListener('DOMContentLoaded', () => {
             previousFocus = document.activeElement;
             const signupForm = document.querySelector('.signup_form');
             const loginForm = document.querySelector('.login_form');
+            const passwordResetForm = document.getElementById('passwordResetForm');
             if (signupForm) signupForm.setAttribute('aria-hidden', 'true');
             if (loginForm) loginForm.setAttribute('aria-hidden', 'false');
+            if (passwordResetForm) passwordResetForm.setAttribute('aria-hidden', 'true');
             if (formContainer) formContainer.classList.add('active');
             setFocusToFirstInput('.login_form');
         });
@@ -429,7 +433,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (getStarted) {
         getStarted.addEventListener('click', e => {
             e.preventDefault();
-            if (localStorage.getItem('loggedIn') === 'true') {
+            // Check server-side authentication status from data attribute
+            const isAuthenticated = getStarted.getAttribute('data-authenticated') === 'true';
+            if (isAuthenticated) {
                 window.location.href = '/dashboard/';
             } else {
                 if (home) {
@@ -440,8 +446,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 previousFocus = document.activeElement;
                 const signupForm = document.querySelector('.signup_form');
                 const loginForm = document.querySelector('.login_form');
+                const passwordResetForm = document.getElementById('passwordResetForm');
                 if (signupForm) signupForm.setAttribute('aria-hidden', 'true');
                 if (loginForm) loginForm.setAttribute('aria-hidden', 'false');
+                if (passwordResetForm) passwordResetForm.setAttribute('aria-hidden', 'true');
                 if (formContainer) formContainer.classList.add('active');
                 setFocusToFirstInput('.login_form');
             }

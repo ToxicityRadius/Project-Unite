@@ -41,7 +41,7 @@
         <h1 class="main-title">PROJECT UNITE</h1>
         <p class="subtitle"> OFFICER ATTENDANCE LOGGING AND INVENTORY TRACKING</p>
         <div class="landing-buttons">
-            <button id="getStarted" class="cta-button">Get Started</button>
+            <button type="button" id="getStarted" class="cta-button" data-authenticated="{% if user.is_authenticated %}true{% else %}false{% endif %}">Get Started</button>
         </div>
     </main>
 
