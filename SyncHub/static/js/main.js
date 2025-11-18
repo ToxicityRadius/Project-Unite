@@ -243,6 +243,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const navAvatarImg = document.getElementById('nav-avatar-img');
     const navUsernameDisplay = document.getElementById('nav-username-display');
 
+    // Check URL params for auto-opening login modal
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('login') === 'true' && openLoginBtn) {
+        // Simulate click on login button to open modal
+        setTimeout(() => {
+            openLoginBtn.click();
+        }, 100);
+    }
+
   // Function to toggle password visibility
   function togglePasswordVisibility(icon) {
     const input = icon.previousElementSibling;

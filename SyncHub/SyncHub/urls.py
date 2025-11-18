@@ -3,6 +3,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.views.generic import RedirectView
 from . import views
 
 urlpatterns = [
@@ -20,6 +21,7 @@ urlpatterns = [
 
     # Password reset
     path('accounts/password_reset/', views.password_reset_validate_email, name='password_reset'),
+    path('accounts/login/', RedirectView.as_view(url='/?login=true', permanent=False), name='login'),
     path('accounts/', include('django.contrib.auth.urls')),
 
     path('api/signup', views.signup_api, name='api_signup'),

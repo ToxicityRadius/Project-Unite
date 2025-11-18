@@ -1565,18 +1565,18 @@ input#id_new_password2,
 input[name="new_password1"],
 input[name="new_password2"] {
     display: block;
-    width: 420px; /* increased width */
-    max-width: 86%;
-    padding: 12px 18px;
-    padding-right: 54px; /* leave room for the toggle icon */
+    width: 100%;
+    max-width: 100%;
+    padding: 12px 54px 12px 18px; /* right padding for icon */
     margin: 10px 0;
-    border-radius: 8px;
-    background: #ffffff;
+    border-radius: 28px;
+    background: #e8f0ff;
     border: none;
     font-size: 16px;
-    font-weight: 700;
-    color: #0b3d7a;
-    box-shadow: 0 6px 18px rgba(11, 77, 122, 0.06);
+    font-weight: 600;
+    color: #a8b8d8;
+    box-shadow: none;
+    text-align: center;
 }
 
 input#id_new_password1:focus,
@@ -1584,7 +1584,9 @@ input#id_new_password2:focus,
 input[name="new_password1"]:focus,
 input[name="new_password2"]:focus {
     outline: none;
-    box-shadow: 0 6px 18px rgba(11, 77, 122, 0.12), 0 0 0 4px rgba(11,77,122,0.06);
+    box-shadow: none;
+    background: #dce8ff;
+    color: #3d5a8a;
 }
 
 @media (max-width: 520px) {
@@ -1600,17 +1602,19 @@ input[name="new_password2"]:focus {
 /* Positioning for input wrapper and password toggle icon */
 .input_box {
     position: relative;
+    width: 100%;
 }
 
 .input_box .toggle-password {
     position: absolute;
-    right: 12px;
+    right: 18px;
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
-    color: #6b7fae;
+    color: #a8b8d8;
     font-size: 1.05rem;
     padding: 6px;
+    z-index: 10;
 }
 
 .input_box .toggle-password:focus {
