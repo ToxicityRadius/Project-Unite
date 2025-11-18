@@ -18,6 +18,9 @@
     --border-color: #8A96A3;
 }
 
+/* Slightly reduce global scale: set base font-size to 15px (was 16px) */
+html { font-size: 15px; }
+
 body {
     font-family: 'Poppins', -apple-system, Roboto, Helvetica, sans-serif;
     background: var(--white);
