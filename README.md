@@ -78,5 +78,4 @@ Project Unite (a.k.a. SyncHub) is a Django-based web app for officer attendance 
 **License**
 - See `LICENSE` in the repository root.
 
-If you'd like, I can also add a short `CONTRIBUTING.md` and an example `.env.example` template. Want me to add those?
 # PROJECT-UNITE
