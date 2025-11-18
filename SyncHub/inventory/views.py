@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import Group
 from django.http import JsonResponse
 from django.db.models import Count, Sum
+from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
+from django.contrib.contenttypes.models import ContentType
 from .models import Item
 from .forms import ItemForm
 
@@ -89,6 +91,17 @@ def item_list(request):
                     item.quantity = int(quantity)
                     item.location = location
                     item.save()
+                    
+                    # Log the activity
+                    LogEntry.objects.log_action(
+                        user_id=request.user.id,
+                        content_type_id=ContentType.objects.get_for_model(item).pk,
+                        object_id=item.pk,
+                        object_repr=str(item),
+                        action_flag=CHANGE,
+                        change_message='Updated item'
+                    )
+                    
                     return JsonResponse({'success': True})
                 except Item.DoesNotExist:
                     return JsonResponse({'success': False, 'error': 'Item not found'})
@@ -97,7 +110,19 @@ def item_list(request):
 
             elif action == 'delete':
                 item_ids = data.get('item_ids', [])
-                deleted_count = Item.objects.filter(id__in=item_ids).delete()[0]
+                # Log deletions before deleting
+                items_to_delete = Item.objects.filter(id__in=item_ids)
+                for item in items_to_delete:
+                    LogEntry.objects.log_action(
+                        user_id=request.user.id,
+                        content_type_id=ContentType.objects.get_for_model(item).pk,
+                        object_id=item.pk,
+                        object_repr=str(item),
+                        action_flag=DELETION,
+                        change_message='Deleted item'
+                    )
+                
+                deleted_count = items_to_delete.delete()[0]
                 return JsonResponse({'success': True, 'deleted_count': deleted_count, 'item_ids': item_ids})
 
             elif action == 'create':
@@ -107,12 +132,23 @@ def item_list(request):
                 location = data.get('location')
 
                 try:
-                    Item.objects.create(
+                    item = Item.objects.create(
                         name=name,
                         description=description,
                         quantity=int(quantity),
                         location=location
                     )
+                    
+                    # Log the activity
+                    LogEntry.objects.log_action(
+                        user_id=request.user.id,
+                        content_type_id=ContentType.objects.get_for_model(item).pk,
+                        object_id=item.pk,
+                        object_repr=str(item),
+                        action_flag=ADDITION,
+                        change_message='Created item'
+                    )
+                    
                     return JsonResponse({'success': True})
                 except ValueError:
                     return JsonResponse({'success': False, 'error': 'Invalid quantity'})
@@ -133,23 +169,53 @@ def item_list(request):
                             item.quantity = int(item_data['quantity']) if str(item_data['quantity']).isdigit() else 0
                             item.location = item_data.get('location', '')
                             item.save()
+                            
+                            # Log the activity
+                            LogEntry.objects.log_action(
+                                user_id=request.user.id,
+                                content_type_id=ContentType.objects.get_for_model(item).pk,
+                                object_id=item.pk,
+                                object_repr=str(item),
+                                action_flag=CHANGE,
+                                change_message='Updated item'
+                            )
                         except Item.DoesNotExist:
                             # If item doesn't exist, create it
-                            Item.objects.create(
+                            item = Item.objects.create(
                                 name=item_data['name'],
                                 description=item_data['description'] or '',
                                 quantity=int(item_data['quantity']) if str(item_data['quantity']).isdigit() else 0,
                                 location=item_data.get('location', '')
                             )
+                            
+                            # Log the activity
+                            LogEntry.objects.log_action(
+                                user_id=request.user.id,
+                                content_type_id=ContentType.objects.get_for_model(item).pk,
+                                object_id=item.pk,
+                                object_repr=str(item),
+                                action_flag=ADDITION,
+                                change_message='Created item'
+                            )
 
                 # Create new items
                 for new_item_data in new_items_data:
                     if new_item_data['name'].strip():  # Only save if name is not empty
-                        Item.objects.create(
+                        item = Item.objects.create(
                             name=new_item_data['name'],
                             description=new_item_data['description'] or '',
                             quantity=int(new_item_data['quantity']) if str(new_item_data['quantity']).isdigit() else 0,
                             location=new_item_data.get('location', '')
+                        )
+                        
+                        # Log the activity
+                        LogEntry.objects.log_action(
+                            user_id=request.user.id,
+                            content_type_id=ContentType.objects.get_for_model(item).pk,
+                            object_id=item.pk,
+                            object_repr=str(item),
+                            action_flag=ADDITION,
+                            change_message='Created item'
                         )
 
                 return JsonResponse({'success': True})

@@ -206,18 +206,60 @@ def profile_view(request):
 
     # Get recent RFID activities for the user
     from rfid_login.models import TimeLog, Officer
+    from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
+    from django.contrib.contenttypes.models import ContentType
+    from inventory.models import Item
+    
     recent_activities = []
+    
+    # Get RFID time log activities
     try:
         officer = Officer.objects.get(id=request.user.student_number)
-        logs = TimeLog.objects.filter(officer=officer).order_by('-date', '-time_in')[:10]  # Last 10 activities
+        logs = TimeLog.objects.filter(officer=officer).order_by('-date', '-time_in')[:10]
         for log in logs:
             if log.time_out:
-                activity = f"Time Out: {log.date} at {log.time_out.astimezone().strftime('%I:%M %p')}"
+                activity = {
+                    'text': f"Time Out: {log.date} at {log.time_out.astimezone().strftime('%I:%M %p')}",
+                    'timestamp': log.time_out
+                }
             else:
-                activity = f"Time In: {log.date} at {log.time_in.astimezone().strftime('%I:%M %p')}"
+                activity = {
+                    'text': f"Time In: {log.date} at {log.time_in.astimezone().strftime('%I:%M %p')}",
+                    'timestamp': log.time_in
+                }
             recent_activities.append(activity)
     except Officer.DoesNotExist:
         pass
+    
+    # Get inventory management activities from Django admin logs
+    try:
+        item_content_type = ContentType.objects.get_for_model(Item)
+        inventory_logs = LogEntry.objects.filter(
+            user=request.user,
+            content_type=item_content_type
+        ).order_by('-action_time')[:10]
+        
+        for log in inventory_logs:
+            action_text = ""
+            if log.action_flag == ADDITION:
+                action_text = f"Added inventory item: {log.object_repr}"
+            elif log.action_flag == CHANGE:
+                action_text = f"Updated inventory item: {log.object_repr}"
+            elif log.action_flag == DELETION:
+                action_text = f"Deleted inventory item: {log.object_repr}"
+            
+            if action_text:
+                activity = {
+                    'text': action_text,
+                    'timestamp': log.action_time
+                }
+                recent_activities.append(activity)
+    except Exception:
+        pass
+    
+    # Sort all activities by timestamp and take the most recent 10
+    recent_activities.sort(key=lambda x: x['timestamp'], reverse=True)
+    recent_activities = [activity['text'] for activity in recent_activities[:10]]
 
     context = {
         'role': role,
