@@ -19,7 +19,7 @@
 }
 
 /* Slightly reduce global scale: set base font-size to 15px (was 16px) */
-html { font-size: 15px; }
+html { font-size: 14px; }
 
 body {
     font-family: 'Poppins', -apple-system, Roboto, Helvetica, sans-serif;
